@@ -1,0 +1,43 @@
+/*----------------------------------------------------------------------------*/
+/*#TYPOGRAPHY STYLE*/
+/*----------------------------------------------------------------------------*/
+
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $default-txt-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h6,
+h5 { }
+
+h1 { }
+
+h2 { }
+
+h3 { }
+
+h4 { }
+
+h5 { }
+
+h6 { }
+
+ul, ol {
+  font-size: 0;
+  line-height: 0;
+}
+
+p,
+ul li,
+ol li {
+  font-size: 18px;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
