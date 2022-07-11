@@ -1,0 +1,47 @@
+body{
+  background-color: $bg-color;
+}
+
+svg {
+  display: block;
+  margin: 30px auto 100px auto;
+}
+
+
+.form {
+  color: white;
+  width: 100%;
+  max-width: 700px;
+  margin: auto;
+
+  &_label { color: white; }
+
+  &_error {
+    color: #fc8181;
+    font-size: 0.75rem;
+    text-align: left;
+    margin-top: 0.25rem;
+  }
+  &_input--error{
+    border: solid 2px red;
+  }
+
+  &_title {
+    text-align: center;
+    color: white;
+  }
+
+  input, button,label {
+    width: 100%;
+    max-width: 700px;
+  }
+
+  input, button{
+    height: 60px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    border-radius: 20px;
+  }
+  
+
+}

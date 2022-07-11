@@ -6,6 +6,11 @@
 .btn {
   transition: all .3s ease-in-out;
 
+  &_submit {
+    background: #000F93;
+    border: none;
+
+  }
   //button size
   &--xl { }
 
