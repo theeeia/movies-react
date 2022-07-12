@@ -1,5 +1,7 @@
 import { Form, Formik} from 'formik';
+import { Link } from 'react-router-dom';
 import { registerSchema } from '../schemas/schema';
+import FormCheckbox from './FormCheckbox';
 import FormInput from './FormInput';
 
 const onSubmit = () => { 
@@ -18,7 +20,7 @@ export default function Register() {
     return (
         <>     
             <div className='form_title'>
-                <h1 className='form_title'>Register</h1>
+                <h1 className=''>Register</h1>
                 <p>Create account to start using <b>Miru.</b></p>
             </div>
             
@@ -43,7 +45,7 @@ export default function Register() {
                             placeholder="Enter your last name" 
                         />
                         <FormInput 
-                            label="Email"
+                            label="Email Address"
                             name="email"
                             type="email"
                             placeholder="Enter your email" 
@@ -60,9 +62,17 @@ export default function Register() {
                             type="Password"
                             placeholder="Confirm your password" 
                         />
+                        <FormCheckbox
+                            label="Remember me"
+                            name="rememberMe"
+                            type="checkbox"
+                         />
+
                         <button disabled={isSubmitting} type="submit" className='btn_submit'>
                             Register
-                        </button>                   
+                        </button>   
+
+                        <p className='txt--center '>You already have an account? <Link to={"/login"} className="txt--underline">Login</Link></p>              
                     </Form>
                 )}           
             </Formik>   

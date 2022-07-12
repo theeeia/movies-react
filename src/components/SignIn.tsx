@@ -3,8 +3,6 @@ import Login from './Login'
 import Register from './Register'
 
 export default function SignIn(props: any) {
-    console.log(props.type)
-
     return (
         <>
             <svg width="150" height="55" viewBox="0 0 150 55" fill="none" xmlns="http://www.w3.org/2000/svg">

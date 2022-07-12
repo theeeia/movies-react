@@ -7,41 +7,76 @@ svg {
   margin: 30px auto 100px auto;
 }
 
-
 .form {
   color: white;
   width: 100%;
   max-width: 700px;
   margin: auto;
+  font-size: 16px;
 
-  &_label { color: white; }
+  &_label { color: white;  }
 
   &_error {
-    color: #fc8181;
-    font-size: 0.75rem;
+    color: red;
+    font-size: 15px;
     text-align: left;
-    margin-top: 0.25rem;
+    margin-top: -20px;
+
+    &--hidden {
+      visibility: hidden;
+    }
   }
+
+  &_checkbox {
+    display: flex;
+    align-content: center;
+
+  }
+  &_checkbox--input {
+    height: 25px;
+    width: 25px;
+    align-items: center;
+    accent-color: #131313;
+    margin-right: 15px;
+  }
+  &_checkbox--label {
+
+  }
+
   &_input--error{
     border: solid 2px red;
+  }
+
+  &_input:nth-child(1) {
+    color: red;
+    background-color: red;
   }
 
   &_title {
     text-align: center;
     color: white;
+    margin-bottom: 30px;
   }
 
-  input, button,label {
+  &_input, button,label {
     width: 100%;
     max-width: 700px;
   }
 
-  input, button{
-    height: 60px;
+  &_input, button{
+    height: 70px;
     margin-bottom: 30px;
-    margin-top: 10px;
+    margin-top: 15px;
     border-radius: 20px;
   }
   
+  &_input {
+    padding-left: 30px;
+    background-color: #131313;
+    color: white;
+    border: 1px solid #CBCBCB;
+    font-size: 16px;
+  }
+
 
 }
