@@ -1,22 +1,40 @@
+import axios from 'axios';
 import { Form, Formik} from 'formik';
-import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import { registerSchema } from '../schemas/schema';
 import FormCheckbox from './FormCheckbox';
 import FormInput from './FormInput';
 
-const onSubmit = () => { 
-    /*
-    const data = { username: 'example' };
 
-    fetch("",{
-        method: "POST",
-        body: JSON.stringify(data)
-
-    })*/
-    console.log("submit")
- }
 
 export default function Register() {
+    const [navigate, setNavigate] = useState(false)
+    const formRef:any  = useRef()
+
+
+    const onSubmit = async () => { 
+       
+        const {confirmPassword, ...data} = formRef.current.values
+        console.log(data)
+        /*
+        const response = await fetch("https://movies.codeart.mk/api/auth/register",{   //da go zemime access tokenot
+        mode: 'no-cors',
+            credentials: "include", //za refresh tokenot v cookie
+            method: "POST",
+            body: JSON.stringify(data)
+
+        })  */ 
+        const response = await axios.post("https://movies.codeart.mk/api/auth/register", data)
+        setNavigate(true)
+        console.log(response)
+    }
+
+    if(navigate) {
+        return <Navigate to="/login"/>
+    }
+
+
     return (
         <>     
             <div className='form_title'>
@@ -26,7 +44,8 @@ export default function Register() {
             
 
             <Formik 
-                initialValues={{firstName:"", lastName:"", email:"", password:"", confirmPassword:""}}
+                innerRef={formRef}
+                initialValues={{first_name:"", last_name:"", email:"", password:"", confirmPassword:""}}
                 validationSchema={registerSchema}
                 onSubmit={onSubmit}   
             >
@@ -34,13 +53,13 @@ export default function Register() {
                     <Form className='form'>
                         <FormInput 
                             label="First Name"
-                            name="firstName"
+                            name="first_name"
                             type="text"
                             placeholder="Enter your first name" 
                         />
                         <FormInput 
                             label="Last Name"
-                            name="lastName"
+                            name="last_name"
                             type="text"
                             placeholder="Enter your last name" 
                         />
@@ -59,7 +78,7 @@ export default function Register() {
                         <FormInput 
                             label="Confirm Password"
                             name="confirmPassword"
-                            type="Password"
+                            type="password"
                             placeholder="Confirm your password" 
                         />
                         <FormCheckbox

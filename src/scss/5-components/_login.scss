@@ -7,6 +7,10 @@ svg {
   margin: 30px auto 100px auto;
 }
 
+input[type="checkbox"] { /* change "blue" browser chrome to yellow */
+  filter: invert(100%) hue-rotate(18deg) brightness(1.7);
+}
+
 .form {
   color: white;
   width: 100%;
