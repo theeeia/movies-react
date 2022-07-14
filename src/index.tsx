@@ -4,6 +4,7 @@ import './scss/application.scss';
 import App from './App';
 
 import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from './context/user-context';
 
 
 const root = ReactDOM.createRoot(
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <UserProvider>
+         <App />
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

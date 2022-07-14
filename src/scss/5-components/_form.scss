@@ -7,9 +7,11 @@ svg {
   margin: 30px auto 100px auto;
 }
 
-input[type="checkbox"] { /* change "blue" browser chrome to yellow */
+input[type="checkbox"] { 
   filter: invert(100%) hue-rotate(18deg) brightness(1.7);
 }
+
+
 
 .form {
   color: white;
@@ -44,6 +46,12 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
     margin-right: 15px;
   }
   &_checkbox--label {
+  }
+
+  &_icon {
+    position: absolute;
+    right: 40px;
+    top: 5px;
 
   }
 
@@ -51,15 +59,16 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
     border: solid 2px red;
   }
 
-  &_input:nth-child(1) {
-    color: red;
-    background-color: red;
-  }
-
   &_title {
     text-align: center;
     color: white;
     margin-bottom: 30px;
+  }
+
+  &_input[type="password"] {
+    background-image: url("../../assets/images/Frame3.svg");
+    background-repeat: no-repeat;
+    background-position: top 20px right 40px;
   }
 
   &_input, button,label {
@@ -73,8 +82,12 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
     margin-top: 15px;
     border-radius: 20px;
   }
-  
+  &_line{
+
+      position: relative;
+  }
   &_input {
+  
     padding-left: 30px;
     background-color: #131313;
     color: white;
