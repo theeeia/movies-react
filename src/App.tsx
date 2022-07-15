@@ -1,19 +1,12 @@
-import React from "react";
-import {Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import React, { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
+import AuthenticatedApp from "./pages/AuthenticatedApp";
+
+import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 import "./scss/application.scss";
 
-
-
 export default function App() {
-  return (
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-      </Routes>
-  
-  );
+  const { user } = useContext(AuthContext);
+
+  return user ? <AuthenticatedApp /> : <UnauthenticatedApp />;
 }

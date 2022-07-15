@@ -1,26 +1,29 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import { UserContext } from '../context/user-context';
+import React, { useContext } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Home() {
-  const { user } = useContext(UserContext);
+  const { user, expireTime, logoutUser, updateToken } = useContext(AuthContext);
 
-  const handleClick= () => {
-
-    if(Date.now() > user.expires_in){
-      console.log("Timed out")
-    }else{
-      console.log(user.expires_in - Date.now())
+  const handleClick = () => {
+    
+    console.log(Date.now() , Number(expireTime) )
+    if (Date.now() > Number(expireTime)) {
+      console.log("Timed out");
+      updateToken();
+    } else {
+      console.log(Number(expireTime) - Date.now());
     }
-
-  }
+  };
+  const handleLogout = () => {
+    logoutUser();
+  };
 
   return (
     <>
-      <div> {"fafa"}</div>
+      <div> Hello {user}</div>
       <button onClick={handleClick}>Check token</button>
-      <Link to={"/login"}>Login</Link>
+      <button onClick={handleLogout}>Logout</button>
     </>
- 
-  )
+  );
 }
