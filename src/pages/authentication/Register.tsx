@@ -5,6 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 //components
 import FormCheckbox from "../../components/AuthenticationForm/FormCheckbox";
 import FormInput from "../../components/AuthenticationForm/FormInput";
+import FormButton from "../../components/AuthenticationForm/FormButton";
 //authentication schema
 import { AUTHENTICATION_REGISTER_SCHEMA } from "../../schemas/AuthenticationSchema";
 //interface
@@ -14,7 +15,7 @@ import { AuthContext } from "../../context/AuthContext";
 //icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-import FormButton from "../../components/AuthenticationForm/FormButton";
+
 
 
 export default function Register() {
@@ -43,8 +44,9 @@ export default function Register() {
   };
 
   return (
-    <>
+    <div className="container">
       <svg
+      className="logo"
         width="150"
         height="55"
         viewBox="0 0 150 55"
@@ -127,7 +129,6 @@ export default function Register() {
             />
             <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
 
-
             <FormButton label="Register" disabled={isSubmitting} type="submit" className="btn btn_submit"/>
   
             <p className="txt--center ">
@@ -139,6 +140,6 @@ export default function Register() {
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 }

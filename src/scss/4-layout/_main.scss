@@ -2,6 +2,20 @@
 /*#MAIN/GLOBAL STYLE*/
 /*----------------------------------------------------------------------------*/
 
-body {
-    background-color: $bg-color;
+body { background-color: $bg-color; }
+
+.logo {
+    display: block;
+    margin: 60px auto 100px auto;
+}
+.home_page {
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    margin: 70px 0;
+    
+    button {
+        color: black; 
+        margin: 30px;
+    }
 }

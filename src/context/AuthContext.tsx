@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { boolean } from "yup";
 
 interface User {
   email: string;
@@ -7,24 +8,31 @@ interface User {
   refresh_token: string;
   expires_in: number;
 }
+
 interface Context {
   user: User,
   expireTime: string,
+  rememberMe: boolean,
   loginUser: (arg:Login) => void,
   registerUser: (arg:Register) => void,
   logoutUser: () => void,
   updateToken: () => void,
-  children?: React.ReactNode
-
+  clearUserFromStorage: ()=>void
 }
+
 interface Login {
   email: string,
-  password: string
+  password: string,
+  rememberMe: boolean
 }
 
-interface Register extends Login{
+interface Register 
+{
+  email: string,
+  password: string,
   first_name: string,
-  last_name: string
+  last_name: string,
+
 }
 
 
@@ -52,6 +60,9 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
     localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "") : null,
   );
 
+  const [rememberMe, setRememberMe] = useState(() =>
+    localStorage.getItem("rememberMe") ? JSON.parse(localStorage.getItem("rememberMe") || "") : false,
+  );
 
   // headers for login 
   const postReq = {
@@ -65,51 +76,68 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
   // navigation hook to redirect to pages
   const navigate = useNavigate();
 
+  // stores the access token, refresh token, user email and expire time in local storage
+  const setUserInStorage = (access:string, refresh:string, email:string, expires_in:number) => {
+    setAccessToken(access);
+    setRefreshToken(refresh);
+    setUser(email);
 
+    localStorage.setItem("accessToken", JSON.stringify(access));
+    localStorage.setItem("refreshToken", JSON.stringify(refresh));
+    localStorage.setItem("user", JSON.stringify(email));
+
+    let expire = Date.now();
+    expire = expire + expires_in * 1000; // add 300 seconds in miliseconds
+
+    localStorage.setItem("expireTime", JSON.stringify(expire));
+    setExpireTime(expire);
+  }
+
+  // clears the user from local storage
+  const clearUserFromStorage = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+    localStorage.removeItem("expireTime");
+
+    setUser(null);
+    setAccessToken(null);
+    setRefreshToken(null);
+    setExpireTime(null);
+
+  }
 /*================
   LOGIN USER
-  sends a login request and stores the access token, refresh token, user email and expire time in local storage
+  sends a login request and calls function to store them in local storage
 ================*/
-
-
   const loginUser = async (values: Login) => {
-    
+
+    const {rememberMe, ...props} = values
+   
+
     const response = await fetch("https://movies.codeart.mk/api/auth/login", {
       ...postReq,
-      body: JSON.stringify(values),
+      body: JSON.stringify(props),
     });
 
     const res = await response.json();
 
     if (response.status === 200) {
-      
-      setAccessToken(res.access_token);
-      setRefreshToken(res.refresh_token);
-      setUser(values.email);
-
-      localStorage.setItem("accessToken", JSON.stringify(res.access_token));
-      localStorage.setItem("refreshToken", JSON.stringify(res.refresh_token));
-      localStorage.setItem("user", JSON.stringify(values.email));
-
-      let expire = Date.now();
-      expire = expire + res.expires_in * 1000; // add 300 seconds in miliseconds
- 
-      localStorage.setItem("expireTime", JSON.stringify(expire));
-      setExpireTime(expire);
-
+      setUserInStorage(res.access_token, res.refresh_token, values.email, res.expires_in)
+       setRememberMe(rememberMe)
+      localStorage.setItem("rememberMe", String(rememberMe))
       navigate("/home");
+
     }else{
       alert("invalid creditentials")
       console.log(res)
     }
   };
-
 /*================
   REGISTER USER
   send a register request 
 ================*/
   const registerUser = async (values: Register) => {
-
     try{
       const response = await fetch("https://movies.codeart.mk/api/auth/register", {
         ...postReq,
@@ -123,19 +151,16 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
         console.log(res.errors)
       }
     }catch(e){ 
-
       console.error(e)
     }
-    
   };
-
 
   /*================
   LOGOUT USER
   sends a logout request and clear the tokens, user and expire time from local storage
 ================*/
   const logoutUser = async () => {
-    const response = await fetch("https://movies.codeart.mk/api/auth/logout", {
+      await fetch("https://movies.codeart.mk/api/auth/logout", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -145,14 +170,7 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
       body: "",
     });
 
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
-    localStorage.removeItem("expireTime");
-    setUser(null);
-    setAccessToken(null);
-    setRefreshToken(null);
-    setExpireTime(null);
+    clearUserFromStorage();
 
     navigate("/login");
     console.log("logout");
@@ -173,19 +191,12 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
 
     if(res.error=="invalid_request"){
 
-        console.log("Timed out refresh")
-        logoutUser()
+        console.log("Timed out refresh");
+        //cant call logout because access token in expired
+        clearUserFromStorage();
     } else if (response.status === 200) {
-      setAccessToken(res.access_token);
-      setRefreshToken(res.refresh_token);
 
-      localStorage.setItem("accessToken", JSON.stringify(res.access_token));
-      localStorage.setItem("refreshToken", JSON.stringify(res.refresh_token));
-      let expire = Date.now();
-      expire = expire + res.expires_in * 1000; // add 300 seconds in miliseconds
- 
-      localStorage.setItem("expireTime", JSON.stringify(expire));
-      setExpireTime(expire);
+      setUserInStorage(res.access_token, res.refresh_token, user, res.expires_in)
 
       console.log("update");
     } 
@@ -194,10 +205,12 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
   const contextData = {
     user: user,
     expireTime: expireTime,
+    rememberMe: rememberMe,
     loginUser: loginUser,
     registerUser: registerUser,
     logoutUser: logoutUser,
     updateToken: updateToken,
+    clearUserFromStorage: clearUserFromStorage
   };
 
   return <AuthContext.Provider value={contextData}>{children} </AuthContext.Provider>;

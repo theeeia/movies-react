@@ -9,13 +9,15 @@ export default function FormInput(props: Input) {
   return (
     <div>
       <label htmlFor={label} className="form_label">
-        {label}{required && "*"}
+        {label}
+        {required && "*"}
       </label>
+      
       <div className="form_field">
         <input
           {...field}
           {...properties}
-          className={`form_input  ${meta.touched && meta.error ? "form_input--error" : ""}`}
+          className={`form_input  ${meta.touched && meta.error && "form_input--error"}`}
         />
 
         {icon ? (
@@ -23,13 +25,13 @@ export default function FormInput(props: Input) {
             {icon}
           </div>
         ) : null}
-      </div>
 
-      {meta.touched && meta.error ? (
-        <p className="form_error">{meta.error}</p>
-      ) : (
-        <p className="form_error form_error--hidden">Error</p>
-      )}
+        {meta.touched && meta.error ? (
+          <p className="form_error">{meta.error}</p>
+        ) : (
+          <p className="form_error form_error--hidden">Error</p>
+        )}
+      </div>
     </div>
   );
 }

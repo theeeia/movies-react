@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 //components
 import FormCheckbox from "../../components/AuthenticationForm/FormCheckbox";
 import FormInput from "../../components/AuthenticationForm/FormInput";
+import FormButton from "../../components/AuthenticationForm/FormButton";
 //authentication schema
 import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
 //interface
@@ -14,7 +15,7 @@ import { AuthContext } from "../../context/AuthContext";
 //icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-import FormButton from "../../components/AuthenticationForm/FormButton";
+
 
 
 export default function Login() {
@@ -22,7 +23,8 @@ export default function Login() {
   const [ showIcon, setShowIcon ] = useState<"show" | "hidden">("hidden");
 
   const onSubmit = async (values: loginInput) => {
-    const { rememberMe, ...data } = values;
+    const {...data } = values;
+ 
     loginUser(data);
   };
 
@@ -35,8 +37,9 @@ export default function Login() {
   };
 
   return (
-    <>
+    <div className="container">
       <svg
+        className="logo"
         width="150"
         height="55"
         viewBox="0 0 150 55"
@@ -56,6 +59,7 @@ export default function Login() {
           fill="white"
         />
       </svg>
+
       <div className="form_title">
         <h1 className="">Login</h1>
         <p>Welcome back! Please enter your details.</p>
@@ -97,6 +101,6 @@ export default function Login() {
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 }

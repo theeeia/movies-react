@@ -1,6 +1,3 @@
-.form > div:nth-last-child(4) input  {
-  background-color: black
-}
 .form {
   color: white;
   width: 100%;
@@ -9,6 +6,7 @@
   font-size: 16px;
 
 
+  & > div:nth-last-child(4) input { background-color: black }
 
   &_label { 
     font-weight: 300;
@@ -16,77 +14,72 @@
   }
 
   &_error {
+    position: absolute;
+    bottom:   -15px;
     color: red;
     font-size: 15px;
     text-align: left;
-    margin-top: -20px;
 
-    &--hidden {
-      visibility: hidden;
-    }
+    &--hidden { visibility: hidden;}
   }
 
-  &_checkbox {
-    display: flex;
-    align-content: center;
-    
-    &--label { 
-      font-weight: 500; 
-      font-size: 16px;   
-    }
+  &_input {
+      position: relative;
+      height: 70px;
+      margin-bottom: 30px;
+      margin-top: 15px;
+      border-radius: 20px;
+      font-weight: 300;
+      padding-left: 30px;
+      background-color: #131313;
+      color: white;
+      border: 1px solid #CBCBCB;
+      font-size: 16px;
 
-    &--input {
-      height: 25px;
-      width: 25px;
-      align-items: center;
-      accent-color: #131313;
-      margin-right: 15px;
-      filter: invert(100%) hue-rotate(18deg) brightness(1.7);
-    }
+      &--error{ border: solid 1px red; }
   }
 
   &_icon {
     position: absolute;
-    right: 40px;
-    top: 5px;
-  }
-
-  &_input--error{
-    border: solid 2px red;
+    right: 35px;
+    top: 30%;
   }
 
   &_title {
     text-align: center;
     color: white;
-    margin-bottom: 30px;
-
+    margin-bottom: 55px;
+    
     p {
+      font-size: 16px;
+      padding-top: 10px;
       font-weight: 300;
     }
   }
 
-  &_input, button,label {
+  &_input, &_label {
     width: 100%;
     max-width: 700px;
   }
 
-  &_input, button{
-    height: 70px;
-    margin-bottom: 30px;
-    margin-top: 15px;
-    border-radius: 20px;
-  }
-  &_field{
-      position: relative;
-  }
-  &_input {
-    font-weight: 300;
-    padding-left: 30px;
-    background-color: #131313;
-    color: white;
-    border: 1px solid #CBCBCB;
-    font-size: 16px;
-  }
+  &_field { position: relative; }
 
+  &_checkbox {
+      display: flex;
+      align-content: center;
+      
+      &--label { 
+        font-weight: 500; 
+        font-size: 16px;   
+      }
 
+      &--input {
+        height: 25px;
+        width: 25px;
+        align-items: center;
+        accent-color: #131313;
+        margin-right: 15px;
+        filter: invert(100%) hue-rotate(18deg) brightness(1.7);
+      }
+  }
 }
