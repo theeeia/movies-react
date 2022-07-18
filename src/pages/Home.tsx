@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Home() {
@@ -8,6 +7,7 @@ export default function Home() {
   const handleClick = () => {
     
     console.log(Date.now() , Number(expireTime) )
+
     if (Date.now() > Number(expireTime)) {
       console.log("Timed out");
       updateToken();
@@ -15,13 +15,15 @@ export default function Home() {
       console.log(Number(expireTime) - Date.now());
     }
   };
+  
   const handleLogout = () => {
     logoutUser();
   };
 
   return (
     <>
-      <div> Hello {user}</div>
+      <div> Hello<>{user}</></div>
+
       <button onClick={handleClick}>Check token</button>
       <button onClick={handleLogout}>Logout</button>
     </>

@@ -1,14 +1,15 @@
 import { useField } from "formik";
 import React from "react";
+import { Input } from "./interfaces";
 
-export default function FormInput(props: any) {
-  const { label, handleIconClick, icon, ...properties } = props;
+export default function FormInput(props: Input) {
+  const { label, required, handleIconClick, icon, ...properties } = props;
   const [field, meta] = useField(properties);
 
   return (
-    <>
+    <div>
       <label htmlFor={label} className="form_label">
-        {label}*
+        {label}{required && "*"}
       </label>
       <div className="form_field">
         <input
@@ -29,6 +30,6 @@ export default function FormInput(props: any) {
       ) : (
         <p className="form_error form_error--hidden">Error</p>
       )}
-    </>
+    </div>
   );
 }

@@ -1,5 +1,6 @@
-
-
+.form > div:nth-last-child(4) input  {
+  background-color: black
+}
 .form {
   color: white;
   width: 100%;
@@ -7,7 +8,12 @@
   margin: auto;
   font-size: 16px;
 
-  &_label { color: white;  }
+
+
+  &_label { 
+    font-weight: 300;
+    color: white;  
+  }
 
   &_error {
     color: red;
@@ -24,22 +30,25 @@
     display: flex;
     align-content: center;
     
+    &--label { 
+      font-weight: 500; 
+      font-size: 16px;   
+    }
 
-  }
-  &_checkbox--input {
-    height: 25px;
-    width: 25px;
-    align-items: center;
-    accent-color: #131313;
-    margin-right: 15px;
-    filter: invert(100%) hue-rotate(18deg) brightness(1.7);
+    &--input {
+      height: 25px;
+      width: 25px;
+      align-items: center;
+      accent-color: #131313;
+      margin-right: 15px;
+      filter: invert(100%) hue-rotate(18deg) brightness(1.7);
+    }
   }
 
   &_icon {
     position: absolute;
     right: 40px;
     top: 5px;
-
   }
 
   &_input--error{
@@ -50,6 +59,10 @@
     text-align: center;
     color: white;
     margin-bottom: 30px;
+
+    p {
+      font-weight: 300;
+    }
   }
 
   &_input, button,label {
@@ -64,11 +77,10 @@
     border-radius: 20px;
   }
   &_field{
-
       position: relative;
   }
   &_input {
-  
+    font-weight: 300;
     padding-left: 30px;
     background-color: #131313;
     color: white;

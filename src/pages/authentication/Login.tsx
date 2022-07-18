@@ -1,29 +1,25 @@
 import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
-import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
-import FormInput from "../../components/authenticationForm/FormInput";
-import { AuthContext } from "../../context/AuthContext";
 
+//components
+import FormCheckbox from "../../components/AuthenticationForm/FormCheckbox";
+import FormInput from "../../components/AuthenticationForm/FormInput";
+//authentication schema
+import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
+//interface
+import { loginInput  } from "./interfaces";
+//context
+import { AuthContext } from "../../context/AuthContext";
+//icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+import FormButton from "../../components/AuthenticationForm/FormButton";
 
-interface loginInput {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
-
-const addTokenExpire = (expires_in: number) => {
-  let time = Date.now();
-  time = time + expires_in * 1000; // add 300 seconds in miliseconds
-  return time;
-};
 
 export default function Login() {
   const { loginUser } = useContext(AuthContext);
-  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
+  const [ showIcon, setShowIcon ] = useState<"show" | "hidden">("hidden");
 
   const onSubmit = async (values: loginInput) => {
     const { rememberMe, ...data } = values;
@@ -77,6 +73,7 @@ export default function Login() {
               name="email"
               type="email"
               placeholder="Enter your email"
+              required
             />
             <FormInput
               label="Password"
@@ -85,12 +82,11 @@ export default function Login() {
               type={showIcon === "show" ? "text" : "password"}
               icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
               handleIconClick={handleIconClick}
+              required
             />
             <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
 
-            <button disabled={isSubmitting} type="submit" className="btn_submit txt--uppercase">
-              login
-            </button>
+            <FormButton label="login" disabled={isSubmitting} type="submit" className="btn btn_submit txt--uppercase" />
 
             <p className="txt--center ">
               Don't have an account?{" "}

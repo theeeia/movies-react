@@ -1,25 +1,25 @@
 import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+
+//components
+import FormCheckbox from "../../components/AuthenticationForm/FormCheckbox";
+import FormInput from "../../components/AuthenticationForm/FormInput";
+//authentication schema
 import { AUTHENTICATION_REGISTER_SCHEMA } from "../../schemas/AuthenticationSchema";
-import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
-import FormInput from "../../components/authenticationForm/FormInput";
+//interface
+import { registerInput } from "./interfaces";
+//context
 import { AuthContext } from "../../context/AuthContext";
+//icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+import FormButton from "../../components/AuthenticationForm/FormButton";
 
-interface registerInput {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  confirmPassword: string;
-  rememberMe: boolean;
-}
 
 export default function Register() {
-  const [navigate, setNavigate] = useState(false);
   const { registerUser } = useContext(AuthContext);
+  const [navigate, setNavigate] = useState(false);
   const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
 
   const onSubmit = async (values: registerInput) => {
@@ -28,10 +28,12 @@ export default function Register() {
     setNavigate(true);
   };
 
+//navigates to login if register is successfull
   if (navigate) {
     return <Navigate to="/login" />;
   }
 
+//Toggles show password icon
   const handleIconClick = () => {
     if (showIcon === "hidden") {
       setShowIcon("show");
@@ -89,18 +91,21 @@ export default function Register() {
               name="first_name"
               type="text"
               placeholder="Enter your first name"
+              required
             />
             <FormInput
               label="Last Name"
               name="last_name"
               type="text"
               placeholder="Enter your last name"
+              required
             />
             <FormInput
               label="Email Address"
               name="email"
               type="email"
               placeholder="Enter your email"
+              required
             />
             <FormInput
               label="Password"
@@ -109,6 +114,7 @@ export default function Register() {
               placeholder="Enter your password"
               icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
               handleIconClick={handleIconClick}
+              required
             />
             <FormInput
               label="Confirm Password"
@@ -116,13 +122,14 @@ export default function Register() {
               type={showIcon === "show" ? "text" : "password"}
               placeholder="Confirm your password"
               icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+              handleIconClick={handleIconClick}
+              required
             />
             <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
 
-            <button disabled={isSubmitting} type="submit" className="btn_submit">
-              Register
-            </button>
 
+            <FormButton label="Register" disabled={isSubmitting} type="submit" className="btn btn_submit"/>
+  
             <p className="txt--center ">
               You already have an account?{" "}
               <Link to={"/login"} className="txt--underline">
