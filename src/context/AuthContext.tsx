@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { clearUserFromStorage, setUserInStorage } from "../utils/setStorage";
 import { Context, Login, Register } from "./interfaces";
 
 
@@ -8,6 +9,7 @@ export const AuthContext = createContext<Context>({} as Context);
 export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[] }) {
   //checks if theres an access token in local storage and stores it in state otherwise it sets null
   // so callback za da ne se proveruvat nasekoe tuku samo ednash
+
   const [accessToken, setAccessToken] = useState(() =>
     localStorage.getItem("accessToken")
       ? JSON.parse(localStorage.getItem("accessToken") || "")
@@ -43,79 +45,7 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
   // navigation hook to redirect to pages
   const navigate = useNavigate();
 
-  // stores the access token, refresh token, user email and expire time in local storage
-  const setUserInStorage = (access:string, refresh:string, email:string, expires_in:number) => {
-    setAccessToken(access);
-    setRefreshToken(refresh);
-    setUser(email);
-
-    localStorage.setItem("accessToken", JSON.stringify(access));
-    localStorage.setItem("refreshToken", JSON.stringify(refresh));
-    localStorage.setItem("user", JSON.stringify(email));
-
-    let expire = Date.now();
-    expire = expire + expires_in * 1000; // add 300 seconds in miliseconds
-
-    localStorage.setItem("expireTime", JSON.stringify(expire));
-    setExpireTime(expire);
-  }
-
-  // clears the user from local storage
-  const clearUserFromStorage = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
-    localStorage.removeItem("expireTime");
-
-    setUser(null);
-    setAccessToken(null);
-    setRefreshToken(null);
-    setExpireTime(null);
-  }
-/*================
-  LOGIN USER
-  sends a login request and calls function to store them in local storage
-================*/
-  const loginUser = async (values: Login) => {
-    const {rememberMe, ...props} = values
-   
-    const response = await fetch("https://movies.codeart.mk/api/auth/login", {
-      ...postReq,
-      body: JSON.stringify(props),
-    });
-
-    const res = await response.json();
-
-    if (response.status === 200) {
-      setUserInStorage(res.access_token, res.refresh_token, values.email, res.expires_in)
-      setRememberMe(rememberMe)
-      localStorage.setItem("rememberMe", String(rememberMe))
-      navigate("/home");
-
-    }else{
-      alert("invalid creditentials")
-      console.log(res)
-    }
-  };
-/*================
-  REGISTER USER
-  send a register request 
-================*/
-  const registerUser = async (values: Register) => {
-
-    const response = await fetch("https://movies.codeart.mk/api/auth/register", {
-      ...postReq,
-      body: JSON.stringify(values),
-    });
-    const res = await response.json();
-    if(response.status ===200) {
-        console.log("Registered")
-
-    }else{ 
-      console.log(res.errors)
-    }
-  };
-
+ 
   /*================
   LOGOUT USER
   sends a logout request and clear the tokens, user and expire time from local storage
@@ -150,11 +80,11 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
     });
     const res = await response.json();
 
-    if(res.error=="invalid_request"){
+    if(res.error){
         console.log("Timed out refresh token");
         //cant call logout because access token in expired
         clearUserFromStorage();
-    } else if (response.status === 200) {
+    } else  {
         setUserInStorage(res.access_token, res.refresh_token, user, res.expires_in)
         console.log("updated");
     } 
@@ -164,11 +94,11 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
     user: user,
     expireTime: expireTime,
     rememberMe: rememberMe,
-    loginUser: loginUser,
-    registerUser: registerUser,
+    setUser:setUser,
     logoutUser: logoutUser,
     updateToken: updateToken,
-    clearUserFromStorage: clearUserFromStorage
+    clearUserFromStorage: clearUserFromStorage,
+    setUserInStorage: setUserInStorage
   };
 
   return <AuthContext.Provider value={contextData}>{children} </AuthContext.Provider>;

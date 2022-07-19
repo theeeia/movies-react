@@ -9,11 +9,11 @@ export interface Context {
   user: User;
   expireTime: string;
   rememberMe: boolean;
-  loginUser: (arg: Login) => void;
-  registerUser: (arg: Register) => void;
+  setUser:(arg:any) => void;
   logoutUser: () => void;
   updateToken: () => void;
   clearUserFromStorage: () => void;
+  setUserInStorage: (...arg: any) => void;
 }
 
 export interface Login {

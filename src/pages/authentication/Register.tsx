@@ -15,26 +15,35 @@ import { AuthContext } from "../../context/AuthContext";
 //icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-
-
+import useFetchCall from "../../utils/handleFetchCall";
 
 export default function Register() {
-  const { registerUser } = useContext(AuthContext);
   const [navigate, setNavigate] = useState(false);
   const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
 
+  const { fetchNow } = useFetchCall();
+
   const onSubmit = async (values: registerInput) => {
     const { confirmPassword, rememberMe, ...data } = values;
-    registerUser(data);
-    setNavigate(true);
+
+    const url = "https://movies.codeart.mk/api/auth/register";
+    const method = "POST";
+
+    const res = await fetchNow(url, method, data);
+    if (res.errors) {
+      console.log(res.errors);
+    } else {
+      console.log("Registered");
+      setNavigate(true);
+    }
   };
 
-//navigates to login if register is successfull
+  //navigates to login if register is successfull
   if (navigate) {
     return <Navigate to="/login" />;
   }
 
-//Toggles show password icon
+  //Toggles show password icon
   const handleIconClick = () => {
     if (showIcon === "hidden") {
       setShowIcon("show");
@@ -46,7 +55,7 @@ export default function Register() {
   return (
     <div className="container">
       <svg
-      className="logo"
+        className="logo"
         width="150"
         height="55"
         viewBox="0 0 150 55"
@@ -129,8 +138,13 @@ export default function Register() {
             />
             <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
 
-            <FormButton label="Register" disabled={isSubmitting} type="submit" className="btn btn_submit"/>
-  
+            <FormButton
+              label="Register"
+              disabled={isSubmitting}
+              type="submit"
+              className="btn btn_submit"
+            />
+
             <p className="txt--center ">
               You already have an account?{" "}
               <Link to={"/login"} className="txt--underline">

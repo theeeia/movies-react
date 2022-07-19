@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 //components
 import FormCheckbox from "../../components/AuthenticationForm/FormCheckbox";
@@ -9,23 +9,41 @@ import FormButton from "../../components/AuthenticationForm/FormButton";
 //authentication schema
 import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
 //interface
-import { loginInput  } from "./interfaces";
+import { loginInput } from "./interfaces";
 //context
 import { AuthContext } from "../../context/AuthContext";
 //icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-
-
+import handleFetchCall from "../../utils/handleFetchCall";
+import { setUserInStorage } from "../../utils/setStorage";
 
 export default function Login() {
-  const { loginUser } = useContext(AuthContext);
-  const [ showIcon, setShowIcon ] = useState<"show" | "hidden">("hidden");
+  const { setUser } = useContext(AuthContext);
+  //const [response, isFetching , setRequest] = useFetchCall({} as any)
+  const [navigate, setNavigate] = useState(false);
+  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
+  const { fetchNow } = handleFetchCall();
 
   const onSubmit = async (values: loginInput) => {
-    const {...data } = values;
-    loginUser(data);
+    const { rememberMe, ...input } = values;
+    const url = "https://movies.codeart.mk/api/auth/login";
+    const method = "POST";
+    const res = await fetchNow(url, method, input);
+
+    if (res.errors) {
+      console.log(res.errors);
+    } else {
+      console.log("Logged in");
+      setNavigate(true);
+      setUser(values.email)
+      setUserInStorage(res.access_token,res.refresh_token,values.email,res.expires_in)
+    }
   };
+
+  if (navigate) {
+    return <Navigate to="/home" />;
+  }
 
   const handleIconClick = () => {
     if (showIcon === "hidden") {
@@ -89,7 +107,12 @@ export default function Login() {
             />
             <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
 
-            <FormButton label="login" disabled={isSubmitting} type="submit" className="btn btn_submit txt--uppercase" />
+            <FormButton
+              label="login"
+              disabled={isSubmitting}
+              type="submit"
+              className="btn btn_submit txt--uppercase"
+            />
 
             <p className="txt--center ">
               Don't have an account?{" "}
