@@ -1,35 +1,50 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import handleFetchCall from "../utils/handleFetchCall";
-import { setUserInStorage } from "../utils/setStorage";
+import { clearUserFromStorage } from "../utils/setStorage";
 
 export default function Home() {
-  const { user, expireTime, logoutUser, updateToken, clearUserFromStorage} = useContext(AuthContext);
+  const [navigate, setNavigate] = useState(false);
+  const { user, logoutUser, setUser} = useContext(AuthContext);
   const { fetchNow } = handleFetchCall();
   
   const handleClick = async () => {
-    if (Date.now() > Number(expireTime)) {
-      console.log("Timed out home");
-      const url = "https://movies.codeart.mk/api/auth/refresh-token";
-      const method = "POST";
-      const token= localStorage.getItem("refreshToken") || ""
-      const data = JSON.parse(token)
-      if(data){
-          const res = await fetchNow(url, method, {refresh_token: data} );
-          console.log(res)
-          setUserInStorage(res.access_token, res.refresh_token, String(user), res.expires_in)
-      }
+   
+      /*
+      const url = 'https://jsonplaceholder.typicode.com/posts/1'
+      const method = "GET"
+      const res= await fetchNow(url, method)
+      console.log(res)*/
 
-      
-      
-    } else {
-      console.log((Number(expireTime) - Date.now())/1000 + " sec");
-    }
+      const url = 'https://jsonplaceholder.typicode.com/posts'
+      const method = "POST"
+      const body= {
+        title: 'foo',
+        body: 'bar',
+        userId: 1,
+      }
+      const res= await fetchNow(url, method, body)
+      console.log(res)
+    
+  
   };
   
-  const handleLogout = () => {
-    logoutUser();
+  const handleLogout =  () => {
+  /*  const url = "https://movies.codeart.mk/api/auth/logout"
+    const method = "POST"
+    const bearer=true
+    const res= await fetchNow(url, method, undefined,bearer)
+    console.log(res)*/
+    logoutUser()
+    clearUserFromStorage();
+    setUser(null)
+    setNavigate(true);
   };
+  
+  if (navigate) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div className="home_page">

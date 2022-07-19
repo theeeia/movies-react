@@ -30,6 +30,7 @@ export default function Login() {
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";
     const res = await fetchNow(url, method, input);
+    
 
     if (res.errors) {
       console.log(res.errors);
@@ -37,7 +38,7 @@ export default function Login() {
       console.log("Logged in");
       setNavigate(true);
       setUser(values.email)
-      setUserInStorage(res.access_token,res.refresh_token,values.email,res.expires_in)
+      setUserInStorage(res.access_token, res.refresh_token, values.email, res.expires_in)
     }
   };
 

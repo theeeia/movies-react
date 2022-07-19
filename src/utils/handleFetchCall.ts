@@ -1,17 +1,29 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { setUserInStorage } from "./setStorage";
+import { clearUserFromStorage, setUserInStorage } from "./setStorage";
 
-const handleFetchCall = (url?: string | undefined, method?: string, data?: object) => {
+const handleFetchCall = (url?: string | undefined, method?: string, data?: object, bearer:boolean=false) => {
   
-  const { user, expireTime,  } = useContext(AuthContext);
-  const expire_time = localStorage.getItem("expireTime")
-  
+  const { user } = useContext(AuthContext);
+
+  const checkToken = ()=>{
+    if (user) {
+      const expire_time = JSON.parse(localStorage.getItem("expireTime")|| "")
+      console.log(Date.now(), expire_time)
+      if (Date.now() > Number(expire_time)) {
+        console.log("Timed out access");
+        updateToken();
+      } else {
+        console.log((Number(expire_time) - Date.now()) / 1000 + " sec");
+      }
+    }else{
+      console.log("not logged in")
+    }
+
+  }
   const updateToken = async () => {
-    const refresh_token = localStorage.getItem("refreshToken")
+    const refresh_token = JSON.parse(localStorage.getItem("refreshToken")||"")
 
-    console.log(refresh_token)
-/*
     const response = await fetch("https://movies.codeart.mk/api/auth/refresh-token", {
       method: "POST",
       headers: {
@@ -26,36 +38,36 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
 
     if(res.error){
         console.log("Timed out refresh token");
-        //cant call logout because access token in expired
+        clearUserFromStorage();
         
     } else  {
         setUserInStorage(res.access_token, res.refresh_token, String(user), res.expires_in)
         console.log("updated");
-    } */
+    } 
   };
 
-  if (user) {
-    console.log("user")
-    console.log(Date.now(), expire_time)
-    if (Date.now() > Number(expire_time)) {
-      console.log("Timed out");
-      updateToken();
-    } else {
-      console.log((Number(expire_time) - Date.now()) / 1000 + " sec");
-    }
-  }
+ 
 
   const headers = {
     "Content-Type": "application/json",
     Accept: "application/json",
   };
+  const bearerHeader =  {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    //Authorization: "Bearer "+JSON.parse(localStorage.getItem("accessToken") || ""),
+    } 
 
-  const fetchNow = async (url: string, method: string, data?: object) => {
+
+  const fetchNow = async (url: string, method: string, data?: object, bearer:boolean=false) => {
+    checkToken();
+   // bearer ? headers["Authorization"]= "Bearer " + String(accessToken),
+    console.log( bearer? bearerHeader : headers)
     try {
       const response = await fetch(url, {
         method,
-        headers: headers,
-        body: data ? JSON.stringify(data) : "",
+        headers: bearer ? bearerHeader : headers,
+        body: data ? JSON.stringify(data) : null,
       });
 
       const res = await response.json();

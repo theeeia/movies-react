@@ -7,24 +7,7 @@ export interface User {
 
 export interface Context {
   user: User;
-  expireTime: string;
-  rememberMe: boolean;
-  setUser:(arg:any) => void;
+  setUser:( arg: string | null) => void;
   logoutUser: () => void;
-  updateToken: () => void;
-  clearUserFromStorage: () => void;
-  setUserInStorage: (...arg: any) => void;
 }
 
-export interface Login {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
-
-export interface Register {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-}
