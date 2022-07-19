@@ -5,8 +5,6 @@ export default function Home() {
   const { user, expireTime, rememberMe, logoutUser, updateToken, clearUserFromStorage} = useContext(AuthContext);
 
   const handleClick = () => {
-    console.log(Date.now() , Number(expireTime) )
-
     if (Date.now() > Number(expireTime)) {
       console.log("Timed out");
       updateToken();
@@ -14,10 +12,6 @@ export default function Home() {
       console.log((Number(expireTime) - Date.now())/1000 + " sec");
     }
   };
-
-  window.onunload = () => {
-    if(!rememberMe) clearUserFromStorage()
-  }
   
   const handleLogout = () => {
     logoutUser();
@@ -25,7 +19,6 @@ export default function Home() {
 
   return (
     <div className="home_page">
-
       <div > Hello <>{user}</></div>
 
       <button onClick={handleClick}>Check token</button>

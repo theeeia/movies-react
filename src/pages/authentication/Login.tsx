@@ -24,7 +24,6 @@ export default function Login() {
 
   const onSubmit = async (values: loginInput) => {
     const {...data } = values;
- 
     loginUser(data);
   };
 

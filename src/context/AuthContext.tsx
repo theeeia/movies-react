@@ -1,39 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { boolean } from "yup";
-
-interface User {
-  email: string;
-  access_token: string;
-  refresh_token: string;
-  expires_in: number;
-}
-
-interface Context {
-  user: User,
-  expireTime: string,
-  rememberMe: boolean,
-  loginUser: (arg:Login) => void,
-  registerUser: (arg:Register) => void,
-  logoutUser: () => void,
-  updateToken: () => void,
-  clearUserFromStorage: ()=>void
-}
-
-interface Login {
-  email: string,
-  password: string,
-  rememberMe: boolean
-}
-
-interface Register 
-{
-  email: string,
-  password: string,
-  first_name: string,
-  last_name: string,
-
-}
+import { Context, Login, Register } from "./interfaces";
 
 
 export const AuthContext = createContext<Context>({} as Context);
@@ -104,17 +71,14 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
     setAccessToken(null);
     setRefreshToken(null);
     setExpireTime(null);
-
   }
 /*================
   LOGIN USER
   sends a login request and calls function to store them in local storage
 ================*/
   const loginUser = async (values: Login) => {
-
     const {rememberMe, ...props} = values
    
-
     const response = await fetch("https://movies.codeart.mk/api/auth/login", {
       ...postReq,
       body: JSON.stringify(props),
@@ -124,7 +88,7 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
 
     if (response.status === 200) {
       setUserInStorage(res.access_token, res.refresh_token, values.email, res.expires_in)
-       setRememberMe(rememberMe)
+      setRememberMe(rememberMe)
       localStorage.setItem("rememberMe", String(rememberMe))
       navigate("/home");
 
@@ -138,20 +102,17 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
   send a register request 
 ================*/
   const registerUser = async (values: Register) => {
-    try{
-      const response = await fetch("https://movies.codeart.mk/api/auth/register", {
-        ...postReq,
-        body: JSON.stringify(values),
-      });
-      const res = await response.json();
-      if(response.status ===200) {
-          console.log("Registered")
 
-      }else{ 
-        console.log(res.errors)
-      }
-    }catch(e){ 
-      console.error(e)
+    const response = await fetch("https://movies.codeart.mk/api/auth/register", {
+      ...postReq,
+      body: JSON.stringify(values),
+    });
+    const res = await response.json();
+    if(response.status ===200) {
+        console.log("Registered")
+
+    }else{ 
+      console.log(res.errors)
     }
   };
 
@@ -190,15 +151,12 @@ export function AuthProvider({ children }: { children: JSX.Element|JSX.Element[]
     const res = await response.json();
 
     if(res.error=="invalid_request"){
-
-        console.log("Timed out refresh");
+        console.log("Timed out refresh token");
         //cant call logout because access token in expired
         clearUserFromStorage();
     } else if (response.status === 200) {
-
-      setUserInStorage(res.access_token, res.refresh_token, user, res.expires_in)
-
-      console.log("update");
+        setUserInStorage(res.access_token, res.refresh_token, user, res.expires_in)
+        console.log("updated");
     } 
   };
 
