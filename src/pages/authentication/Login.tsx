@@ -3,9 +3,9 @@ import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 //components
-import FormCheckbox from "../../components/AuthenticationForm/FormCheckbox";
-import FormInput from "../../components/AuthenticationForm/FormInput";
-import FormButton from "../../components/AuthenticationForm/FormButton";
+import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
+import FormInput from "../../components/authenticationForm/FormInput";
+import FormButton from "../../components/authenticationForm/FormButton";
 //authentication schema
 import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
 //interface
