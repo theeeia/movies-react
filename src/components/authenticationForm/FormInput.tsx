@@ -1,8 +1,8 @@
 import { useField } from "formik";
 import React from "react";
-import { Input } from "./interfaces";
+import { FormInputProps } from "./interfaces";
 
-export default function FormInput(props: Input) {
+export default function FormInput(props: FormInputProps) {
   const { label, required, handleIconClick, icon, ...properties } = props;
   const [field, meta] = useField(properties);
 

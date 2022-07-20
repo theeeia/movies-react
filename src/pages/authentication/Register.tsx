@@ -9,7 +9,7 @@ import FormButton from "../../components/authenticationForm/FormButton";
 //authentication schema
 import { AUTHENTICATION_REGISTER_SCHEMA } from "../../schemas/AuthenticationSchema";
 //interface
-import { registerInput } from "./interfaces";
+import { RegisterFormValues } from "./interfaces";
 //icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
@@ -23,14 +23,14 @@ export default function Register() {
 
   const { fetchNow } = useFetchCall();
 
-  const onSubmit = async (values: registerInput) => {
+  const onSubmit = async (values: RegisterFormValues) => {
     const { confirmPassword, rememberMe, ...data } = values;
 
     const url = "https://movies.codeart.mk/api/auth/register";
     const method = "POST";
 
     const res = await fetchNow(url, method, data);
-    
+
     if (res) {
       setNavigate(true);
     }

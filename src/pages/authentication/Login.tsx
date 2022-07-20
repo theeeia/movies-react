@@ -9,7 +9,7 @@ import FormButton from "../../components/authenticationForm/FormButton";
 //authentication schema
 import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
 //interface
-import { loginInput } from "./interfaces";
+import { LoginFormValues } from "./interfaces";
 //context
 import { AuthContext } from "../../context/AuthContext";
 //icons
@@ -28,7 +28,7 @@ export default function Login() {
   const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
   const { fetchNow } = handleFetchCall();
 
-  const onSubmit = async (values: loginInput) => {
+  const onSubmit = async (values: LoginFormValues) => {
     const { rememberMe, ...data } = values;
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";

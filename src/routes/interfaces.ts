@@ -1,4 +1,4 @@
 export interface RoutesProps {
   path: string;
-  component: any;
+  component: () => JSX.Element;
 }

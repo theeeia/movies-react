@@ -1,9 +1,9 @@
 import React, { createContext, useState } from "react";
-import { Context } from "./interfaces";
+import { AuthenticationContext } from "./interfaces";
 
-export const AuthContext = createContext<Context>({} as Context);
+export const AuthContext = createContext<AuthenticationContext>({} as AuthenticationContext);
 
-export function AuthProvider({ children }: { children: JSX.Element | JSX.Element[] }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState(() =>
     localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "") : null,
   );

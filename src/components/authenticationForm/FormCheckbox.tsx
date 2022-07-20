@@ -1,8 +1,8 @@
 import { useField } from "formik";
 import React from "react";
-import { Checkbox } from "./interfaces";
+import { FormCheckboxProps } from "./interfaces";
 
-export default function FormCheckbox(props: Checkbox) {
+export default function FormCheckbox(props: FormCheckboxProps) {
   const { label, ...properties } = props;
 
   const [field, meta] = useField(properties);

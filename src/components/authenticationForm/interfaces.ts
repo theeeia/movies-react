@@ -1,10 +1,10 @@
-export interface Checkbox {
+export interface FormCheckboxProps {
   label: string;
   name: string;
   type: string;
 }
 
-export interface Input {
+export interface FormInputProps {
   label: string;
   name: string;
   type: string;
