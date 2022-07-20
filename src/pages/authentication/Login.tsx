@@ -15,6 +15,7 @@ import { AuthContext } from "../../context/AuthContext";
 //icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+//utils
 import handleFetchCall from "../../utils/handleFetchCall";
 import { setUserInStorage } from "../../utils/setStorage";
 
@@ -30,15 +31,14 @@ export default function Login() {
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";
     const res = await fetchNow(url, method, input);
-    
 
     if (res.errors) {
       console.log(res.errors);
     } else {
       console.log("Logged in");
       setNavigate(true);
-      setUser(values.email)
-      setUserInStorage(res.access_token, res.refresh_token, values.email, res.expires_in)
+      setUser(values.email);
+      setUserInStorage(res.access_token, res.refresh_token, values.email, res.expires_in);
     }
   };
 

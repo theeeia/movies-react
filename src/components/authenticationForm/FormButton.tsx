@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-function FormButton({...props}) {
-    const {label, ...properties} = props
+function FormButton({ ...props }) {
+  const { label, ...properties } = props;
 
-    return (
-        <button {...properties}>{label}</button>
-    )
+  return <button {...properties}>{label}</button>;
 }
 
-export default FormButton
+export default FormButton;

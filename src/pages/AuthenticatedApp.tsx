@@ -1,5 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+
+//routes
 import { HOME_ROUTE } from "../routes/home";
 
 const AUTHENTICATED_ROUTES = [...HOME_ROUTE];

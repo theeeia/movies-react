@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 //components
@@ -10,11 +10,10 @@ import FormButton from "../../components/AuthenticationForm/FormButton";
 import { AUTHENTICATION_REGISTER_SCHEMA } from "../../schemas/AuthenticationSchema";
 //interface
 import { registerInput } from "./interfaces";
-//context
-import { AuthContext } from "../../context/AuthContext";
 //icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+//utils
 import useFetchCall from "../../utils/handleFetchCall";
 
 export default function Register() {

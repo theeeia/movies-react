@@ -12,7 +12,7 @@ export default function FormInput(props: Input) {
         {label}
         {required && "*"}
       </label>
-      
+
       <div className="form_field">
         <input
           {...field}
