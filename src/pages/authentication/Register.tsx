@@ -15,6 +15,7 @@ import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.s
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 //utils
 import useFetchCall from "../../utils/handleFetchCall";
+import { ToastContainer } from "react-toastify";
 
 export default function Register() {
   const [navigate, setNavigate] = useState(false);
@@ -29,10 +30,8 @@ export default function Register() {
     const method = "POST";
 
     const res = await fetchNow(url, method, data);
-    if (res.errors) {
-      console.log(res.errors);
-    } else {
-      console.log("Registered");
+    
+    if (res) {
       setNavigate(true);
     }
   };
@@ -53,6 +52,7 @@ export default function Register() {
 
   return (
     <div className="container">
+      <ToastContainer />
       <svg
         className="logo"
         width="150"

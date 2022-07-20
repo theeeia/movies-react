@@ -1,4 +1,4 @@
-export const setUserInStorage = (
+export const setUserInLocalStorage = (
   access: string,
   refresh: string,
   email: string,
@@ -12,7 +12,7 @@ export const setUserInStorage = (
   localStorage.setItem("expireTime", JSON.stringify(expire));
 };
 
-export const clearUserFromStorage = () => {
+export const clearUserFromLocalStorage = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("user");

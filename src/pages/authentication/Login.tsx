@@ -17,7 +17,9 @@ import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.s
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 //utils
 import handleFetchCall from "../../utils/handleFetchCall";
-import { setUserInStorage } from "../../utils/setStorage";
+import { setUserInLocalStorage } from "../../utils/handleLocalStorage";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const { setUser } = useContext(AuthContext);
@@ -27,24 +29,17 @@ export default function Login() {
   const { fetchNow } = handleFetchCall();
 
   const onSubmit = async (values: loginInput) => {
-    const { rememberMe, ...input } = values;
+    const { rememberMe, ...data } = values;
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";
-    const res = await fetchNow(url, method, input);
+    const res = await fetchNow(url, method, data);
 
-    if (res.errors) {
-      console.log(res.errors);
-    } else {
-      console.log("Logged in");
+    if (res) {
       setNavigate(true);
       setUser(values.email);
-      setUserInStorage(res.access_token, res.refresh_token, values.email, res.expires_in);
+      setUserInLocalStorage(res.access_token, res.refresh_token, values.email, res.expires_in);
     }
   };
-
-  if (navigate) {
-    return <Navigate to="/home" />;
-  }
 
   const handleIconClick = () => {
     if (showIcon === "hidden") {
@@ -56,6 +51,7 @@ export default function Login() {
 
   return (
     <div className="container">
+      <ToastContainer />
       <svg
         className="logo"
         width="150"

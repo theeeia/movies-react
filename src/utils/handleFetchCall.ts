@@ -1,9 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 //context
 import { AuthContext } from "../context/AuthContext";
 //utils
-import { clearUserFromStorage, setUserInStorage } from "./setStorage";
+import { clearUserFromLocalStorage, setUserInLocalStorage } from "./handleLocalStorage";
 
 const handleFetchCall = (
   url?: string | undefined,
@@ -12,6 +13,16 @@ const handleFetchCall = (
   bearer: boolean = false,
 ) => {
   const { user } = useContext(AuthContext);
+
+  const [status, setStatus] = useState<{
+    loading: boolean;
+    error?: Error;
+    resData?: any;
+  }>({
+    loading: false,
+    resData: undefined,
+    error: undefined
+  });
 
   //updates the access token if the refresh token is valid
   const updateToken = async (user: string) => {
@@ -31,11 +42,11 @@ const handleFetchCall = (
 
     if (res.error) {
       console.log("Timed out refresh token");
-      clearUserFromStorage();
+      clearUserFromLocalStorage();
 
       console.log("logged out");
     } else {
-      setUserInStorage(res.access_token, res.refresh_token, String(user), res.expires_in);
+      setUserInLocalStorage(res.access_token, res.refresh_token, String(user), res.expires_in);
       console.log("updated");
     }
   };
@@ -57,8 +68,9 @@ const handleFetchCall = (
   };
 
   const fetchNow = async (url: string, method: string, data?: object, bearer: boolean = false) => {
-    const accessToken = checkToken();
-
+    setStatus({ loading: true });
+    const accessToken = await checkToken();
+  
     try {
       const response = await fetch(url, {
         method,
@@ -67,13 +79,19 @@ const handleFetchCall = (
           Accept: "application/json",
           ...(bearer && { Authorization: "Bearer " + accessToken }),
         },
-        body: data ? JSON.stringify(data) : null,
+        ...(data && { body: JSON.stringify(data) }),
       });
 
       const res = await response.json();
-      return res;
+      if (!response.ok) {
+        console.log(res.message)
+        toast.error(res.message);
+        throw Error("Invalid creditentials");
+      }else{
+        return res
+      }      
     } catch (error: any) {
-      console.log(error);
+      setStatus({ loading: false, error });
     }
   };
 
@@ -83,7 +101,7 @@ const handleFetchCall = (
     }
   }, []);
 
-  return { fetchNow };
+  return { ...status, fetchNow };
 };
 
 export default handleFetchCall;
