@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-//routes
+// Routes
 import { AUTHENTICATION_ROUTES } from "../routes/authentication";
 
 const UNAUTHENTICATED_ROUTES = [...AUTHENTICATION_ROUTES];

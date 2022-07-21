@@ -1,45 +1,59 @@
 import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-//components
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// Components
 import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
 import FormInput from "../../components/authenticationForm/FormInput";
 import FormButton from "../../components/authenticationForm/FormButton";
-//authentication schema
+
+// Schemas
 import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
-//interface
+
+// Interfaces
 import { LoginFormValues } from "./interfaces";
-//context
+
+// Context
 import { AuthContext } from "../../context/AuthContext";
-//icons
-import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
-import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-//utils
+
+// Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import { setUserInLocalStorage } from "../../utils/handleLocalStorage";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+// Icons
+import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
+import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 
 export default function Login() {
+  /*================
+  LOGIN USER
+
+  Log in the user with the input from the form and save the response and user email in local storage if successfull 
+  ================*/
   const { setUser } = useContext(AuthContext);
-  //const [response, isFetching , setRequest] = useFetchCall({} as any)
-  const [navigate, setNavigate] = useState(false);
-  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
   const { fetchNow } = handleFetchCall();
 
-  const onSubmit = async (values: LoginFormValues) => {
+  const handleLogin = async (values: LoginFormValues) => {
     const { rememberMe, ...data } = values;
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";
     const res = await fetchNow(url, method, data);
 
     if (res) {
-      setNavigate(true);
       setUser(values.email);
       setUserInLocalStorage(res.access_token, res.refresh_token, values.email, res.expires_in);
     }
   };
+
+  /*================
+  PASSWORD ICON 
+
+   Show or hide the password by clicking on the icon and show the correct icon
+  ================*/
+  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
 
   const handleIconClick = () => {
     if (showIcon === "hidden") {
@@ -74,15 +88,15 @@ export default function Login() {
         />
       </svg>
 
-      <div className="form_title">
-        <h1 className="">Login</h1>
+      <div className="form__title">
+        <h1>Login</h1>
         <p>Welcome back! Please enter your details.</p>
       </div>
 
       <Formik
         initialValues={{ email: "", password: "", rememberMe: false }}
         validationSchema={AUTHENTICATION_LOGIN_SCHEMA}
-        onSubmit={onSubmit}
+        onSubmit={handleLogin}
       >
         {({ isSubmitting }) => (
           <Form className="form">
@@ -108,7 +122,7 @@ export default function Login() {
               label="login"
               disabled={isSubmitting}
               type="submit"
-              className="btn btn_submit txt--uppercase"
+              classes="btn btn__submit txt--uppercase"
             />
 
             <p className="txt--center ">

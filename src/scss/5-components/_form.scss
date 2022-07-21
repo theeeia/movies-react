@@ -5,12 +5,12 @@
   margin: auto;
   font-size: 16px;
 
-  &_label { 
+  &__label { 
     font-weight: 300;
     color: white;  
   }
 
-  &_error {
+  &__error {
     position: absolute;
     bottom:   -15px;
     color: red;
@@ -20,7 +20,7 @@
     &--hidden { visibility: hidden;}
   }
 
-  &_input {
+  &__input {
       position: relative;
       height: 70px;
       margin-bottom: 30px;
@@ -36,13 +36,13 @@
       &--error{ border: solid 1px red; }
   }
 
-  &_icon {
+  &__icon {
     position: absolute;
     right: 35px;
     top: 30%;
   }
 
-  &_title {
+  &__title {
     text-align: center;
     color: white;
     margin-bottom: 55px;
@@ -54,29 +54,27 @@
     }
   }
 
-  &_input, &_label {
+  &__input, &_label {
     width: 100%;
     max-width: 700px;
   }
 
-  &_field { position: relative; }
+  &__field { position: relative; }
 
-  &_checkbox {
+  &__checkbox {
       display: flex;
       align-content: center;
-      
-      &--label { 
-        font-weight: 500; 
-        font-size: 16px;   
-      }
-
-      &--input {
-        height: 25px;
-        width: 25px;
-        align-items: center;
-        accent-color: #131313;
-        margin-right: 15px;
-        filter: invert(100%) hue-rotate(18deg) brightness(1.7);
-      }
+  }
+  &__checkbox-label { 
+    font-weight: 500; 
+    font-size: 16px;   
+  }
+  &__checkbox-input {
+    height: 25px;
+    width: 25px;
+    align-items: center;
+    accent-color: #131313;
+    margin-right: 15px;
+    filter: invert(100%) hue-rotate(18deg) brightness(1.7);
   }
 }

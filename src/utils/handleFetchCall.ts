@@ -1,30 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-//context
+// Context
 import { AuthContext } from "../context/AuthContext";
-//utils
+
+// Utilities
 import { clearUserFromLocalStorage, setUserInLocalStorage } from "./handleLocalStorage";
 
-const handleFetchCall = (
-  url?: string | undefined,
-  method?: string,
-  data?: object,
-  bearer: boolean = false,
-) => {
-  const { user } = useContext(AuthContext);
+const handleFetchCall = (url?: string | undefined, method?: string, data?: object) => {
+  /*================
+  UPDATE TOKEN
 
-  const [status, setStatus] = useState<{
-    loading: boolean;
-    error?: Error;
-    resData?: any;
-  }>({
-    loading: false,
-    resData: undefined,
-    error: undefined
-  });
+  Send a request to refresh the access token and update it in the local storage,
+  if the refresh token is not valid, log out the user and clears the tokens from local storage
+  ================*/
 
-  //updates the access token if the refresh token is valid
   const updateToken = async (user: string) => {
     const refresh_token = JSON.parse(localStorage.getItem("refreshToken") || "");
 
@@ -51,7 +41,12 @@ const handleFetchCall = (
     }
   };
 
-  //checks if access token is valid
+  /*================
+  CHECK  TOKEN
+  
+  Check if the token is expired and needs to be refreshed if a user is logged in
+  ================*/
+  const { user } = useContext(AuthContext);
   const checkToken = () => {
     if (user) {
       const expire_time = JSON.parse(localStorage.getItem("expireTime") || "");
@@ -67,10 +62,17 @@ const handleFetchCall = (
     return null;
   };
 
+  /*================
+    FETCH
+
+  Send a fetch request with the provided url, method, data and authorization
+  ================*/
+  const [loading, setLoading] = useState(false);
+
   const fetchNow = async (url: string, method: string, data?: object, bearer: boolean = false) => {
-    setStatus({ loading: true });
+    setLoading(true);
     const accessToken = await checkToken();
-  
+
     try {
       const response = await fetch(url, {
         method,
@@ -84,14 +86,15 @@ const handleFetchCall = (
 
       const res = await response.json();
       if (!response.ok) {
-        console.log(res.message)
+        console.log(res.message);
         toast.error(res.message);
         throw Error("Invalid creditentials");
-      }else{
-        return res
-      }      
+      } else {
+        setLoading(false);
+        return res;
+      }
     } catch (error: any) {
-      setStatus({ loading: false, error });
+      setLoading(false);
     }
   };
 
@@ -101,7 +104,7 @@ const handleFetchCall = (
     }
   }, []);
 
-  return { ...status, fetchNow };
+  return { loading, fetchNow };
 };
 
 export default handleFetchCall;

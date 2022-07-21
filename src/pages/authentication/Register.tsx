@@ -1,29 +1,36 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-//components
+// Components
 import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
 import FormInput from "../../components/authenticationForm/FormInput";
 import FormButton from "../../components/authenticationForm/FormButton";
-//authentication schema
+
+// Schema
 import { AUTHENTICATION_REGISTER_SCHEMA } from "../../schemas/AuthenticationSchema";
-//interface
+
+// Interfaces
 import { RegisterFormValues } from "./interfaces";
-//icons
+
+// Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-//utils
+
+// Utilities
 import useFetchCall from "../../utils/handleFetchCall";
-import { ToastContainer } from "react-toastify";
 
 export default function Register() {
-  const [navigate, setNavigate] = useState(false);
-  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
+  /*================
+  REGISTER USER
 
+  Register the user with the input from the form and redirect to login page if successfull 
+  ================*/
+  const navigate = useNavigate();
   const { fetchNow } = useFetchCall();
 
-  const onSubmit = async (values: RegisterFormValues) => {
+  const handleRegister = async (values: RegisterFormValues) => {
     const { confirmPassword, rememberMe, ...data } = values;
 
     const url = "https://movies.codeart.mk/api/auth/register";
@@ -32,16 +39,17 @@ export default function Register() {
     const res = await fetchNow(url, method, data);
 
     if (res) {
-      setNavigate(true);
+      navigate("/login");
     }
   };
 
-  //navigates to login if register is successfull
-  if (navigate) {
-    return <Navigate to="/login" />;
-  }
+  /*================
+  PASSWORD ICON 
 
-  //Toggles show password icon
+   Show or hide the password by clicking on the icon and show the correct icon
+  ================*/
+  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
+
   const handleIconClick = () => {
     if (showIcon === "hidden") {
       setShowIcon("show");
@@ -75,8 +83,8 @@ export default function Register() {
         />
       </svg>
 
-      <div className="form_title">
-        <h1 className="">Register</h1>
+      <div className="form__title">
+        <h1>Register</h1>
         <p>
           Create account to start using <b>Miru.</b>
         </p>
@@ -92,7 +100,7 @@ export default function Register() {
           rememberMe: false,
         }}
         validationSchema={AUTHENTICATION_REGISTER_SCHEMA}
-        onSubmit={onSubmit}
+        onSubmit={handleRegister}
       >
         {({ isSubmitting }) => (
           <Form className="form">
@@ -141,7 +149,7 @@ export default function Register() {
               label="Register"
               disabled={isSubmitting}
               type="submit"
-              className="btn btn_submit"
+              classes="btn btn__submit"
             />
 
             <p className="txt--center ">

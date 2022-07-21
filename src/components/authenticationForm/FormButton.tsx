@@ -1,9 +1,9 @@
 import React from "react";
 
 function FormButton({ ...props }) {
-  const { label, ...properties } = props;
+  const { label,classes, ...properties } = props;
 
-  return <button {...properties}>{label}</button>;
+  return <button {...properties} className={classes} >{label}</button>;
 }
 
 export default FormButton;

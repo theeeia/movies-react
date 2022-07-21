@@ -1,3 +1,4 @@
+// Pages & Interface
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
 import { RoutesProps } from "./interfaces";

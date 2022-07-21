@@ -8,7 +8,7 @@ export const setUserInLocalStorage = (
   localStorage.setItem("refreshToken", JSON.stringify(refresh));
   localStorage.setItem("user", JSON.stringify(email));
   let expire = Date.now();
-  expire = expire + expires_in * 1000; // add 300 seconds in miliseconds
+  expire = expire + expires_in * 1000;
   localStorage.setItem("expireTime", JSON.stringify(expire));
 };
 

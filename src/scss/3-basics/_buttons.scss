@@ -6,7 +6,7 @@
 .btn {
   transition: all .3s ease-in-out;
 
-  &_submit {
+  &__submit {
     background: #000F93;
     border: none;
     font-weight: 600;
@@ -17,7 +17,9 @@
     margin-bottom: 30px;
     margin-top: 15px;
     border-radius: 20px;
-
+    &:disabled {
+      background: darken($color: #000F93, $amount: 10)
+    }
   }
   //button size
   &--xl { }

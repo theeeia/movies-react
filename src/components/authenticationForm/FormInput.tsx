@@ -1,5 +1,7 @@
 import { useField } from "formik";
 import React from "react";
+
+// Interfaces
 import { FormInputProps } from "./interfaces";
 
 export default function FormInput(props: FormInputProps) {
@@ -8,28 +10,28 @@ export default function FormInput(props: FormInputProps) {
 
   return (
     <div>
-      <label htmlFor={label} className="form_label">
+      <label htmlFor={label} className="form__label">
         {label}
         {required && "*"}
       </label>
 
-      <div className="form_field">
+      <div className="form__field">
         <input
           {...field}
           {...properties}
-          className={`form_input  ${meta.touched && meta.error && "form_input--error"}`}
+          className={`form__input  ${meta.touched && meta.error && "form__input--error"}`}
         />
 
         {icon ? (
-          <div className="form_icon" onClick={handleIconClick}>
+          <div className="form__icon" onClick={handleIconClick}>
             {icon}
           </div>
         ) : null}
 
         {meta.touched && meta.error ? (
-          <p className="form_error">{meta.error}</p>
+          <p className="form__error">{meta.error}</p>
         ) : (
-          <p className="form_error form_error--hidden">Error</p>
+          <p className="form__error form__error--hidden">Error</p>
         )}
       </div>
     </div>
