@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
-import { ToastContainer } from "react-toastify";
+import React, { useContext, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import Loader from "../components/Loader";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
 
 // Utilities
 import handleFetchCall from "../utils/handleFetchCall";
-import { clearUserFromLocalStorage } from "../utils/handleLocalStorage";
+import { handleLogoutUser } from "../utils/handleLocalStorage";
 
 export default function Home() {
   const { user } = useContext(AuthContext);
@@ -36,28 +37,38 @@ export default function Home() {
 
   Log out the user and clear tokens and user email from local storage
   ================*/
+  const [loadingLogout, setLoadingLogout] = useState(false);
   const handleLogout = async () => {
-    const url = "https://movies.codeart.mk/api/auth/logout";
-    const method = "POST";
+    setLoadingLogout(true);
+    try {
+      await fetch("https://movies.codeart.mk/api/auth/logout", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("accessToken") || ""),
+        },
+        method: "POST",
+      });
 
-    await fetchNow(url, method, undefined, true);
-
-    clearUserFromLocalStorage();
+      handleLogoutUser();
+    } catch (error) {
+      console.log(error);
+    }
+    setLoadingLogout(false);
   };
 
   return (
-    <div className="home_page">
-      <ToastContainer />
+    <div className="home-page">
       <div>
         {" "}
         Hello <>{user}</>
       </div>
 
       <button onClick={handleCheckToken} disabled={loading}>
-        Check token
+        {loading ? <Loader /> : "Check token"}
       </button>
-      <button onClick={handleLogout} disabled={loading}>
-        Logout
+      <button onClick={handleLogout} disabled={loadingLogout}>
+        {loadingLogout ? <Loader /> : "Logout"}
       </button>
     </div>
   );

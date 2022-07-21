@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 
 // Utilities
-import { clearUserFromLocalStorage, setUserInLocalStorage } from "./handleLocalStorage";
+import { handleLogoutUser, handleSaveUserInLocalStorage } from "./handleLocalStorage";
 
 const handleFetchCall = (url?: string | undefined, method?: string, data?: object) => {
   /*================
@@ -31,13 +31,14 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
     const res = await response.json();
 
     if (res.error) {
-      console.log("Timed out refresh token");
-      clearUserFromLocalStorage();
-
-      console.log("logged out");
+      handleLogoutUser();
     } else {
-      setUserInLocalStorage(res.access_token, res.refresh_token, String(user), res.expires_in);
-      console.log("updated");
+      handleSaveUserInLocalStorage(
+        res.access_token,
+        res.refresh_token,
+        String(user),
+        res.expires_in,
+      );
     }
   };
 
@@ -51,10 +52,7 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
     if (user) {
       const expire_time = JSON.parse(localStorage.getItem("expireTime") || "");
       if (Date.now() > Number(expire_time)) {
-        console.log("Timed out access");
         updateToken(user);
-      } else {
-        console.log((Number(expire_time) - Date.now()) / 1000 + " sec");
       }
       const accessToken = JSON.parse(localStorage.getItem("accessToken") || "");
       return accessToken;
@@ -86,23 +84,16 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
 
       const res = await response.json();
       if (!response.ok) {
-        console.log(res.message);
-        toast.error(res.message);
-        throw Error("Invalid creditentials");
+        throw Error(res.message);
       } else {
         setLoading(false);
         return res;
       }
     } catch (error: any) {
+      toast.error(error.message);
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (url && method) {
-      fetchNow(url, method, data);
-    }
-  }, []);
 
   return { loading, fetchNow };
 };

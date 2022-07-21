@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 // Components
 import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
@@ -20,6 +20,7 @@ import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg"
 
 // Utilities
 import useFetchCall from "../../utils/handleFetchCall";
+import Loader from "../../components/Loader";
 
 export default function Register() {
   /*================
@@ -37,8 +38,8 @@ export default function Register() {
     const method = "POST";
 
     const res = await fetchNow(url, method, data);
-
     if (res) {
+      toast.success("Registered successfully");
       navigate("/login");
     }
   };
@@ -60,7 +61,6 @@ export default function Register() {
 
   return (
     <div className="container">
-      <ToastContainer />
       <svg
         className="logo"
         width="150"
@@ -143,10 +143,9 @@ export default function Register() {
               handleIconClick={handleIconClick}
               required
             />
-            <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
-
+                   
             <FormButton
-              label="Register"
+              label={isSubmitting ? <Loader /> : "Register"}
               disabled={isSubmitting}
               type="submit"
               classes="btn btn__submit"

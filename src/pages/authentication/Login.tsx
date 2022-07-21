@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Components
@@ -21,11 +21,12 @@ import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
-import { setUserInLocalStorage } from "../../utils/handleLocalStorage";
+import { handleSaveUserInLocalStorage } from "../../utils/handleLocalStorage";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+import Loader from "../../components/Loader";
 
 export default function Login() {
   /*================
@@ -40,11 +41,18 @@ export default function Login() {
     const { rememberMe, ...data } = values;
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";
+
     const res = await fetchNow(url, method, data);
 
     if (res) {
       setUser(values.email);
-      setUserInLocalStorage(res.access_token, res.refresh_token, values.email, res.expires_in);
+      handleSaveUserInLocalStorage(
+        res.access_token,
+        res.refresh_token,
+        values.email,
+        res.expires_in,
+      );
+      toast.success("Logged in successfully");
     }
   };
 
@@ -65,7 +73,6 @@ export default function Login() {
 
   return (
     <div className="container">
-      <ToastContainer />
       <svg
         className="logo"
         width="150"
@@ -119,12 +126,11 @@ export default function Login() {
             <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
 
             <FormButton
-              label="login"
+              label={isSubmitting ? <Loader /> : "login"}
               disabled={isSubmitting}
               type="submit"
               classes="btn btn__submit txt--uppercase"
             />
-
             <p className="txt--center ">
               Don't have an account?{" "}
               <Link to={"/register"} className="txt--underline">

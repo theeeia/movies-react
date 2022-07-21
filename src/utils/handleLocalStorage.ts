@@ -1,4 +1,6 @@
-export const setUserInLocalStorage = (
+import { toast } from "react-toastify";
+
+export const handleSaveUserInLocalStorage = (
   access: string,
   refresh: string,
   email: string,
@@ -12,10 +14,13 @@ export const setUserInLocalStorage = (
   localStorage.setItem("expireTime", JSON.stringify(expire));
 };
 
-export const clearUserFromLocalStorage = () => {
+export const handleLogoutUser = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("user");
   localStorage.removeItem("expireTime");
-  window.location.reload();
+  toast.success("Logged out");
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
 };

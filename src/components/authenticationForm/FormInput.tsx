@@ -28,11 +28,7 @@ export default function FormInput(props: FormInputProps) {
           </div>
         ) : null}
 
-        {meta.touched && meta.error ? (
-          <p className="form__error">{meta.error}</p>
-        ) : (
-          <p className="form__error form__error--hidden">Error</p>
-        )}
+        {meta.touched && meta.error && <p className="form__error">{meta.error}</p>}
       </div>
     </div>
   );
