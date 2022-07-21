@@ -31,7 +31,7 @@ export default function Register() {
   const { fetchNow } = useFetchCall();
 
   const handleRegister = async (values: RegisterFormValues) => {
-    const { ...data } = values;
+    const {confirmPassword, ...data } = values;
 
     const url = "https://movies.codeart.mk/api/auth/register";
     const method = "POST";
@@ -95,6 +95,7 @@ export default function Register() {
           password: "",
           first_name: "",
           last_name: "",
+          confirmPassword: ""
         }}
         validationSchema={AUTHENTICATION_REGISTER_SCHEMA}
         onSubmit={handleRegister}

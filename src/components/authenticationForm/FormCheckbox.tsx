@@ -7,7 +7,7 @@ import { FormCheckboxProps } from "./interfaces";
 export default function FormCheckbox(props: FormCheckboxProps) {
   const { label, ...properties } = props;
 
-  const [field, meta] = useField(properties);
+  const [field] = useField(properties);
   return (
     <>
       <div className="form__checkbox">
