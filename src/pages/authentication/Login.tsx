@@ -29,6 +29,7 @@ import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg"
 import Loader from "../../components/Loader";
 
 export default function Login() {
+  // Get remembered user from local storage if it exists
   const rememberedUser = localStorage.getItem("rememberedUser")
     ? JSON.parse(localStorage.getItem("rememberedUser") || "")
     : null;
@@ -36,7 +37,8 @@ export default function Login() {
   /*================
   LOGIN USER
 
-  Log in the user with the input from the form and save the response and user email in local storage if successfull 
+  Log in the user with the input from the form and save the response and user email in local storage if successfull.
+  If rememberMSe is active, save the user in local storage or delete it
   ================*/
   const { setUser } = useContext(AuthContext);
   const { fetchNow } = handleFetchCall();
