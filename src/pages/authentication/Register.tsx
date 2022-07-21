@@ -1,10 +1,9 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 // Components
-import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
 import FormInput from "../../components/authenticationForm/FormInput";
 import FormButton from "../../components/authenticationForm/FormButton";
 
@@ -32,7 +31,7 @@ export default function Register() {
   const { fetchNow } = useFetchCall();
 
   const handleRegister = async (values: RegisterFormValues) => {
-    const { confirmPassword, rememberMe, ...data } = values;
+    const { ...data } = values;
 
     const url = "https://movies.codeart.mk/api/auth/register";
     const method = "POST";
@@ -96,8 +95,6 @@ export default function Register() {
           password: "",
           first_name: "",
           last_name: "",
-          confirmPassword: "",
-          rememberMe: false,
         }}
         validationSchema={AUTHENTICATION_REGISTER_SCHEMA}
         onSubmit={handleRegister}
@@ -143,7 +140,7 @@ export default function Register() {
               handleIconClick={handleIconClick}
               required
             />
-                   
+
             <FormButton
               label={isSubmitting ? <Loader /> : "Register"}
               disabled={isSubmitting}

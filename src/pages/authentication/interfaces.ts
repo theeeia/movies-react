@@ -9,6 +9,4 @@ export interface RegisterFormValues {
   password: string;
   first_name: string;
   last_name: string;
-  confirmPassword: string;
-  rememberMe: boolean;
 }

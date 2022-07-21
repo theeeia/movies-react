@@ -2,6 +2,7 @@ export interface FormCheckboxProps {
   label: string;
   name: string;
   type: string;
+  checked?: boolean;
 }
 
 export interface FormInputProps {
@@ -9,7 +10,6 @@ export interface FormInputProps {
   name: string;
   type: string;
   placeholder: string;
-  showIcon?: string;
   icon?: React.ReactNode;
   handleIconClick?: () => void;
   required: boolean;

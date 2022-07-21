@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader";
 
 // Context

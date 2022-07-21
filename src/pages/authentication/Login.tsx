@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Components
@@ -29,6 +29,10 @@ import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg"
 import Loader from "../../components/Loader";
 
 export default function Login() {
+  const rememberedUser = localStorage.getItem("rememberedUser")
+    ? JSON.parse(localStorage.getItem("rememberedUser") || "")
+    : null;
+
   /*================
   LOGIN USER
 
@@ -39,12 +43,19 @@ export default function Login() {
 
   const handleLogin = async (values: LoginFormValues) => {
     const { rememberMe, ...data } = values;
+
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";
 
     const res = await fetchNow(url, method, data);
 
     if (res) {
+      if (rememberMe) {
+        localStorage.setItem("rememberedUser", JSON.stringify(values.email));
+      } else {
+        localStorage.removeItem("rememberedUser");
+      }
+
       setUser(values.email);
       handleSaveUserInLocalStorage(
         res.access_token,
@@ -101,7 +112,11 @@ export default function Login() {
       </div>
 
       <Formik
-        initialValues={{ email: "", password: "", rememberMe: false }}
+        initialValues={{
+          email: rememberedUser ? rememberedUser : "",
+          password: "",
+          rememberMe: rememberedUser ? true : false,
+        }}
         validationSchema={AUTHENTICATION_LOGIN_SCHEMA}
         onSubmit={handleLogin}
       >
@@ -123,6 +138,7 @@ export default function Login() {
               handleIconClick={handleIconClick}
               required
             />
+
             <FormCheckbox label="Remember me" name="rememberMe" type="checkbox" />
 
             <FormButton
