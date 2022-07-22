@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
 // Context
@@ -16,7 +17,7 @@ export default function Home() {
 
   Send a request to check if the token is valid or needs to be refreshed
   ================*/
-  const { loading, fetchNow } = handleFetchCall();
+  const { loading, handleFetch } = handleFetchCall();
 
   const handleCheckToken = async () => {
     const url = "https://jsonplaceholder.typicode.com/posts";
@@ -27,7 +28,7 @@ export default function Home() {
       userId: 1,
     };
 
-    const res = await fetchNow(url, method, body);
+    const res = await handleFetch(url, method, body);
     console.log(res);
   };
 
@@ -39,19 +40,22 @@ export default function Home() {
   const [loadingLogout, setLoadingLogout] = useState(false);
   const handleLogout = async () => {
     setLoadingLogout(true);
+    const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
+
     try {
       await fetch("https://movies.codeart.mk/api/auth/logout", {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("accessToken") || ""),
+          Authorization: `Bearer ${access_token}`,
         },
         method: "POST",
       });
 
       handleLogoutUser();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.message)
+      throw new Error(error.message)
     }
     setLoadingLogout(false);
   };

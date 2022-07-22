@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 // Context
@@ -7,7 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 // Utilities
 import { handleLogoutUser, handleSaveUserInLocalStorage } from "./handleLocalStorage";
 
-const handleFetchCall = (url?: string | undefined, method?: string, data?: object) => {
+const handleFetchCall = () => {
   /*================
   UPDATE TOKEN
 
@@ -15,30 +15,35 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
   if the refresh token is not valid, log out the user and clears the tokens from local storage
   ================*/
 
-  const updateToken = async (user: string) => {
+  const handleUpdateToken = async (user: string) => {
     const refresh_token = JSON.parse(localStorage.getItem("refreshToken") || "");
 
-    const response = await fetch("https://movies.codeart.mk/api/auth/refresh-token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        refresh_token: refresh_token,
-      }),
-    });
-    const res = await response.json();
+    try {
+      const response = await fetch("https://movies.codeart.mk/api/auth/refresh-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          refresh_token: refresh_token,
+        }),
+      });
+      const res = await response.json();
 
-    if (res.error) {
-      handleLogoutUser();
-    } else {
-      handleSaveUserInLocalStorage(
-        res.access_token,
-        res.refresh_token,
-        String(user),
-        res.expires_in,
-      );
+      if (res.error) {
+        handleLogoutUser();
+      } else {
+        handleSaveUserInLocalStorage(
+          res.access_token,
+          res.refresh_token,
+          String(user),
+          res.expires_in,
+        );
+      }
+    } catch (error: any) {
+      toast.error(error.message)
+      throw new Error(error.message)
     }
   };
 
@@ -48,11 +53,12 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
   Check if the token is expired and needs to be refreshed if a user is logged in
   ================*/
   const { user } = useContext(AuthContext);
-  const checkToken = () => {
+  
+  const handleCheckToken = () => {
     if (user) {
       const expire_time = JSON.parse(localStorage.getItem("expireTime") || "");
       if (Date.now() > Number(expire_time)) {
-        updateToken(user);
+        handleUpdateToken(user);
       }
       const accessToken = JSON.parse(localStorage.getItem("accessToken") || "");
       return accessToken;
@@ -67,9 +73,14 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
   ================*/
   const [loading, setLoading] = useState(false);
 
-  const fetchNow = async (url: string, method: string, data?: object, bearer: boolean = false) => {
+  const handleFetch = async (
+    url: string,
+    method: string,
+    data?: object,
+    bearer: boolean = false,
+  ) => {
     setLoading(true);
-    const accessToken = await checkToken();
+    const accessToken = await handleCheckToken();
 
     try {
       const response = await fetch(url, {
@@ -85,17 +96,16 @@ const handleFetchCall = (url?: string | undefined, method?: string, data?: objec
       const res = await response.json();
       if (!response.ok) {
         throw Error(res.message);
-      } else {
-        setLoading(false);
-        return res;
       }
+      setLoading(false);
+      return res;
     } catch (error: any) {
       toast.error(error.message);
       setLoading(false);
     }
   };
 
-  return { loading, fetchNow };
+  return { loading, handleFetch };
 };
 
 export default handleFetchCall;

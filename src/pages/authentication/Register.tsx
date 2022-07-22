@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 // Components
 import FormInput from "../../components/authenticationForm/FormInput";
 import FormButton from "../../components/authenticationForm/FormButton";
+import Loader from "../../components/Loader";
 
 // Schema
 import { AUTHENTICATION_REGISTER_SCHEMA } from "../../schemas/AuthenticationSchema";
@@ -19,7 +20,7 @@ import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg"
 
 // Utilities
 import useFetchCall from "../../utils/handleFetchCall";
-import Loader from "../../components/Loader";
+
 
 export default function Register() {
   /*================
@@ -28,15 +29,15 @@ export default function Register() {
   Register the user with the input from the form and redirect to login page if successfull 
   ================*/
   const navigate = useNavigate();
-  const { fetchNow } = useFetchCall();
+  const { handleFetch } = useFetchCall();
 
   const handleRegister = async (values: RegisterFormValues) => {
-    const {confirmPassword, ...data } = values;
+    const { email, password, first_name, last_name } = values;
 
     const url = "https://movies.codeart.mk/api/auth/register";
     const method = "POST";
 
-    const res = await fetchNow(url, method, data);
+    const res = await handleFetch(url, method, { email, password, first_name, last_name });
     if (res) {
       toast.success("Registered successfully");
       navigate("/login");
@@ -95,7 +96,7 @@ export default function Register() {
           password: "",
           first_name: "",
           last_name: "",
-          confirmPassword: ""
+          confirmPassword: "",
         }}
         validationSchema={AUTHENTICATION_REGISTER_SCHEMA}
         onSubmit={handleRegister}
@@ -146,7 +147,7 @@ export default function Register() {
               label={isSubmitting ? <Loader /> : "Register"}
               disabled={isSubmitting}
               type="submit"
-              classes="btn btn__submit"
+              modifierClass="btn__submit"
             />
 
             <p className="txt--center ">

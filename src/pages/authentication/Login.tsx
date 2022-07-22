@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
 import FormInput from "../../components/authenticationForm/FormInput";
 import FormButton from "../../components/authenticationForm/FormButton";
+import Loader from "../../components/Loader";
 
 // Schemas
 import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
@@ -26,7 +27,7 @@ import { handleSaveUserInLocalStorage } from "../../utils/handleLocalStorage";
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-import Loader from "../../components/Loader";
+
 
 export default function Login() {
   // Get remembered user from local storage if it exists
@@ -41,7 +42,7 @@ export default function Login() {
   If rememberMSe is active, save the user in local storage or delete it
   ================*/
   const { setUser } = useContext(AuthContext);
-  const { fetchNow } = handleFetchCall();
+  const { handleFetch } = handleFetchCall();
 
   const handleLogin = async (values: LoginFormValues) => {
     const { rememberMe, ...data } = values;
@@ -49,7 +50,7 @@ export default function Login() {
     const url = "https://movies.codeart.mk/api/auth/login";
     const method = "POST";
 
-    const res = await fetchNow(url, method, data);
+    const res = await handleFetch(url, method, data);
 
     if (res) {
       if (rememberMe) {
@@ -147,7 +148,7 @@ export default function Login() {
               label={isSubmitting ? <Loader /> : "login"}
               disabled={isSubmitting}
               type="submit"
-              classes="btn btn__submit txt--uppercase"
+              modifierClass="btn__submit txt--uppercase"
             />
             <p className="txt--center ">
               Don't have an account?{" "}

@@ -1,9 +1,15 @@
 import React, { useContext } from "react";
 import { ToastContainer } from "react-toastify";
+import "./scss/application.scss";
+
+// Context
 import { AuthContext } from "./context/AuthContext";
+
+//Pages
 import AuthenticatedApp from "./pages/AuthenticatedApp";
 import UnauthenticatedApp from "./pages/UnauthenticatedApp";
-import "./scss/application.scss";
+
+
 
 export default function App() {
   const { user } = useContext(AuthContext);
