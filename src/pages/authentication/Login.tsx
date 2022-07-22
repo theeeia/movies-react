@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
 import FormInput from "../../components/authenticationForm/FormInput";
 import FormButton from "../../components/authenticationForm/FormButton";
-import Loader from "../../components/Loader";
+import Loader from "../../components/Loader/Loader";
 
 // Schemas
 import { AUTHENTICATION_LOGIN_SCHEMA } from "../../schemas/AuthenticationSchema";
@@ -27,7 +27,6 @@ import { handleSaveUserInLocalStorage } from "../../utils/handleLocalStorage";
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
-
 
 export default function Login() {
   // Get remembered user from local storage if it exists

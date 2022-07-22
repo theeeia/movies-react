@@ -1,5 +1,4 @@
 import { useField } from "formik";
-import React from "react";
 
 // Interfaces
 import { FormCheckboxProps } from "./interfaces";

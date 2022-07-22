@@ -33,6 +33,7 @@ const handleFetchCall = () => {
 
       if (res.error) {
         handleLogoutUser();
+        throw new Error(res.error);
       } else {
         handleSaveUserInLocalStorage(
           res.access_token,
@@ -42,8 +43,7 @@ const handleFetchCall = () => {
         );
       }
     } catch (error: any) {
-      toast.error(error.message)
-      throw new Error(error.message)
+      toast.error(error.message);
     }
   };
 
@@ -53,7 +53,7 @@ const handleFetchCall = () => {
   Check if the token is expired and needs to be refreshed if a user is logged in
   ================*/
   const { user } = useContext(AuthContext);
-  
+
   const handleCheckToken = () => {
     if (user) {
       const expire_time = JSON.parse(localStorage.getItem("expireTime") || "");

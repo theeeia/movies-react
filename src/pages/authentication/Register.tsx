@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 // Components
 import FormInput from "../../components/authenticationForm/FormInput";
 import FormButton from "../../components/authenticationForm/FormButton";
-import Loader from "../../components/Loader";
+import Loader from "../../components/Loader/Loader";
 
 // Schema
 import { AUTHENTICATION_REGISTER_SCHEMA } from "../../schemas/AuthenticationSchema";
@@ -20,7 +20,6 @@ import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg"
 
 // Utilities
 import useFetchCall from "../../utils/handleFetchCall";
-
 
 export default function Register() {
   /*================

@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+import Loader from "../components/Loader/Loader";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
@@ -43,7 +43,7 @@ export default function Home() {
     const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
 
     try {
-      await fetch("https://movies.codeart.mk/api/auth/logout", {
+      const response = await fetch("https://movies.codeart.mk/api/auth/logout", {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -51,11 +51,13 @@ export default function Home() {
         },
         method: "POST",
       });
+      if (!response.ok) {
+        throw new Error("Cannot logout");
+      }
 
       handleLogoutUser();
     } catch (error: any) {
-      toast.error(error.message)
-      throw new Error(error.message)
+      toast.error(error.message);
     }
     setLoadingLogout(false);
   };
