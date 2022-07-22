@@ -4,7 +4,7 @@
 
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: Poppins, 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $default-txt-color;
@@ -17,17 +17,20 @@ h4,
 h6,
 h5 { }
 
-h1 { }
+h1 { 
+  font-weight: 600;
+  font-size: 30px; 
+}
 
-h2 { }
+h2 { font-size: 27px; }
 
-h3 { }
+h3 { font-size: 25px; }
 
-h4 { }
+h4 { font-size: 23px; }
 
-h5 { }
+h5 { font-size: 20px; }
 
-h6 { }
+h6 { font-size: 16px; }
 
 ul, ol {
   font-size: 0;

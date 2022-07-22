@@ -6,6 +6,18 @@
 .btn {
   transition: all .3s ease-in-out;
 
+  &__submit {
+    background: #000F93;
+    border: none;
+    font-weight: 600;
+    font-size: 18px;
+    width: 100%;
+    max-width: 700px;
+    height: 65px;
+    margin-bottom: 30px;
+    margin-top: 15px;
+    border-radius: 20px;
+  }
   //button size
   &--xl { }
 
