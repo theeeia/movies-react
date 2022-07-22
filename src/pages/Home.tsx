@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader/Loader";
 
@@ -11,6 +12,7 @@ import { handleLogoutUser } from "../utils/handleLocalStorage";
 
 export default function Home() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   /*================
   CHECK TOKEN
@@ -51,11 +53,11 @@ export default function Home() {
         },
         method: "POST",
       });
+
+      handleLogoutUser();
       if (!response.ok) {
         throw new Error("Cannot logout");
       }
-
-      handleLogoutUser();
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -69,11 +71,19 @@ export default function Home() {
         Hello <>{user}</>
       </div>
 
-      <button onClick={handleCheckToken} disabled={loading}>
+      <button onClick={handleCheckToken} disabled={loading} className="button">
         {loading ? <Loader /> : "Check token"}
       </button>
-      <button onClick={handleLogout} disabled={loadingLogout}>
+      <button onClick={handleLogout} disabled={loadingLogout} className="button">
         {loadingLogout ? <Loader /> : "Logout"}
+      </button>
+      <button
+        onClick={() => {
+          navigate("/account-edit");
+        }}
+        className="button"
+      >
+        Edit Account
       </button>
     </div>
   );
