@@ -146,7 +146,7 @@ export default function Register() {
               label={isSubmitting ? <Loader /> : "Register"}
               disabled={isSubmitting}
               type="submit"
-              modifierClass="btn__submit"
+              modifierClass="btn__form btn__form--submit"
             />
 
             <p className="txt--center ">

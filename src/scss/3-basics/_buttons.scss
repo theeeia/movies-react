@@ -6,7 +6,7 @@
 .btn {
   transition: all .3s ease-in-out;
 
-  &__submit {
+  &__form {
     background: #000F93;
     border: none;
     font-weight: 600;
@@ -17,7 +17,12 @@
     margin-bottom: 30px;
     margin-top: 15px;
     border-radius: 20px;
+    
+    &--submit{ background: #000F93; }
+    &--back{ background: rgb(43, 43, 56); }
   }
+
+
   //button size
   &--xl { }
 

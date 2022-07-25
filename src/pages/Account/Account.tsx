@@ -1,46 +1,114 @@
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+// Components
 import FormButton from "../../components/authenticationForm/FormButton";
 import FormInput from "../../components/authenticationForm/FormInput";
 import Loader from "../../components/Loader/Loader";
-import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
+
+// Interfaces
 import { AccountValues, EditAccountValues } from "./interfaces";
 
+// Utilities and schemas
+import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
+import handleFetchCall from "../../utils/handleFetchCall";
+import { handleLogoutUser } from "../../utils/handleLocalStorage";
+
+// Icons
+import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
+import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+
 export default function Account() {
-  const navigate = useNavigate();
+  const { handleFetch } = handleFetchCall();
   const [response, setResponse] = useState<AccountValues | null>(null);
-  const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
+  const [roles, setRoles] = useState([]);
+
+  /*================
+    FILL INPUT FIELDS
+
+  Send a fetch request to get the user details and fill the input fields
+  ================*/
+
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch("https://movies.codeart.mk/api/users/me", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-      const res = await response.json();
-      setResponse(res);
+      const response = await handleFetch(
+        "https://movies.codeart.mk/api/users/me",
+        "GET",
+        undefined,
+        true,
+      );
+      setResponse(response);
+
+      const rolesResponse = await handleFetch(
+        "https://movies.codeart.mk/api/roles",
+        "GET",
+        undefined,
+        true,
+      );
+      setRoles(rolesResponse);
     };
+
     fetchUser();
   }, []);
 
+  /*================
+    EDIT
+
+  Send a request to edit the user with the provided input and log out 
+  ================*/
+  const navigate = useNavigate();
+
   const handleEdit = async (values: EditAccountValues) => {
-    const { confirmPassword, ...data } = values;
-    const response = await fetch("https://movies.codeart.mk/api/users/me", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${access_token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    const res = await response.json();
-    console.log(res);
-    console.log(confirmPassword);
+    const { first_name, last_name, email, role } = values;
+    const response = await handleFetch(
+      "https://movies.codeart.mk/api/users/me",
+      "PUT",
+      { first_name, last_name, email, role },
+      true,
+    );
+    if (response.error) {
+      toast.error("Error");
+    } else {
+      toast.success("Edited successfully, please relog");
+
+      // Logout user
+      const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
+
+      try {
+        const response = await fetch("https://movies.codeart.mk/api/auth/logout", {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+          method: "POST",
+        });
+
+        handleLogoutUser();
+        if (!response.ok) {
+          throw new Error("Cannot logout");
+        }
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  /*================
+  PASSWORD ICON 
+
+   Show or hide the password by clicking on the icon and show the correct icon
+  ================*/
+  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
+
+  const handleIconClick = () => {
+    if (showIcon === "hidden") {
+      setShowIcon("show");
+    } else {
+      setShowIcon("hidden");
+    }
   };
 
   return (
@@ -88,36 +156,48 @@ export default function Account() {
               <FormInput
                 label="Password"
                 name="password"
-                type="password"
                 placeholder="Enter your password"
+                type={showIcon === "show" ? "text" : "password"}
+                icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+                handleIconClick={handleIconClick}
                 required
               />
               <FormInput
                 label="Confirm Password"
                 name="confirmPassword"
-                type="password"
                 placeholder="Confirm your password"
+                type={showIcon === "show" ? "text" : "password"}
+                icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+                handleIconClick={handleIconClick}
                 required
               />
+              <Field className="form__input" as="select" name="role">
+                {roles.map(role => (
+                  <option key={role["name"]} value={role["name"]}>
+                    {role["name"]}
+                  </option>
+                ))}
+              </Field>
 
               <FormButton
                 label={isSubmitting ? <Loader /> : "Edit"}
                 disabled={isSubmitting}
                 type="submit"
-                modifierClass="btn__submit"
+                modifierClass="btn__form btn__form--submit"
+              />
+
+              <FormButton
+                label="Back"
+                disabled={isSubmitting}
+                modifierClass="btn__form btn__form--back"
+                onClick={() => {
+                  navigate("/home");
+                }}
               />
             </Form>
           )}
         </Formik>
       )}
-      <button
-        className="button"
-        onClick={() => {
-          navigate("/home");
-        }}
-      >
-        Back
-      </button>
     </div>
   );
 }

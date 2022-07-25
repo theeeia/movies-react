@@ -147,7 +147,7 @@ export default function Login() {
               label={isSubmitting ? <Loader /> : "login"}
               disabled={isSubmitting}
               type="submit"
-              modifierClass="btn__submit txt--uppercase"
+              modifierClass="btn__form btn__form--submit txt--uppercase"
             />
             <p className="txt--center ">
               Don't have an account?{" "}
