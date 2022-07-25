@@ -14,7 +14,7 @@ import { AccountValues, EditAccountValues } from "./interfaces";
 // Utilities and schemas
 import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
 import handleFetchCall from "../../utils/handleFetchCall";
-import { handleLogoutUser } from "../../utils/handleLocalStorage";
+import handleLogoutUser from "../../utils/handleLogoutUser";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
@@ -40,6 +40,8 @@ export default function Account() {
         true,
       );
       setResponse(response);
+      console.log(response);
+      console.log(response.role["name"]);
 
       const rolesResponse = await handleFetch(
         "https://movies.codeart.mk/api/roles",
@@ -74,25 +76,7 @@ export default function Account() {
       toast.success("Edited successfully, please relog");
 
       // Logout user
-      const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
-
-      try {
-        const response = await fetch("https://movies.codeart.mk/api/auth/logout", {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${access_token}`,
-          },
-          method: "POST",
-        });
-
-        handleLogoutUser();
-        if (!response.ok) {
-          throw new Error("Cannot logout");
-        }
-      } catch (error: any) {
-        toast.error(error.message);
-      }
+      handleLogoutUser();
     }
   };
 
@@ -117,6 +101,7 @@ export default function Account() {
         <h1>Edit</h1>
         <p>Edit your account.</p>
       </div>
+
       {response != null && (
         <Formik
           initialValues={{
@@ -125,7 +110,7 @@ export default function Account() {
             first_name: response.first_name,
             last_name: response.last_name,
             confirmPassword: "",
-            role: "admin",
+            role: response.role["name"],
           }}
           validationSchema={ACCOUNT_EDIT_SCHEMA}
           onSubmit={handleEdit}

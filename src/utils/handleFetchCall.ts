@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 
 // Utilities
-import { handleLogoutUser, handleSaveUserInLocalStorage } from "./handleLocalStorage";
+import { handleSaveUserInLocalStorage } from "./handleSaveUserInLocalStorage";
+import handleLogoutUser from "./handleLogoutUser";
 
 const handleFetchCall = () => {
   /*================

@@ -1,14 +1,13 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import Loader from "../components/Loader/Loader";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
+import Loader from "../components/Loader/Loader";
 
 // Utilities
 import handleFetchCall from "../utils/handleFetchCall";
-import { handleLogoutUser } from "../utils/handleLocalStorage";
+import handleLogoutUser from "../utils/handleLogoutUser";
 
 export default function Home() {
   const { user } = useContext(AuthContext);
@@ -42,25 +41,7 @@ export default function Home() {
   const [loadingLogout, setLoadingLogout] = useState(false);
   const handleLogout = async () => {
     setLoadingLogout(true);
-    const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
-
-    try {
-      const response = await fetch("https://movies.codeart.mk/api/auth/logout", {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
-        method: "POST",
-      });
-
-      handleLogoutUser();
-      if (!response.ok) {
-        throw new Error("Cannot logout");
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    handleLogoutUser();
     setLoadingLogout(false);
   };
 

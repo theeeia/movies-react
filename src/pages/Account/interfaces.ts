@@ -2,7 +2,7 @@ export interface AccountValues {
   email: string;
   first_name: string;
   last_name: string;
-  role: string;
+  role: { [key: string | number]: string };
 }
 
 export interface EditAccountValues {
@@ -10,6 +10,6 @@ export interface EditAccountValues {
   password: string;
   first_name: string;
   last_name: string;
-  role: any;
+  role: string;
   confirmPassword: string;
 }

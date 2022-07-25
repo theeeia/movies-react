@@ -22,7 +22,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
-import { handleSaveUserInLocalStorage } from "../../utils/handleLocalStorage";
+import { handleSaveUserInLocalStorage } from "../../utils/handleSaveUserInLocalStorage";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
