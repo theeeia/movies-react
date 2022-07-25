@@ -77,7 +77,7 @@ const handleFetchCall = () => {
   const handleFetch = async (
     url: string,
     method: string,
-    data?: object,
+    data: object | undefined = undefined,
     bearer: boolean = false,
   ) => {
     setLoading(true);
