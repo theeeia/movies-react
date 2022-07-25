@@ -66,6 +66,14 @@ export default function Home() {
       >
         Edit Account
       </button>
+      <button
+        onClick={() => {
+          navigate("/account/privileges");
+        }}
+        className="button"
+      >
+        Privileges
+      </button>
     </div>
   );
 }

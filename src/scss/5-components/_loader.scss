@@ -1,3 +1,4 @@
+
 .lds-ellipsis {
     display: inline-block;
     position: relative;
@@ -54,4 +55,7 @@
       transform: translate(24px, 0);
     }
   }
-  
+  .loader--center{
+    position: absolute;
+    left: 47%;
+}

@@ -14,11 +14,13 @@ import { AccountValues, EditAccountValues } from "./interfaces";
 // Utilities and schemas
 import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
 import handleFetchCall from "../../utils/handleFetchCall";
-import handleLogoutUser from "../../utils/handleLogoutUser";
+//import handleLogoutUser from "../../utils/handleLogoutUser";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+import FormToggleButton from "../../components/authenticationForm/FormToggleButton";
+import handleLogoutUser from "../../utils/handleLogoutUser";
 
 export default function Account() {
   const { handleFetch } = handleFetchCall();
@@ -39,16 +41,22 @@ export default function Account() {
         undefined,
         true,
       );
+      console.log("1");
       setResponse(response);
-      console.log(response);
-      console.log(response.role["name"]);
+    };
 
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
       const rolesResponse = await handleFetch(
         "https://movies.codeart.mk/api/roles",
         "GET",
         undefined,
         true,
       );
+      console.log("2");
       setRoles(rolesResponse);
     };
 
@@ -74,7 +82,7 @@ export default function Account() {
       toast.error("Error");
     } else {
       toast.success("Edited successfully, please relog");
-
+      console.log(roles);
       // Logout user
       handleLogoutUser();
     }
@@ -102,7 +110,7 @@ export default function Account() {
         <p>Edit your account.</p>
       </div>
 
-      {response != null && (
+      {response != null ? (
         <Formik
           initialValues={{
             email: response.email,
@@ -156,13 +164,25 @@ export default function Account() {
                 handleIconClick={handleIconClick}
                 required
               />
-              <Field className="form__input" as="select" name="role">
-                {roles.map(role => (
-                  <option key={role["name"]} value={role["name"]}>
-                    {role["name"]}
-                  </option>
-                ))}
-              </Field>
+              <div className="form__label">Role</div>
+
+              <Field
+                component={FormToggleButton}
+                name="role"
+                id="user"
+                label="User"
+                value="user"
+                className="form__toggle__input"
+              />
+
+              <Field
+                component={FormToggleButton}
+                name="role"
+                id="admin"
+                label="Admin"
+                value="admin"
+                className="form__toggle__input"
+              />
 
               <FormButton
                 label={isSubmitting ? <Loader /> : "Edit"}
@@ -170,7 +190,6 @@ export default function Account() {
                 type="submit"
                 modifierClass="btn__form btn__form--submit"
               />
-
               <FormButton
                 label="Back"
                 disabled={isSubmitting}
@@ -182,6 +201,8 @@ export default function Account() {
             </Form>
           )}
         </Formik>
+      ) : (
+        <Loader modifierClass="loader--center" />
       )}
     </div>
   );

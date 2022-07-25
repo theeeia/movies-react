@@ -1,6 +1,6 @@
 // Pages & Interface
 import Account from "../pages/Account/Account";
-import Admin from "../pages/Account/Admin";
+import AccountPrivileges from "../pages/Account/AccountPrivileges";
 import { RoutesProps } from "./interfaces";
 
 export const ACCOUNT_ROUTE: RoutesProps[] = [
@@ -9,7 +9,7 @@ export const ACCOUNT_ROUTE: RoutesProps[] = [
     component: Account,
   },
   {
-    path: "/account-privileges",
-    component: Admin,
+    path: "/account/privileges",
+    component: AccountPrivileges,
   },
 ];

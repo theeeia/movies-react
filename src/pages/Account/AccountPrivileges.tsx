@@ -28,10 +28,9 @@ function Admin() {
         );
 
         setRole(response.role.name);
-        if (role === "user") {
-          setSeconds(5);
-          setCountdown(true);
-        }
+
+        setSeconds(5);
+        setCountdown(true);
       } catch (error: any) {
         toast.error(error.message);
       }
