@@ -14,13 +14,12 @@ import { AccountValues, EditAccountValues } from "./interfaces";
 // Utilities and schemas
 import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
 import handleFetchCall from "../../utils/handleFetchCall";
-//import handleLogoutUser from "../../utils/handleLogoutUser";
+import handleLogoutUser from "../../utils/handleLogoutUser";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 import FormToggleButton from "../../components/authenticationForm/FormToggleButton";
-import handleLogoutUser from "../../utils/handleLogoutUser";
 
 export default function Account() {
   const { handleFetch } = handleFetchCall();
@@ -32,19 +31,17 @@ export default function Account() {
 
   Send a fetch request to get the user details and fill the input fields
   ================*/
-
+  const fetchUser = async () => {
+    const response = await handleFetch(
+      "https://movies.codeart.mk/api/users/me",
+      "GET",
+      undefined,
+      true,
+    );
+    console.log("1");
+    setResponse(response);
+  };
   useEffect(() => {
-    const fetchUser = async () => {
-      const response = await handleFetch(
-        "https://movies.codeart.mk/api/users/me",
-        "GET",
-        undefined,
-        true,
-      );
-      console.log("1");
-      setResponse(response);
-    };
-
     fetchUser();
   }, []);
 
@@ -71,11 +68,12 @@ export default function Account() {
   const navigate = useNavigate();
 
   const handleEdit = async (values: EditAccountValues) => {
-    const { first_name, last_name, email, role } = values;
+    const { first_name, password, last_name, email, role } = values;
+    console.log(password);
     const response = await handleFetch(
       "https://movies.codeart.mk/api/users/me",
       "PUT",
-      { first_name, last_name, email, role },
+      { first_name, last_name, email, role, password },
       true,
     );
     if (response.error) {

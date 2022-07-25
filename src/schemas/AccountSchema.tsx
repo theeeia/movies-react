@@ -10,9 +10,6 @@ export const ACCOUNT_EDIT_SCHEMA = yup.object().shape({
     .string()
     .min(8)
     .matches(passwordRules, { message: "Please enter a stronger password" })
-    .required("Required"),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Passwords must match")
-    .required("Required"),
+    .oneOf([yup.ref("confirmPassword"), null], "Must confirm password"),
+  confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Passwords must match"),
 });
