@@ -103,6 +103,7 @@ const handleFetchCall = () => {
     } catch (error: any) {
       toast.error(error.message);
       setLoading(false);
+      throw Error(error);
     }
   };
 

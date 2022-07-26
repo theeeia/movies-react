@@ -1,7 +1,6 @@
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 // Components
 import FormButton from "../../components/authenticationForm/FormButton";
@@ -10,7 +9,7 @@ import Loader from "../../components/Loader/Loader";
 import FormToggleButton from "../../components/authenticationForm/FormToggleButton";
 
 // Interfaces
-import { EditAccountValues } from "./interfaces";
+import { EditAccountValues, EditParameters } from "./interfaces";
 
 // Schemas
 import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
@@ -18,6 +17,8 @@ import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleLogoutUser from "../../utils/handleLogoutUser";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
@@ -32,96 +33,65 @@ export default function Account() {
     password: "",
     confirmPassword: "",
   });
+
   const { handleFetch } = handleFetchCall();
-  //const [response, setResponse] = useState<AccountValues | null>(null);
-  //const [roles, setRoles] = useState([]);
+
+  const { status, data } = useQuery(["user"], () =>
+    handleFetch("https://movies.codeart.mk/api/users/me", "GET", undefined, true),
+  );
 
   /*================
     FILL INPUT FIELDS
 
   Send a fetch request to get the user details and fill the input fields
   ================*/
-
   useEffect(() => {
-    let ignore = false;
-    const fetchUser = async () => {
-      const response = await handleFetch(
-        "https://movies.codeart.mk/api/users/me",
-        "GET",
-        undefined,
-        true,
-      );
-      const { email, role, first_name, last_name } = response;
-      if (!ignore) {
-        setEditDetailsFormValues({
-          ...editDetailsFormValues,
-          email: email,
-          first_name: first_name,
-          last_name: last_name,
-          role: role.name,
-        });
-      }
+    if (!data || !Object.entries(data).length) return;
+
+    const initialData = {
+      ...editDetailsFormValues,
+      email: data?.email || "",
+      first_name: data?.first_name || "",
+      last_name: data?.last_name || "",
+      role: data?.role.name || "",
     };
+    setEditDetailsFormValues(initialData);
+  }, [data]);
 
-    fetchUser();
-    return () => {
-      ignore = true;
-      console.log(editDetailsFormValues);
-    };
-  }, []);
-
-  useEffect(() => {
-    let ignore = false;
-    const fetchRoles = async () => {
-      const rolesResponse = await handleFetch(
-        "https://movies.codeart.mk/api/roles",
-        "GET",
-        undefined,
-        true,
-      );
-
-      if (!ignore) {
-        //setRoles(rolesResponse);
-        console.log(rolesResponse);
-        console.log("2");
-      }
-    };
-
-    fetchRoles();
-
-    return () => {
-      ignore = true;
-    };
-  }, []);
   /*================
     EDIT
 
   Send a request to edit the user with the provided input and log out 
   ================*/
+
+  const mutation = useMutation<Response, unknown, EditParameters>(
+    editedData => {
+      return handleFetch("https://movies.codeart.mk/api/users/me", "PUT", editedData, true);
+    },
+    {
+      onError: (error: any) => {
+        toast.error(error);
+      },
+      onSuccess: async () => {
+        toast.success("Edited successfully, you will be logged out");
+        setTimeout(() => {
+          handleLogoutUser();
+        }, 2000);
+      },
+    },
+  );
+
   const navigate = useNavigate();
 
   const handleEdit = async (values: EditAccountValues) => {
     const { first_name, password, last_name, email, role } = values;
-
-    const response = await handleFetch(
-      "https://movies.codeart.mk/api/users/me",
-      "PUT",
-      {
-        first_name,
-        last_name,
-        email,
-        role,
-        ...(password && { password: password }),
-      },
-      true,
-    );
-    if (response.error) {
-      toast.error("Error");
-    } else {
-      toast.success("Edited successfully, please relog");
-      // Logout user
-      handleLogoutUser();
-    }
+    mutation.mutate({
+      first_name,
+      last_name,
+      email,
+      role,
+      ...(password && { password: password }),
+    });
   };
 
   /*================
@@ -129,13 +99,15 @@ export default function Account() {
 
    Show or hide the password by clicking on the icon and show the correct icon
   ================*/
-  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
+  const [togglePasswordVisibility, setTogglePasswordVisibility] = useState<"show" | "hidden">(
+    "hidden",
+  );
 
   const handleIconClick = () => {
-    if (showIcon === "hidden") {
-      setShowIcon("show");
+    if (togglePasswordVisibility === "hidden") {
+      setTogglePasswordVisibility("show");
     } else {
-      setShowIcon("hidden");
+      setTogglePasswordVisibility("hidden");
     }
   };
 
@@ -146,7 +118,7 @@ export default function Account() {
         <p>Edit your account.</p>
       </div>
 
-      {editDetailsFormValues ? (
+      {status !== "loading" ? (
         <Formik
           initialValues={editDetailsFormValues}
           enableReinitialize
@@ -180,8 +152,10 @@ export default function Account() {
                 label="Password"
                 name="password"
                 placeholder="Enter your password"
-                type={showIcon === "show" ? "text" : "password"}
-                icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+                type={togglePasswordVisibility === "show" ? "text" : "password"}
+                icon={
+                  togglePasswordVisibility === "show" ? <ToggleIconShow /> : <ToggleIconHidden />
+                }
                 handleIconClick={handleIconClick}
                 required
               />
@@ -189,8 +163,10 @@ export default function Account() {
                 label="Confirm Password"
                 name="confirmPassword"
                 placeholder="Confirm your password"
-                type={showIcon === "show" ? "text" : "password"}
-                icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+                type={togglePasswordVisibility === "show" ? "text" : "password"}
+                icon={
+                  togglePasswordVisibility === "show" ? <ToggleIconShow /> : <ToggleIconHidden />
+                }
                 handleIconClick={handleIconClick}
                 required
               />

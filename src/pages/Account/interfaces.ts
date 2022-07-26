@@ -1,10 +1,3 @@
-export interface AccountValues {
-  email: string;
-  first_name: string;
-  last_name: string;
-  role: { [key: string | number]: string };
-}
-
 export interface EditAccountValues {
   email: string;
   password: string;
@@ -13,3 +6,11 @@ export interface EditAccountValues {
   role: string;
   confirmPassword: string;
 }
+
+export type EditParameters = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: string;
+  password?: string;
+};
