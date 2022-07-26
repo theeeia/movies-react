@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
@@ -11,7 +11,6 @@ import handleLogoutUser from "../utils/handleLogoutUser";
 
 export default function Home() {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   /*================
   CHECK TOKEN
@@ -58,22 +57,12 @@ export default function Home() {
       <button onClick={handleLogout} disabled={loadingLogout} className="button">
         {loadingLogout ? <Loader /> : "Logout"}
       </button>
-      <button
-        onClick={() => {
-          navigate("/account-edit");
-        }}
-        className="button"
-      >
+      <Link to="/account-edit" className="button link-button">
         Edit Account
-      </button>
-      <button
-        onClick={() => {
-          navigate("/account/privileges");
-        }}
-        className="button"
-      >
+      </Link>
+      <Link to="/account/privileges" className="button link-button">
         Privileges
-      </button>
+      </Link>
     </div>
   );
 }

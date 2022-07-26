@@ -77,45 +77,5 @@
     margin-right: 15px;
     filter: invert(100%) hue-rotate(18deg) brightness(1.7);
   }
-
-  &__toggle {
-    display: inline-block;
-    margin-bottom: 20px;
-
-
-  }
-
-  &__toggle__input {
-    margin-right: 55px ;
-    margin-left: 35px;
-    --inactive-bg: #C4C4C4;
-    --active-bg: #000F93;
-    --size: 18px;
-    appearance: none;
-    width: calc(var(--size) * 1.9);
-    height: var(--size);
-    display: inline-block;
-    border-radius: calc(var(--size) / 2);
-    cursor: pointer;
-    background-color: var(--inactive-bg);
-    background-image: radial-gradient(
-        circle calc(var(--size) / 2.1),
-        #fff 100%,
-        #0000 0
-      ),
-      radial-gradient(circle calc(var(--size) / 1.5), #0003 0%, #0000 100%);
-    background-repeat: no-repeat;
-    background-position: calc(var(--size) / -1.75) 0;
-    transition: background 0.2s ease-out;
-
-
-     &:checked {
-    background-color: var(--active-bg);
-    background-position: calc(var(--size) / 1.75) 0;
-  } 
   
-  }
- 
-  
-   
 }

@@ -36,6 +36,7 @@ export default function Account() {
 
   const { handleFetch } = handleFetchCall();
 
+  // Fetch the user from api
   const { status, data } = useQuery(["user"], () =>
     handleFetch("https://movies.codeart.mk/api/users/me", "GET", undefined, true),
   );
@@ -56,6 +57,8 @@ export default function Account() {
       role: data?.role.name || "",
     };
     setEditDetailsFormValues(initialData);
+
+    setToggleUserRole(initialData.role);
   }, [data]);
 
   /*================
@@ -85,6 +88,7 @@ export default function Account() {
 
   const handleEdit = async (values: EditAccountValues) => {
     const { first_name, password, last_name, email, role } = values;
+
     mutation.mutate({
       first_name,
       last_name,
@@ -92,6 +96,21 @@ export default function Account() {
       role,
       ...(password && { password: password }),
     });
+  };
+
+  /*================
+  ROLE TOGGLE BUTTON 
+
+  Toggles between admin and user role
+  ================*/
+  const [toggleUserRole, setToggleUserRole] = useState<"user" | "admin">("user");
+
+  const handleToggleRole = () => {
+    if (toggleUserRole === "admin") {
+      setToggleUserRole("user");
+    } else {
+      setToggleUserRole("admin");
+    }
   };
 
   /*================
@@ -125,7 +144,7 @@ export default function Account() {
           validationSchema={ACCOUNT_EDIT_SCHEMA}
           onSubmit={handleEdit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue }) => (
             <Form className="form">
               <FormInput
                 label="First Name"
@@ -175,21 +194,23 @@ export default function Account() {
               <Field
                 component={FormToggleButton}
                 name="role"
-                id="user"
                 label="User"
-                value="user"
-                className="form__toggle__input"
+                checked={toggleUserRole === "user" ? true : false}
+                onChange={() => {
+                  handleToggleRole();
+                  setFieldValue("role", toggleUserRole === "user" ? "admin" : "user");
+                }}
               />
-
               <Field
                 component={FormToggleButton}
                 name="role"
-                id="admin"
                 label="Admin"
-                value="admin"
-                className="form__toggle__input"
+                checked={toggleUserRole === "admin" ? true : false}
+                onChange={() => {
+                  handleToggleRole();
+                  setFieldValue("role", toggleUserRole === "admin" ? "user" : "admin");
+                }}
               />
-
               <FormButton
                 label={isSubmitting ? <Loader /> : "Edit"}
                 disabled={isSubmitting}

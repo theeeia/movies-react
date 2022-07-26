@@ -14,3 +14,9 @@ export interface FormInputProps {
   handleIconClick?: () => void;
   required: boolean;
 }
+
+export interface FormToggleButtonProps {
+  label: string;
+  name: string;
+  checked: boolean;
+}

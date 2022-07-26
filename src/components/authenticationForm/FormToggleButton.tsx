@@ -1,27 +1,17 @@
-const FormToggleButton = ({
-  field: { name, value, onChange },
-  id,
-  label,
-  classNames,
-  ...props
-}: any) => {
+import { FormToggleButtonProps } from "./interfaces";
+
+const FormToggleButton = (properties: FormToggleButtonProps) => {
+  const { label, ...props } = properties;
+
   return (
-    <div className="form__toggle">
-      <label htmlFor={id} className="form__label">
-        {label}
+    <div className="toggle">
+      <label> {label}</label>
+      <label className="toggle__switch">
+        <input type="checkbox" {...props} />
+        <span className="toggle__slider"></span>
       </label>
-      <input
-        name={name}
-        id={id}
-        type="radio"
-        value={id}
-        checked={id === value}
-        onChange={onChange}
-        onClick={onChange}
-        className={classNames}
-        {...props}
-      />
     </div>
   );
 };
+
 export default FormToggleButton;
