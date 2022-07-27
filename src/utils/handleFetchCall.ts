@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { toast } from "react-toastify";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
@@ -7,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 // Utilities
 import { handleSaveUserInLocalStorage } from "./handleSaveUserInLocalStorage";
 import handleLogoutUser from "./handleLogoutUser";
+import { toast } from "react-toastify";
 
 const handleFetchCall = () => {
   /*================
@@ -74,24 +74,18 @@ const handleFetchCall = () => {
   ================*/
   const [loading, setLoading] = useState(false);
 
-  const handleFetch = async (
-    url: string,
-    method: string,
-    data: object | undefined = undefined,
-    bearer: boolean = false,
-  ) => {
+  const handleFetch = async (url: string, method: string, body?: Record<string, any>) => {
     setLoading(true);
     const accessToken = await handleCheckToken();
-
     try {
       const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          ...(bearer && { Authorization: "Bearer " + accessToken }),
+          Authorization: "Bearer " + accessToken,
         },
-        ...(data && { body: JSON.stringify(data) }),
+        ...(body && { body: JSON.stringify(body) }),
       });
 
       const res = await response.json();
