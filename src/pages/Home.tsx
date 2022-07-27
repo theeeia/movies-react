@@ -10,6 +10,7 @@ import Loader from "../components/Loader/Loader";
 // Utilities
 import handleFetchCall from "../utils/handleFetchCall";
 import handleLogoutUser from "../utils/handleLogoutUser";
+import { useMutation } from "@tanstack/react-query";
 
 export default function Home() {
   const { user } = useContext(AuthContext);
@@ -19,7 +20,18 @@ export default function Home() {
 
   Send a request to check if the token is valid or needs to be refreshed
   ================*/
-  const { loading, handleFetch } = handleFetchCall();
+
+  const { handleFetch } = handleFetchCall();
+
+  const mutation = useMutation(
+    ({ url, method, body }: { url: string; method: string; body: object }) =>
+      handleFetch(url, method, body),
+    {
+      onSuccess: () => {
+        console.log("Token is valid");
+      },
+    },
+  );
 
   // NOTE: This is used only for testing
   // Send a request to check if the token is valid
@@ -31,9 +43,7 @@ export default function Home() {
       body: "bar",
       userId: 1,
     };
-
-    const res = await handleFetch(url, method, body);
-    console.log(res);
+    mutation.mutate({ url, method, body });
   };
 
   /*================
@@ -57,8 +67,8 @@ export default function Home() {
         Hello <>{user}</>
       </div>
 
-      <button onClick={handleCheckToken} disabled={loading} className="button">
-        {loading ? <Loader /> : "Check token"}
+      <button onClick={handleCheckToken} disabled={mutation.isLoading} className="button">
+        {mutation.isLoading ? <Loader /> : "Check token"}
       </button>
       <button onClick={handleLogout} disabled={loadingLogout} className="button">
         {loadingLogout ? <Loader /> : "Logout"}

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
@@ -76,11 +76,8 @@ const handleFetchCall = () => {
 
   Send a fetch request with the provided url, method, data and authorization
   ================*/
-  const [loading, setLoading] = useState(false);
 
   const handleFetch = async (url: string, method: string, body?: Record<string, any>) => {
-    setLoading(true);
-
     // Check if the token is valid
     const accessToken = await handleCheckToken();
 
@@ -91,7 +88,7 @@ const handleFetchCall = () => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + accessToken,
+          ...(accessToken && { Authorization: "Bearer " + accessToken }),
         },
         ...(body && { body: JSON.stringify(body) }),
       });
@@ -102,16 +99,15 @@ const handleFetchCall = () => {
         throw Error(res.message);
       }
 
-      setLoading(false);
       return res;
     } catch (error: any) {
       toast.error(error.message);
-      setLoading(false);
+
       throw Error(error);
     }
   };
 
-  return { loading, handleFetch };
+  return { handleFetch };
 };
 
 export default handleFetchCall;

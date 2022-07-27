@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //Components
 import Loader from "../../components/Loader/Loader";
 
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
-import handleLogoutUser from "../../utils/handleLogoutUser";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 
 function Admin() {
+  const navigate = useNavigate();
+
   /*================
     GET USER ROLE
 
@@ -32,7 +33,7 @@ function Admin() {
     if (data.role.name === "user") {
       toast("You will be logged out");
       setTimeout(() => {
-        handleLogoutUser();
+        navigate("/home");
       }, 5000);
     }
   }, [data]);

@@ -69,7 +69,7 @@ export default function Account() {
   Send a request to edit the user with the provided input and log out if successful 
   ================*/
 
-  const mutation = useMutation(
+  const { mutateAsync } = useMutation(
     (editedData: EditAccountValues) => {
       return handleFetch("https://movies.codeart.mk/api/users/me", "PUT", editedData);
     },
@@ -78,7 +78,7 @@ export default function Account() {
         toast.error(error);
       },
       onSuccess: async () => {
-        toast.success("Edited successfully, you will be logged out");
+        toast.success("Edited successfully, you will be redirected");
         setTimeout(() => {
           handleLogoutUser();
         }, 2000);
@@ -91,7 +91,7 @@ export default function Account() {
   const handleEditUser = async (values: EditAccountValues) => {
     const { first_name, password, last_name, email, role } = values;
     //send a request to edit the data with the form inputs
-    mutation.mutate({
+    await mutateAsync({
       first_name,
       last_name,
       email,
