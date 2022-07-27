@@ -1,7 +1,6 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 // Components
 import FormInput from "../../components/authenticationForm/FormInput";
@@ -19,7 +18,7 @@ import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.s
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 
 // Utilities
-import useFetchCall from "../../utils/handleFetchCall";
+import { toast } from "react-toastify";
 
 export default function Register() {
   /*================
@@ -28,33 +27,59 @@ export default function Register() {
   Register the user with the input from the form and redirect to login page if successfull 
   ================*/
   const navigate = useNavigate();
-  const { handleFetch } = useFetchCall();
 
   const handleRegister = async (values: RegisterFormValues) => {
     const { email, password, first_name, last_name } = values;
 
-    const url = "https://movies.codeart.mk/api/auth/register";
-    const method = "POST";
+    try {
+      const response = await fetch("https://movies.codeart.mk/api/auth/register", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ email, password, first_name, last_name }),
+      });
+      const res = await response.json();
+      if (!response.ok) {
+        throw Error(res.message);
+      }
 
-    const res = await handleFetch(url, method, { email, password, first_name, last_name });
-    if (res) {
       toast.success("Registered successfully");
+
       navigate("/login");
+    } catch (error: any) {
+      toast.error(error.message);
+      throw Error(error);
     }
   };
 
   /*================
-  PASSWORD ICON 
+  PASSWORD AND CONFIRM PASSWORD ICON 
 
    Show or hide the password by clicking on the icon and show the correct icon
   ================*/
-  const [showIcon, setShowIcon] = useState<"show" | "hidden">("hidden");
+  // Controls the icon for the password input
+  const [showPasswordIcon, setShowPasswordIcon] = useState<"show" | "hidden">("hidden");
 
-  const handleIconClick = () => {
-    if (showIcon === "hidden") {
-      setShowIcon("show");
+  const handlePasswordIconClick = () => {
+    if (showPasswordIcon === "hidden") {
+      setShowPasswordIcon("show");
     } else {
-      setShowIcon("hidden");
+      setShowPasswordIcon("hidden");
+    }
+  };
+
+  // Controls the icon for the confirm password input
+  const [showConfirmPasswordIcon, setShowConfirmPasswordIcon] = useState<"show" | "hidden">(
+    "hidden",
+  );
+
+  const handleConfirmPasswordIconClick = () => {
+    if (showConfirmPasswordIcon === "hidden") {
+      setShowConfirmPasswordIcon("show");
+    } else {
+      setShowConfirmPasswordIcon("hidden");
     }
   };
 
@@ -126,19 +151,19 @@ export default function Register() {
             <FormInput
               label="Password"
               name="password"
-              type={showIcon === "show" ? "text" : "password"}
+              type={showPasswordIcon === "show" ? "text" : "password"}
               placeholder="Enter your password"
-              icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
-              handleIconClick={handleIconClick}
+              icon={showPasswordIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+              handleIconClick={handlePasswordIconClick}
               required
             />
             <FormInput
               label="Confirm Password"
               name="confirmPassword"
-              type={showIcon === "show" ? "text" : "password"}
+              type={showConfirmPasswordIcon === "show" ? "text" : "password"}
               placeholder="Confirm your password"
-              icon={showIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
-              handleIconClick={handleIconClick}
+              icon={showConfirmPasswordIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+              handleIconClick={handleConfirmPasswordIconClick}
               required
             />
 
@@ -146,7 +171,7 @@ export default function Register() {
               label={isSubmitting ? <Loader /> : "Register"}
               disabled={isSubmitting}
               type="submit"
-              modifierClass="btn__submit"
+              modifierClass="btn__form btn__form--submit"
             />
 
             <p className="txt--center ">

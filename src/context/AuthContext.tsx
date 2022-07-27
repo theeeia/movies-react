@@ -1,4 +1,6 @@
 import React, { createContext, useState } from "react";
+
+// Interfaces
 import { AuthenticationContext } from "./interfaces";
 
 export const AuthContext = createContext<AuthenticationContext>({} as AuthenticationContext);

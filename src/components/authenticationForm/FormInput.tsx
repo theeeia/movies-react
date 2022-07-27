@@ -18,7 +18,7 @@ export default function FormInput(props: FormInputProps) {
         <input
           {...field}
           {...properties}
-          className={`form__input  ${meta.touched && meta.error && "form__input--error"}`}
+          className={`form__input  ${meta.touched && meta.error ? "form__input--error" : ""}`}
         />
 
         {icon ? (
