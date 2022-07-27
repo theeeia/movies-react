@@ -30,13 +30,14 @@ function Admin() {
 
     // Set a timeout to logout the user
     setRole(data.role.name);
-    if (data.role.name === "user") {
-      toast("You will be logged out");
+
+    if (role === "user") {
+      toast("You will be redirected");
       setTimeout(() => {
         navigate("/home");
       }, 5000);
     }
-  }, [data]);
+  }, [data, role]);
 
   return (
     <div className="home-page">
