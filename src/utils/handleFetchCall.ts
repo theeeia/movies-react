@@ -1,11 +1,12 @@
-import { useContext, useState } from "react";
-import { toast } from "react-toastify";
+import { useContext } from "react";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
 
 // Utilities
-import { handleLogoutUser, handleSaveUserInLocalStorage } from "./handleLocalStorage";
+import { handleSaveUserInLocalStorage } from "./handleSaveUserInLocalStorage";
+import handleLogoutUser from "./handleLogoutUser";
+import { toast } from "react-toastify";
 
 const handleFetchCall = () => {
   /*================
@@ -32,6 +33,7 @@ const handleFetchCall = () => {
       const res = await response.json();
 
       if (res.error) {
+        // If the request to update the token is not successful, logout the user
         handleLogoutUser();
         throw new Error(res.error);
       } else {
@@ -57,9 +59,12 @@ const handleFetchCall = () => {
   const handleCheckToken = () => {
     if (user) {
       const expire_time = JSON.parse(localStorage.getItem("expireTime") || "");
+
+      // If the time of the access token is expired, update it with the refresh token
       if (Date.now() > Number(expire_time)) {
         handleUpdateToken(user);
       }
+
       const accessToken = JSON.parse(localStorage.getItem("accessToken") || "");
       return accessToken;
     }
@@ -71,41 +76,38 @@ const handleFetchCall = () => {
 
   Send a fetch request with the provided url, method, data and authorization
   ================*/
-  const [loading, setLoading] = useState(false);
 
-  const handleFetch = async (
-    url: string,
-    method: string,
-    data?: object,
-    bearer: boolean = false,
-  ) => {
-    setLoading(true);
+  const handleFetch = async (url: string, method: string, body?: Record<string, any>) => {
+    // Check if the token is valid
     const accessToken = await handleCheckToken();
 
+    // Proceed with the request and return the response
     try {
       const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          ...(bearer && { Authorization: "Bearer " + accessToken }),
+          ...(accessToken && { Authorization: "Bearer " + accessToken }),
         },
-        ...(data && { body: JSON.stringify(data) }),
+        ...(body && { body: JSON.stringify(body) }),
       });
 
       const res = await response.json();
+
       if (!response.ok) {
         throw Error(res.message);
       }
-      setLoading(false);
+
       return res;
     } catch (error: any) {
       toast.error(error.message);
-      setLoading(false);
+
+      throw Error(error);
     }
   };
 
-  return { loading, handleFetch };
+  return { handleFetch };
 };
 
 export default handleFetchCall;

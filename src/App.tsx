@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { ToastContainer } from "react-toastify";
 import "./scss/application.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 // Context
 import { AuthContext } from "./context/AuthContext";

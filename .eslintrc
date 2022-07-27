@@ -1,44 +1,44 @@
 {
-    "parserOptions": {
-      "ecmaVersion": 2021,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
-    "extends": ["eslint:recommended", "eslint-config-prettier"],
-    "rules": {
-      "strict": ["error", "never"],
-      "no-case-declarations": "off",
-      "no-irregular-whitespace": "off"
-    },
-    "env": {
-      "browser": true
-    },
-    "overrides": [
-      {
-        "files": "**/*.+(ts|tsx)",
-        "parser": "@typescript-eslint/parser",
-        "parserOptions": {
-          "project": "./tsconfig.json"
-        },
-        "plugins": ["@typescript-eslint/eslint-plugin"],
-        "rules": {
-          "@typescript-eslint/no-inferrable-types": "off",
-          "@typescript-eslint/ban-types": [
-            "error",
-            {
-              "types": {
-                "Object": false,
-                "Function": false
-              }
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": ["eslint:recommended", "eslint-config-prettier"],
+  "rules": {
+    "strict": ["error", "never"],
+    "no-case-declarations": "off",
+    "no-irregular-whitespace": "off"
+  },
+  "env": {
+    "browser": true
+  },
+  "overrides": [
+    {
+      "files": "**/*.+(ts|tsx)",
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "plugins": ["@typescript-eslint/eslint-plugin"],
+      "rules": {
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/ban-types": [
+          "error",
+          {
+            "types": {
+              "Object": false,
+              "Function": false
             }
-          ]
-        },
-        "extends": [
-          "plugin:@typescript-eslint/eslint-recommended",
-          "plugin:@typescript-eslint/recommended"
+          }
         ]
-      }
-    ]
-  }
+      },
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ]
+    }
+  ]
+}

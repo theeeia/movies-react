@@ -2,8 +2,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 // Routes
 import { HOME_ROUTE } from "../routes/home";
+import { ACCOUNT_ROUTE } from "../routes/account";
 
-const AUTHENTICATED_ROUTES = [...HOME_ROUTE];
+const AUTHENTICATED_ROUTES = [...HOME_ROUTE, ...ACCOUNT_ROUTE];
 
 function AuthenticatedApp() {
   return (

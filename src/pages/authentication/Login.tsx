@@ -2,9 +2,6 @@ import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 // Components
 import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
 import FormInput from "../../components/authenticationForm/FormInput";
@@ -21,8 +18,8 @@ import { LoginFormValues } from "./interfaces";
 import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
-import handleFetchCall from "../../utils/handleFetchCall";
-import { handleSaveUserInLocalStorage } from "../../utils/handleLocalStorage";
+import { handleSaveUserInLocalStorage } from "../../utils/handleSaveUserInLocalStorage";
+import { toast } from "react-toastify";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
@@ -41,17 +38,26 @@ export default function Login() {
   If rememberMSe is active, save the user in local storage or delete it
   ================*/
   const { setUser } = useContext(AuthContext);
-  const { handleFetch } = handleFetchCall();
 
   const handleLogin = async (values: LoginFormValues) => {
     const { rememberMe, ...data } = values;
 
-    const url = "https://movies.codeart.mk/api/auth/login";
-    const method = "POST";
+    try {
+      const response = await fetch("https://movies.codeart.mk/api/auth/login", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      const res = await response.json();
 
-    const res = await handleFetch(url, method, data);
+      if (!response.ok) {
+        throw Error(res.message);
+      }
 
-    if (res) {
+      // Save or remove remembered user in local storage based on the remember me checkbox
       if (rememberMe) {
         localStorage.setItem("rememberedUser", JSON.stringify(values.email));
       } else {
@@ -66,6 +72,9 @@ export default function Login() {
         res.expires_in,
       );
       toast.success("Logged in successfully");
+    } catch (error: any) {
+      toast.error(error.message);
+      throw Error(error);
     }
   };
 
@@ -147,7 +156,7 @@ export default function Login() {
               label={isSubmitting ? <Loader /> : "login"}
               disabled={isSubmitting}
               type="submit"
-              modifierClass="btn__submit txt--uppercase"
+              modifierClass="btn__form btn__form--submit txt--uppercase"
             />
             <p className="txt--center ">
               Don't have an account?{" "}
