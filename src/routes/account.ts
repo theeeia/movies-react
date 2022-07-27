@@ -5,7 +5,7 @@ import { RoutesProps } from "./interfaces";
 
 export const ACCOUNT_ROUTE: RoutesProps[] = [
   {
-    path: "/account-edit",
+    path: "/account/edit",
     component: Account,
   },
   {

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 // Context
 import { AuthContext } from "../context/AuthContext";
+
+// Components
 import Loader from "../components/Loader/Loader";
 
 // Utilities
@@ -40,14 +42,16 @@ export default function Home() {
   const [loadingLogout, setLoadingLogout] = useState(false);
   const handleLogout = async () => {
     setLoadingLogout(true);
-    handleLogoutUser();
-    setLoadingLogout(false);
+    try {
+      await handleLogoutUser();
+    } finally {
+      setLoadingLogout(false);
+    }
   };
 
   return (
     <div className="home-page">
       <div>
-        {" "}
         Hello <>{user}</>
       </div>
 
@@ -57,7 +61,7 @@ export default function Home() {
       <button onClick={handleLogout} disabled={loadingLogout} className="button">
         {loadingLogout ? <Loader /> : "Logout"}
       </button>
-      <Link to="/account-edit" className="button link-button">
+      <Link to="/account/edit" className="button link-button">
         Edit Account
       </Link>
       <Link to="/account/privileges" className="button link-button">

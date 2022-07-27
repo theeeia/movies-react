@@ -20,23 +20,21 @@ function Admin() {
   Get the user and check his role, if its not admin, log out after 5 seconds
   ================*/
 
-  const { status, data } = useQuery(
-    ["user"],
-    async () => await handleFetch("https://movies.codeart.mk/api/users/me", "GET", undefined, true),
+  const { status, data } = useQuery(["user"], () =>
+    handleFetch("https://movies.codeart.mk/api/users/me", "GET"),
   );
-  useEffect(() => {
-    if (status === "success") {
-      setRole(data.role.name);
-      if (data.role.name == "user") {
-        toast("You will be logged out");
-        setTimeout(() => {
-          handleLogoutUser();
-        }, 5000);
-      }
-    }
-  }, [status]);
 
-  // Start countdown
+  useEffect(() => {
+    if (!data || !Object.entries(data).length) return;
+
+    setRole(data.role.name);
+    if (data.role.name === "user") {
+      toast("You will be logged out");
+      setTimeout(() => {
+        handleLogoutUser();
+      }, 5000);
+    }
+  }, [data]);
 
   return (
     <div className="home-page">

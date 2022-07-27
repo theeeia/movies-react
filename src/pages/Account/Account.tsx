@@ -9,7 +9,7 @@ import Loader from "../../components/Loader/Loader";
 import FormToggleButton from "../../components/authenticationForm/FormToggleButton";
 
 // Interfaces
-import { EditAccountValues, EditParameters } from "./interfaces";
+import { EditAccountValues } from "./interfaces";
 
 // Schemas
 import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
@@ -25,20 +25,20 @@ import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.s
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 
 export default function Account() {
-  const [editDetailsFormValues, setEditDetailsFormValues] = useState({
+  const [editDetailsFormValues, setEditDetailsFormValues] = useState<EditAccountValues>({
     first_name: "",
     last_name: "",
     email: "",
-    role: "",
+    role: "user",
     password: "",
     confirmPassword: "",
   });
 
   const { handleFetch } = handleFetchCall();
 
-  // Fetch the user from api
+  // Fetch the user data from api
   const { status, data } = useQuery(["user"], () =>
-    handleFetch("https://movies.codeart.mk/api/users/me", "GET", undefined, true),
+    handleFetch("https://movies.codeart.mk/api/users/me", "GET"),
   );
 
   /*================
@@ -54,7 +54,7 @@ export default function Account() {
       email: data?.email || "",
       first_name: data?.first_name || "",
       last_name: data?.last_name || "",
-      role: data?.role.name || "",
+      role: data?.role.name || "user",
     };
     setEditDetailsFormValues(initialData);
 
@@ -64,12 +64,12 @@ export default function Account() {
   /*================
     EDIT
 
-  Send a request to edit the user with the provided input and log out 
+  Send a request to edit the user with the provided input and log out if successful 
   ================*/
 
-  const mutation = useMutation<Response, unknown, EditParameters>(
-    editedData => {
-      return handleFetch("https://movies.codeart.mk/api/users/me", "PUT", editedData, true);
+  const mutation = useMutation(
+    (editedData: EditAccountValues) => {
+      return handleFetch("https://movies.codeart.mk/api/users/me", "PUT", editedData);
     },
     {
       onError: (error: any) => {
@@ -86,7 +86,7 @@ export default function Account() {
 
   const navigate = useNavigate();
 
-  const handleEdit = async (values: EditAccountValues) => {
+  const handleEditUser = async (values: EditAccountValues) => {
     const { first_name, password, last_name, email, role } = values;
 
     mutation.mutate({
@@ -118,15 +118,26 @@ export default function Account() {
 
    Show or hide the password by clicking on the icon and show the correct icon
   ================*/
-  const [togglePasswordVisibility, setTogglePasswordVisibility] = useState<"show" | "hidden">(
+
+  const [showPasswordIcon, setShowPasswordIcon] = useState<"show" | "hidden">("hidden");
+
+  const handlePasswordIconClick = () => {
+    if (showPasswordIcon === "hidden") {
+      setShowPasswordIcon("show");
+    } else {
+      setShowPasswordIcon("hidden");
+    }
+  };
+
+  const [showConfirmPasswordIcon, setShowConfirmPasswordIcon] = useState<"show" | "hidden">(
     "hidden",
   );
 
-  const handleIconClick = () => {
-    if (togglePasswordVisibility === "hidden") {
-      setTogglePasswordVisibility("show");
+  const handleConfirmPasswordIconClick = () => {
+    if (showConfirmPasswordIcon === "hidden") {
+      setShowConfirmPasswordIcon("show");
     } else {
-      setTogglePasswordVisibility("hidden");
+      setShowConfirmPasswordIcon("hidden");
     }
   };
 
@@ -142,7 +153,7 @@ export default function Account() {
           initialValues={editDetailsFormValues}
           enableReinitialize
           validationSchema={ACCOUNT_EDIT_SCHEMA}
-          onSubmit={handleEdit}
+          onSubmit={handleEditUser}
         >
           {({ isSubmitting, setFieldValue }) => (
             <Form className="form">
@@ -171,22 +182,20 @@ export default function Account() {
                 label="Password"
                 name="password"
                 placeholder="Enter your password"
-                type={togglePasswordVisibility === "show" ? "text" : "password"}
-                icon={
-                  togglePasswordVisibility === "show" ? <ToggleIconShow /> : <ToggleIconHidden />
-                }
-                handleIconClick={handleIconClick}
+                type={showPasswordIcon === "show" ? "text" : "password"}
+                icon={showPasswordIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />}
+                handleIconClick={handlePasswordIconClick}
                 required
               />
               <FormInput
                 label="Confirm Password"
                 name="confirmPassword"
                 placeholder="Confirm your password"
-                type={togglePasswordVisibility === "show" ? "text" : "password"}
+                type={showConfirmPasswordIcon === "show" ? "text" : "password"}
                 icon={
-                  togglePasswordVisibility === "show" ? <ToggleIconShow /> : <ToggleIconHidden />
+                  showConfirmPasswordIcon === "show" ? <ToggleIconShow /> : <ToggleIconHidden />
                 }
-                handleIconClick={handleIconClick}
+                handleIconClick={handleConfirmPasswordIconClick}
                 required
               />
               <div className="form__label">Role</div>
