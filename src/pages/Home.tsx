@@ -21,6 +21,8 @@ export default function Home() {
   ================*/
   const { loading, handleFetch } = handleFetchCall();
 
+  // NOTE: This is used only for testing
+  // Send a request to check if the token is valid
   const handleCheckToken = async () => {
     const url = "https://jsonplaceholder.typicode.com/posts";
     const method = "POST";

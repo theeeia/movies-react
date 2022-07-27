@@ -2,9 +2,6 @@ import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 // Components
 import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
 import FormInput from "../../components/authenticationForm/FormInput";
@@ -21,8 +18,8 @@ import { LoginFormValues } from "./interfaces";
 import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
-
 import { handleSaveUserInLocalStorage } from "../../utils/handleSaveUserInLocalStorage";
+import { toast } from "react-toastify";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
@@ -60,6 +57,7 @@ export default function Login() {
         throw Error(res.message);
       }
 
+      // Save or remove remembered user in local storage based on the remember me checkbox
       if (rememberMe) {
         localStorage.setItem("rememberedUser", JSON.stringify(values.email));
       } else {

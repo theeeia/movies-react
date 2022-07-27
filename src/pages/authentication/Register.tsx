@@ -55,10 +55,11 @@ export default function Register() {
   };
 
   /*================
-  PASSWORD ICON 
+  PASSWORD AND CONFIRM PASSWORD ICON 
 
    Show or hide the password by clicking on the icon and show the correct icon
   ================*/
+  // Controls the icon for the password input
   const [showPasswordIcon, setShowPasswordIcon] = useState<"show" | "hidden">("hidden");
 
   const handlePasswordIconClick = () => {
@@ -69,6 +70,7 @@ export default function Register() {
     }
   };
 
+  // Controls the icon for the confirm password input
   const [showConfirmPasswordIcon, setShowConfirmPasswordIcon] = useState<"show" | "hidden">(
     "hidden",
   );

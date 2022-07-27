@@ -33,6 +33,7 @@ const handleFetchCall = () => {
       const res = await response.json();
 
       if (res.error) {
+        // If the request to update the token is not successful, logout the user
         handleLogoutUser();
         throw new Error(res.error);
       } else {
@@ -58,9 +59,12 @@ const handleFetchCall = () => {
   const handleCheckToken = () => {
     if (user) {
       const expire_time = JSON.parse(localStorage.getItem("expireTime") || "");
+
+      // If the time of the access token is expired, update it with the refresh token
       if (Date.now() > Number(expire_time)) {
         handleUpdateToken(user);
       }
+
       const accessToken = JSON.parse(localStorage.getItem("accessToken") || "");
       return accessToken;
     }
@@ -76,7 +80,11 @@ const handleFetchCall = () => {
 
   const handleFetch = async (url: string, method: string, body?: Record<string, any>) => {
     setLoading(true);
+
+    // Check if the token is valid
     const accessToken = await handleCheckToken();
+
+    // Proceed with the request and return the response
     try {
       const response = await fetch(url, {
         method,
@@ -89,9 +97,11 @@ const handleFetchCall = () => {
       });
 
       const res = await response.json();
+
       if (!response.ok) {
         throw Error(res.message);
       }
+
       setLoading(false);
       return res;
     } catch (error: any) {

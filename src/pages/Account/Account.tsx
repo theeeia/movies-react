@@ -1,6 +1,5 @@
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 // Components
 import FormButton from "../../components/authenticationForm/FormButton";
@@ -19,6 +18,7 @@ import handleFetchCall from "../../utils/handleFetchCall";
 import handleLogoutUser from "../../utils/handleLogoutUser";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
@@ -49,6 +49,7 @@ export default function Account() {
   useEffect(() => {
     if (!data || !Object.entries(data).length) return;
 
+    // Load the data from the request when it arrives and fill out the form
     const initialData = {
       ...editDetailsFormValues,
       email: data?.email || "",
@@ -56,6 +57,7 @@ export default function Account() {
       last_name: data?.last_name || "",
       role: data?.role.name || "user",
     };
+
     setEditDetailsFormValues(initialData);
 
     setToggleUserRole(initialData.role);
@@ -88,7 +90,7 @@ export default function Account() {
 
   const handleEditUser = async (values: EditAccountValues) => {
     const { first_name, password, last_name, email, role } = values;
-
+    //send a request to edit the data with the form inputs
     mutation.mutate({
       first_name,
       last_name,
@@ -118,7 +120,7 @@ export default function Account() {
 
    Show or hide the password by clicking on the icon and show the correct icon
   ================*/
-
+  // Controls the icon for the password input
   const [showPasswordIcon, setShowPasswordIcon] = useState<"show" | "hidden">("hidden");
 
   const handlePasswordIconClick = () => {
@@ -129,6 +131,7 @@ export default function Account() {
     }
   };
 
+  // Controls the icon for the confirm password input
   const [showConfirmPasswordIcon, setShowConfirmPasswordIcon] = useState<"show" | "hidden">(
     "hidden",
   );
