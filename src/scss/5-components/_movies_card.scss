@@ -1,9 +1,10 @@
 .movie-card {
     position: relative;
     display: flex;
-    height: 535px;
-    width: 390px;
-    margin-bottom: 30px;
+    max-height: 535px;
+    max-width: 390px;
+    padding: 10px 0 60px;
+    margin-bottom: 50px;
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
@@ -12,13 +13,19 @@
    
     
 
-    &__image {
-        position: relative;
-    
-        width: 310px;
-        height: 320px;
+    &__image-box {
+        position: relative;    
+        max-width: 310px;
+        max-height: 320px;
         margin: 20px 0;
-        background-color: #C4C4C4;
+       // background-color: #C4C4C4;
+        border-radius: 20px;
+    }
+
+    &__image {
+        height: 320px; 
+        width: 320px ; 
+        object-fit: cover;
         border-radius: 20px;
     }
 
