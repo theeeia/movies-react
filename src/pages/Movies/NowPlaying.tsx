@@ -1,27 +1,37 @@
 // Components
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import MovieCard from "../../components/Movies/MovieCard";
 import MoviesHeader from "../../components/Movies/MoviesHeader";
 import NavigationBar from "../../components/NavigationBar/NavigationBar";
+import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
+import handleFetchCall from "../../utils/handleFetchCall";
 
 function NowPlaying() {
-  const handleFetch = async () => {
-    try {
-      const response = await fetch(
-        "https://api.themoviedb.org/3/movie/now_playing?api_key=a760d55ebf6c78254a6035fdd7d1e535&language=en-US&page=1",
-        {
-          method: "GET",
-        },
-      );
-      const res = await response.json();
+  const { handleFetch } = handleFetchCall();
 
-      if (!response.ok) {
-        throw Error(res.message);
-      }
-      console.log(res);
-    } catch (error: any) {
-      console.log(error);
-    }
+  const queryMultiple = () => {
+    const genres = useQuery(["genres"], () =>
+      handleFetch(`${API_ENDPOINT_BASE}genres/get-movie-list`, "GET"),
+    );
+    const movies = useQuery(["movies"], () =>
+      handleFetch(
+        `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`,
+        "GET",
+      ),
+    );
+    return [genres, movies];
   };
+
+  useEffect(() => {
+    // if (!data || !Object.entries(data).length) return;
+    // // Load the data from the request when it arrives and fill out the form
+    // console.log(data);
+    // console.log(data.results[0].original_title);
+    // console.log(data.results[0].original_language);
+    // console.log(data.results[0].release_date);
+    // genre, title, year, language, length
+  }, [status]);
 
   return (
     <>
@@ -30,11 +40,14 @@ function NowPlaying() {
         <div className="breadcrumbs">Home</div>
         <MoviesHeader title="Now Playing" />
 
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-
-        <button onClick={handleFetch}>AAAA</button>
+        <div className="row">
+          <MovieCard className="col-3" />
+          <MovieCard className="col-3" />
+          <MovieCard className="col-3" />
+          <MovieCard className="col-3" />
+          <MovieCard className="col-3" />
+          <MovieCard className="col-3" />
+        </div>
       </div>
     </>
   );

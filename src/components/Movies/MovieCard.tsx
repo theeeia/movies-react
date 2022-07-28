@@ -1,19 +1,21 @@
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
-function MovieCard() {
+function MovieCard(props: any) {
+  const { className, genre, title, year, language, length } = props;
+
   return (
-    <div>
+    <div className={className}>
       <div className="movie-card">
         <div className="movie-card__image">
-          <div className="movie-card__genre">DRAMA</div>
+          <div className="movie-card__genre">{genre}</div>
         </div>
         <div className="movie-card__details">
-          <div className="movie-card__title">Terrible Madness</div>
+          <div className="movie-card__title">{title}</div>
           <div className="movie-card__info">
-            <p>2018</p>
-            <p>EN</p>
-            <p>1hr 2min</p>
+            <p>{year}</p>
+            <p>{language}</p>
+            <p>{length}</p>
           </div>
           <div className="movie-card__rating">
             <StarIcon /> <StarIcon /> <StarIcon /> <StarIcon />
