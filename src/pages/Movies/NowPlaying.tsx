@@ -1,4 +1,5 @@
 // Components
+import MovieCard from "../../components/Movies/MovieCard";
 import MoviesHeader from "../../components/Movies/MoviesHeader";
 import NavigationBar from "../../components/NavigationBar/NavigationBar";
 
@@ -28,6 +29,10 @@ function NowPlaying() {
       <div className="container">
         <div className="breadcrumbs">Home</div>
         <MoviesHeader title="Now Playing" />
+
+        <MovieCard />
+        <MovieCard />
+        <MovieCard />
 
         <button onClick={handleFetch}>AAAA</button>
       </div>
