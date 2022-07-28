@@ -1,15 +1,40 @@
-.navigation-bar{
+.navigation {
 
-    display: flex;
+    background-color: #131313;
+    padding: 35px 0 ;
+    
+
+    &__content {
+        display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    }
+
+    &__logo {
+        display: flex;
+        flex: 1;
+        justify-content: left;
+       
+    }
+
+    &__links {
+        display: flex;
+        flex:  2;
+        flex-direction: row;
+        gap:10px;
+        justify-content: space-between;
+    }
 
     &__link {
         font-size: 16px;
         color: rgba(255, 255, 255, 0.6);;
-
-
     }
-
+     
+    &__dropdown {
+        flex: 1.2;
+        width: 100%;
+    }
+   
 }
+

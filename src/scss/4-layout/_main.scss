@@ -11,22 +11,79 @@ body { background-color: $bg-color; }
 .home-page {
     color: white;
     font-size: 30px;
-    text-align: center;
-    margin: 70px 0;
-        
-    
+    text-align: center;  
 }
+
 .button {
     width: 300px;
     height: 50px;
     background-color: navy;
     color: white; 
     margin: 30px;
-    
-
 }
 
-.link-button {
-    padding: 5px 30px;
+.link-button { padding: 5px 30px; }
+
+.dropdown {
+    overflow: hidden;  
+    width: 225px;
+    float: right;
+
+    & &__button {
+        position:relative;
+        height: 60px;
+        margin: 0;
+        margin-right: 10px;
+        padding: 14px 16px;
+        background-color: #151515;
+        border: 1px solid white;
+        border-radius: 20px;
+        font-size: 16px;  
+        font-weight: 600;  
+        color: white;   
+    }
+
+    &__button {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        text-align: left;
+    }
+
+    &__content {
+        display: none;
+        position: absolute;
+        width: 225px;
+        border: 1px solid white;
+        border-radius: 20px;
+        background-color: #151515;
+        z-index: 1;
+
+       button {
+            border: none;
+            outline: none;
+            background-color: #151515;
+            border-radius: 20px;
+        }
+
+
+        & a:hover { color: rgba(255, 255, 255, 0.6) }
+    }
+
+    &__item {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        float: none;
+        padding: 12px 16px;
+        color: white;
+        text-decoration: none;
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    &:hover &__content { display: block; }
 }
 
