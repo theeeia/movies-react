@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+
+// Icons
 import { ReactComponent as UserIcon } from "../../assets/images/user.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/images/settings.svg";
 import { ReactComponent as LogoutIcon } from "../../assets/images/logout.svg";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import handleLogoutUser from "../../utils/handleLogoutUser";
+
+// Components
 import Loader from "../Loader/Loader";
+
+// Context
+import { AuthContext } from "../../context/AuthContext";
+
+// Utilities
+import handleLogoutUser from "../../utils/handleLogoutUser";
 
 function NavigationBar() {
   const { user } = useContext(AuthContext);
