@@ -1,3 +1,4 @@
+// Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 

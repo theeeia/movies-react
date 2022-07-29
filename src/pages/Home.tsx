@@ -6,7 +6,6 @@ import { AuthContext } from "../context/AuthContext";
 
 // Components
 import Loader from "../components/Loader/Loader";
-import NavigationBar from "../components/NavigationBar/NavigationBar";
 
 // Utilities
 import handleFetchCall from "../utils/handleFetchCall";
@@ -64,7 +63,6 @@ export default function Home() {
 
   return (
     <div className="home-page">
-      <NavigationBar />
       <div>
         Hello <>{user}</>
       </div>

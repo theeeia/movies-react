@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+
 // Components
 import Loader from "../../components/Loader/Loader";
 import MovieCard from "../../components/Movies/MovieCard";
 import MoviesHeader from "../../components/Movies/MoviesHeader";
-import NavigationBar from "../../components/NavigationBar/NavigationBar";
 
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
+
+// Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 
 function NowPlaying() {
@@ -31,7 +33,6 @@ function NowPlaying() {
 
   return (
     <>
-      <NavigationBar />
       <div className="container">
         <div className="breadcrumbs">Home</div>
         <MoviesHeader title="Now Playing" />
