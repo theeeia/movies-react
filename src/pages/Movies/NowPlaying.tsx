@@ -19,6 +19,7 @@ import { GenreProps, MovieProps } from "./interfaces";
 
 function NowPlaying() {
   const { handleFetch } = handleFetchCall();
+  const [page, setPage] = useState(1);
 
   // Get the genres ids and names from API
   const { status: statusGenres, data: genres } = useQuery(["genres"], () =>
@@ -26,9 +27,13 @@ function NowPlaying() {
   );
 
   // Get the movies from API
-  const { status: statusMovies, data: movies } = useQuery(["movies"], () =>
+  const {
+    status: statusMovies,
+    data: movies,
+    isPreviousData: isPreviousData,
+  } = useQuery(["movies", page], () =>
     handleFetch(
-      `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`,
+      `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`,
       "GET",
     ),
   );
@@ -127,25 +132,44 @@ function NowPlaying() {
         />
 
         {statusGenres === "success" && statusMovies === "success" ? (
-          <div className="row mt--30">
-            {filterMovies().map((movie: MovieProps) => {
-              const genre = genres.genres.filter(
-                (genre: GenreProps) => genre.id === movie.genre_ids[0],
-              )[0];
-
-              return (
-                <MovieCard
-                  key={movie.id}
-                  poster={movie.poster_path}
-                  title={movie.title}
-                  year={movie.release_date}
-                  language={movie.original_language}
-                  genre={genre.name}
-                  starsNumber={getStarsNumber(movie.vote_average)}
-                />
-              );
-            })}
-          </div>
+          <>
+            <div className="row mt--30">
+              {filterMovies().map((movie: MovieProps) => {
+                const genre = genres.genres.filter(
+                  (genre: GenreProps) => genre.id === movie.genre_ids[0],
+                )[0];
+                return (
+                  <MovieCard
+                    key={movie.id}
+                    poster={movie.poster_path}
+                    title={movie.title}
+                    year={movie.release_date}
+                    language={movie.original_language}
+                    genre={genre?.name}
+                    starsNumber={getStarsNumber(movie.vote_average)}
+                  />
+                );
+              })}
+            </div>
+            <div>
+              <span>Current Page: {page + 1}</span>
+              <button onClick={() => setPage(old => Math.max(old - 1, 0))} disabled={page === 1}>
+                Previous Page
+              </button>
+              <button
+                onClick={() => {
+                  if (movies.total_pages != page) {
+                    setPage(old => old + 1);
+                    console.log(isPreviousData + "prev");
+                  }
+                }}
+                // Disable the Next Page button until we know a next page is available
+                disabled={movies.total_pages == page}
+              >
+                Next Page
+              </button>
+            </div>
+          </>
         ) : (
           <Loader />
         )}
