@@ -24,6 +24,24 @@ body { background-color: $bg-color; }
 
 .link-button { padding: 5px 30px; }
 
+
+.movie-filter-dropdown {
+    background-color: #151515;
+    outline: none;
+    border: none;
+    padding: 30px;
+    
+    &__option::before{
+        display: inline-flex;
+       content:  url('../../assets/images/search.svg');
+      
+       height: 30px;
+       width: 30px;
+    }
+
+}
+
+
 .dropdown {
     overflow: hidden;  
     width: 225px;
