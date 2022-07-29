@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 
-// Icons
+// Icons;
 import { ReactComponent as UserIcon } from "../../assets/images/user.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/images/settings.svg";
 import { ReactComponent as LogoutIcon } from "../../assets/images/logout.svg";
@@ -15,6 +15,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
 import handleLogoutUser from "../../utils/handleLogoutUser";
+//import Dropdown from "./Dropdown";
 
 function NavigationBar() {
   const { user } = useContext(AuthContext);
@@ -29,6 +30,21 @@ function NavigationBar() {
     }
   };
 
+  // const dropdownItems = [
+  //   { icon: SettingsIcon, label: "Settings" },
+  //   { icon: LogoutIcon, label: "Logout" },
+  //   {
+  //     icon: LogoutIcon,
+  //     label: loadingLogout ? (
+  //       <Loader />
+  //     ) : (
+  //       <>
+  //         <LogoutIcon /> Log out
+  //       </>
+  //     ),
+  //     onClick: handleLogout,
+  //   },
+  // ];
   return (
     <div className="navigation">
       <div className="container navigation__content">
@@ -87,6 +103,8 @@ function NavigationBar() {
         </div>
       </div>
     </div>
+
+    /* <Dropdown buttonIcon={UserIcon} user={user} items={dropdownItems} /> */
   );
 }
 

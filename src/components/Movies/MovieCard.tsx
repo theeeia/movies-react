@@ -2,10 +2,13 @@
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
-function MovieCard(props: any) {
+// Interfaces
+import { MovieCardProps } from "./interfaces";
+
+function MovieCard(props: MovieCardProps) {
   const { genre, title, year, language, poster, starsNumber } = props;
   const stars = [];
-  for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon />);
+  for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon key={i} />);
 
   return (
     <div className="col-12 col-md-6 col-lg-4 col-xl-3">
