@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import ReactPaginate from "react-paginate";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -19,24 +20,28 @@ import { GenreProps, MovieProps } from "./interfaces";
 
 function NowPlaying() {
   const { handleFetch } = handleFetchCall();
-  const [page, setPage] = useState(1);
+  const itemsPerPage = 20;
 
   // Get the genres ids and names from API
   const { status: statusGenres, data: genres } = useQuery(["genres"], () =>
     handleFetch(`${API_ENDPOINT_BASE}/genre/movie/list?api_key=${API_KEY}&language=en-US`, "GET"),
   );
+  const [pageCount, setPageCount] = useState(1);
 
   // Get the movies from API
-  const {
-    status: statusMovies,
-    data: movies,
-    isPreviousData: isPreviousData,
-  } = useQuery(["movies", page], () =>
+  const { status: statusMovies, data: movies } = useQuery(["movies", pageCount], () =>
     handleFetch(
-      `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`,
+      `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${pageCount}`,
       "GET",
     ),
   );
+
+  const handlePageClick = (event: any) => {
+    const newOffset = (event.selected * itemsPerPage) % movies.length;
+    console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
+
+    setPageCount(Math.ceil(movies.length / itemsPerPage));
+  };
 
   /*================
     RATING STARS
@@ -156,7 +161,16 @@ function NowPlaying() {
                 );
               })}
             </div>
-            <div>
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pageCount}
+              previousLabel="< previous"
+            />
+
+            {/* <div>
               <span>Current Page: {page + 1}</span>
               <button onClick={() => setPage(old => Math.max(old - 1, 0))} disabled={page === 1}>
                 Previous Page
@@ -175,7 +189,7 @@ function NowPlaying() {
               >
                 Next Page
               </button>
-            </div>
+            </div> */}
           </>
         ) : (
           <Loader />
