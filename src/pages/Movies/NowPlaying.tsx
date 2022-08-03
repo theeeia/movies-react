@@ -44,12 +44,26 @@ function NowPlaying() {
    Return the number of stars based on the movie average votes
   ================*/
   const getStarsNumber = (rating: number) => {
-    if (rating > 8) return 5;
-    else if (rating <= 8 && rating > 6) return 4;
-    else if (rating <= 6 && rating > 4) return 3;
-    else if (rating <= 4 && rating > 2) return 2;
-    else if (rating <= 2) return 1;
-    else return 0;
+    if (rating > 8) {
+      return 5;
+    } else if (rating == 8) {
+      return 4.5;
+    } else if (rating < 8 && rating > 6) {
+      return 4;
+    } else if (rating == 6) {
+      return 3.5;
+    } else if (rating < 6 && rating > 4) {
+      return 3;
+    } else if (rating == 4) {
+      return 2.5;
+    } else if (rating < 4 && rating > 2) {
+      return 2;
+    } else if (rating == 2) {
+      return 1.5;
+    } else if (rating <= 2 && rating != 0) {
+      if (rating == 1) return 0.5;
+      return 1;
+    } else return 0;
   };
 
   /*================
@@ -117,8 +131,8 @@ function NowPlaying() {
   const handleSearch = (e: any) => {
     setSearchInput(e.target.value);
   };
-  const handleFilterChange = (e: any) => {
-    setSortFilter(e.target.value);
+  const handleFilterChange = (value: any) => {
+    setSortFilter(value);
   };
 
   return (
@@ -160,7 +174,9 @@ function NowPlaying() {
                 onClick={() => {
                   if (movies.total_pages != page) {
                     setPage(old => old + 1);
-                    console.log(isPreviousData + "prev");
+
+                    //isPreviousData is always false
+                    console.log(isPreviousData);
                   }
                 }}
                 // Disable the Next Page button until we know a next page is available

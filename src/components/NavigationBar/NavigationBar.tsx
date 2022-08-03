@@ -9,7 +9,7 @@ import { ReactComponent as MiruLogo } from "../../assets/images/logo.svg";
 
 // Components
 import Loader from "../Loader/Loader";
-import Dropdown from "./Dropdown";
+import NavigationBarDropdown from "./NavigationBarDropdown";
 
 // Context
 import { AuthContext } from "../../context/AuthContext";
@@ -19,8 +19,8 @@ import handleLogoutUser from "../../utils/handleLogoutUser";
 
 function NavigationBar() {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
 
+  // Loader for the logout button while user is being logged out
   const [loadingLogout, setLoadingLogout] = useState(false);
   const handleLogout = async () => {
     setLoadingLogout(true);
@@ -31,6 +31,13 @@ function NavigationBar() {
     }
   };
 
+  /*================
+    DROPDOWN ITEMS
+
+   List of items and their props to show on the navigation bar dropdown
+  ================*/
+
+  const navigate = useNavigate();
   const dropdownItems = [
     {
       label: (
@@ -62,6 +69,7 @@ function NavigationBar() {
       className: "dropdown__item",
     },
   ];
+
   return (
     <div className="navigation">
       <div className="container navigation__content">
@@ -89,7 +97,7 @@ function NavigationBar() {
           </Link>
         </div>
 
-        <Dropdown
+        <NavigationBarDropdown
           user={
             <>
               <UserIcon />

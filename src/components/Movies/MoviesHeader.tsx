@@ -1,6 +1,7 @@
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
+import { ReactComponent as FilterIcon } from "../../assets/images/filter.svg";
 
-import MovieFilterDropdown from "./MovieFilterDropdown";
+import MovieFilterDropdownTest from "./MovieFilterDropdown";
 
 function MoviesHeader({
   title,
@@ -11,6 +12,25 @@ function MoviesHeader({
   handleSearch: (e: any) => void;
   handleFilterChange: (e: any) => void;
 }) {
+  const dropdownItems = [
+    {
+      label: "Newest",
+      className: "dropdown__item",
+      value: "newest",
+    },
+    {
+      label: "Title",
+
+      className: "dropdown__item",
+      value: "title",
+    },
+    {
+      label: "Popular",
+      className: "dropdown__item",
+      value: "popular",
+    },
+  ];
+
   return (
     <div className="movies-header">
       <div className="movies-header__title">{title}</div>
@@ -25,7 +45,11 @@ function MoviesHeader({
           />
         </div>
         <div className="movies-header__filter">
-          <MovieFilterDropdown handleFilterChange={handleFilterChange} />
+          <MovieFilterDropdownTest
+            filterIcon={<FilterIcon />}
+            handleFilterChange={handleFilterChange}
+            dropdownItems={dropdownItems}
+          />
         </div>
       </div>
     </div>

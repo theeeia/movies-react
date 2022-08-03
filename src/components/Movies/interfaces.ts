@@ -6,3 +6,15 @@ export interface MovieCardProps {
   poster: string;
   starsNumber: number;
 }
+
+export interface MovieFilterDropdownProps {
+  filterIcon: React.ReactNode;
+  dropdownItems: any;
+  handleFilterChange: (arg: number) => void;
+}
+
+export interface MovieFilterDropdownItemProps {
+  label: string;
+  className: string;
+  value: number;
+}

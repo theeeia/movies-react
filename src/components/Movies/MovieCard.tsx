@@ -8,8 +8,12 @@ import { MovieCardProps } from "./interfaces";
 function MovieCard(props: MovieCardProps) {
   const { genre, title, year, language, poster, starsNumber } = props;
   const stars = [];
-  for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon key={i} />);
 
+  for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon key={i} />);
+  if (starsNumber % 1 !== 0) {
+    stars.pop();
+    stars.push(<HeartIcon key={stars.length} />);
+  }
   return (
     <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb--50">
       <div className="movie-card">
