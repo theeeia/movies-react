@@ -1,4 +1,5 @@
 // Components
+import Footer from "../components/Footer/Footer";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 
 // Pages
@@ -9,6 +10,7 @@ const AuthenticatedAppLayout = () => {
     <>
       <NavigationBar />
       <AuthenticatedApp />
+      <Footer />
     </>
   );
 };

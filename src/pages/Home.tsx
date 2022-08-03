@@ -62,7 +62,7 @@ export default function Home() {
   };
 
   return (
-    <div className="home-page">
+    <div className="home-page container ">
       <div>
         Hello <>{user}</>
       </div>
