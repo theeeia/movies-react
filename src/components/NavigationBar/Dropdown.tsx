@@ -1,58 +1,23 @@
-// import { Link } from "react-router-dom";
-// import Loader from "../Loader/Loader";
+import { DropdownProps } from "./interfaces";
 
-function Dropdown(props: any) {
-  const { buttonIcon, user, items } = props;
-  console.log(user);
-  const links: any = [];
-  items.map((item: any) => {
-    links.push({
-      to: "/account/edit",
-      className: "dropdown__item",
-      icon: item.icon,
-      label: item.label,
-    });
-  });
+function Dropdown(props: DropdownProps) {
+  const { user, dropdownItems } = props;
 
   return (
     <div className="navigation__dropdown">
       <div className="dropdown">
-        {buttonIcon}
         <button className="dropdown__button">{user}</button>
+        <div className="dropdown__content">
+          {dropdownItems.map((item: any, index: number) => {
+            const { label, ...props } = item;
 
-        {/* <div className="dropdown__content">
-          {links.map((link: any) => {
-            const { label, icon, to, className } = link;
-            return console.log(
-              <Link key={label} to={to} className={className}>
-                {icon}
-                ss
-              </Link>,
+            return (
+              <button key={index} {...props}>
+                {label}
+              </button>
             );
           })}
-        </div> */}
-        {/* 
-
-
-
-          <Link to="/account/edit" className="dropdown__item">
-            <SettingsIcon />
-            Settings
-          </Link>
-          <Link to="/account/privileges" className="dropdown__item">
-            <SettingsIcon />
-            Privileges
-          </Link>
-          <button onClick={handleLogout} className="dropdown__item">
-            {loadingLogout ? (
-              <Loader />
-            ) : (
-              <>
-                <LogoutIcon /> Log out
-              </>
-            )}
-          </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );

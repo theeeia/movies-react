@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 
 // Icons;
@@ -9,16 +9,17 @@ import { ReactComponent as MiruLogo } from "../../assets/images/logo.svg";
 
 // Components
 import Loader from "../Loader/Loader";
+import Dropdown from "./Dropdown";
 
 // Context
 import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
 import handleLogoutUser from "../../utils/handleLogoutUser";
-//import Dropdown from "./Dropdown";
 
 function NavigationBar() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [loadingLogout, setLoadingLogout] = useState(false);
   const handleLogout = async () => {
@@ -30,21 +31,37 @@ function NavigationBar() {
     }
   };
 
-  // const dropdownItems = [
-  //   { icon: SettingsIcon, label: "Settings" },
-  //   { icon: LogoutIcon, label: "Logout" },
-  //   {
-  //     icon: LogoutIcon,
-  //     label: loadingLogout ? (
-  //       <Loader />
-  //     ) : (
-  //       <>
-  //         <LogoutIcon /> Log out
-  //       </>
-  //     ),
-  //     onClick: handleLogout,
-  //   },
-  // ];
+  const dropdownItems = [
+    {
+      label: (
+        <>
+          <SettingsIcon /> Settings
+        </>
+      ),
+      onClick: () => navigate("/account/edit"),
+      className: "dropdown__item",
+    },
+    {
+      label: (
+        <>
+          <LogoutIcon /> Privileges
+        </>
+      ),
+      onClick: () => navigate("/account/privileges"),
+      className: "dropdown__item",
+    },
+    {
+      label: loadingLogout ? (
+        <Loader />
+      ) : (
+        <>
+          <LogoutIcon /> Log out
+        </>
+      ),
+      onClick: handleLogout,
+      className: "dropdown__item",
+    },
+  ];
   return (
     <div className="navigation">
       <div className="container navigation__content">
@@ -72,39 +89,17 @@ function NavigationBar() {
           </Link>
         </div>
 
-        <div className="navigation__dropdown">
-          <div className="dropdown">
-            <button className="dropdown__button">
-              <>
-                <UserIcon />
-                {user}
-              </>
-            </button>
-            <div className="dropdown__content">
-              <Link to="/account/edit" className="dropdown__item">
-                <SettingsIcon />
-                Settings
-              </Link>
-              <Link to="/account/privileges" className="dropdown__item">
-                <SettingsIcon />
-                Privileges
-              </Link>
-              <button onClick={handleLogout} className="dropdown__item">
-                {loadingLogout ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <LogoutIcon /> Log out
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
+        <Dropdown
+          user={
+            <>
+              <UserIcon />
+              {user}
+            </>
+          }
+          dropdownItems={dropdownItems}
+        />
       </div>
     </div>
-
-    /* <Dropdown buttonIcon={UserIcon} user={user} items={dropdownItems} /> */
   );
 }
 
