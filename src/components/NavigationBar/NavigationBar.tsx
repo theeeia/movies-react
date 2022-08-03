@@ -42,31 +42,34 @@ function NavigationBar() {
     {
       label: (
         <>
-          <SettingsIcon /> Settings
+          <SettingsIcon />
+          Settings
         </>
       ),
       onClick: () => navigate("/account/edit"),
-      className: "dropdown__item",
+      className: "dropdown__item dropdown__item--line",
     },
     {
       label: (
         <>
-          <LogoutIcon /> Privileges
+          <LogoutIcon />
+          Privileges
         </>
       ),
       onClick: () => navigate("/account/privileges"),
-      className: "dropdown__item",
+      className: "dropdown__item dropdown__item--line",
     },
     {
       label: loadingLogout ? (
         <Loader />
       ) : (
         <>
-          <LogoutIcon /> Log out
+          <LogoutIcon />
+          Log out
         </>
       ),
       onClick: handleLogout,
-      className: "dropdown__item",
+      className: "dropdown__item dropdown__item--line",
     },
   ];
 
