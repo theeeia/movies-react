@@ -5,6 +5,7 @@ export interface MovieCardProps {
   language: string;
   poster: string;
   starsNumber: number;
+  rating: number;
 }
 
 export interface MovieFilterDropdownProps {

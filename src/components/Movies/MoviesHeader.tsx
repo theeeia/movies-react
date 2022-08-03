@@ -16,7 +16,7 @@ function MoviesHeader({
     {
       label: "Newest",
       className: "dropdown__item",
-      value: "newest",
+      value: "release_date",
     },
     {
       label: "Title",
@@ -27,7 +27,7 @@ function MoviesHeader({
     {
       label: "Popular",
       className: "dropdown__item",
-      value: "popular",
+      value: "vote_average",
     },
   ];
 

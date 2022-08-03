@@ -6,7 +6,7 @@ import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 import { MovieCardProps } from "./interfaces";
 
 function MovieCard(props: MovieCardProps) {
-  const { genre, title, year, language, poster, starsNumber } = props;
+  const { genre, title, year, language, poster, starsNumber, rating } = props;
   const stars = [];
 
   for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon key={i} />);
@@ -25,6 +25,7 @@ function MovieCard(props: MovieCardProps) {
           <div className="movie-card__title">{title}</div>
           <div className="movie-card__info">
             <p>{year}</p>
+            <p>{rating}</p>
             <p className="txt--uppercase">{language}</p>
           </div>
           <div className="movie-card__rating">{stars}</div>

@@ -94,25 +94,13 @@ function NowPlaying() {
    Sort movies by parameter if one is chosen 
   ================*/
   const sortMovies = (movieList: any) => {
-    if (sortFilter === "title") {
-      movieList.sort((a: MovieProps, b: MovieProps) => (a.title > b.title ? 1 : -1));
-    }
-    if (sortFilter === "newest") {
-      movieList.sort((a: any, b: any) => {
-        a = a.release_date;
-        b = b.release_date;
-        return a < b ? 1 : a > b ? -1 : 0;
+    if (sortFilter != null) {
+      movieList.sort((a: MovieProps, b: MovieProps) => {
+        return b[sortFilter] > a[sortFilter] ? 1 : -1;
       });
-    }
-    if (sortFilter === "popular") {
-      movieList.sort((a: any, b: any) => {
-        a = a.vote_average;
-        b = b.vote_average;
-        return b - a;
-      });
-    }
 
-    // return original if no parameter is chosen
+      if (sortFilter === "title") return movieList.reverse();
+    }
     return movieList;
   };
 
@@ -123,7 +111,9 @@ function NowPlaying() {
   ================*/
   const [searchInput, setSearchInput] = useState<string | null>(null);
 
-  const [sortFilter, setSortFilter] = useState<"title" | "newest" | "popular" | null>(null);
+  const [sortFilter, setSortFilter] = useState<"title" | "release_date" | "vote_average" | null>(
+    null,
+  );
 
   // Debounce the input to update every second
   const debouncedSearch = useDebounce(searchInput, 1000);
@@ -154,6 +144,7 @@ function NowPlaying() {
                 )[0];
                 return (
                   <MovieCard
+                    rating={movie.vote_average}
                     key={movie.id}
                     poster={movie.poster_path}
                     title={movie.title}
