@@ -11,7 +11,7 @@ function MovieCard(props: MovieCardProps) {
   for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon key={i} />);
 
   return (
-    <div className="col-12 col-md-6 col-lg-4 col-xl-3">
+    <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb--50">
       <div className="movie-card">
         <div className="movie-card__image-box">
           <div className="movie-card__genre">{genre}</div>
