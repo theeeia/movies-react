@@ -20,28 +20,33 @@ import { GenreProps, MovieProps } from "./interfaces";
 
 function NowPlaying() {
   const { handleFetch } = handleFetchCall();
-  const itemsPerPage = 20;
+
+  /*================
+   Pagination
+
+   Fetch movies based on what page we are on. 
+   Page has offset in the fetch because the pages start from 1.
+  ================*/
+  // Store the current page starting from 0
+  const [page, setPage] = useState(0);
+
+  // Set selected page in state
+  const handlePageClick = (event: any) => {
+    setPage(event.selected);
+  };
 
   // Get the genres ids and names from API
   const { status: statusGenres, data: genres } = useQuery(["genres"], () =>
     handleFetch(`${API_ENDPOINT_BASE}/genre/movie/list?api_key=${API_KEY}&language=en-US`, "GET"),
   );
-  const [pageCount, setPageCount] = useState(1);
 
-  // Get the movies from API
-  const { status: statusMovies, data: movies } = useQuery(["movies", pageCount], () =>
+  // Get the movies from API at the selected page
+  const { status: statusMovies, data: movies } = useQuery(["movies", page + 1], () =>
     handleFetch(
-      `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${pageCount}`,
+      `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page + 1}`,
       "GET",
     ),
   );
-
-  const handlePageClick = (event: any) => {
-    const newOffset = (event.selected * itemsPerPage) % movies.length;
-    console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
-
-    setPageCount(Math.ceil(movies.length / itemsPerPage));
-  };
 
   /*================
     RATING STARS
@@ -126,6 +131,7 @@ function NowPlaying() {
   const handleSearch = (e: any) => {
     setSearchInput(e.target.value);
   };
+
   const handleSortChange = (value: any) => {
     setSortFilter(value);
   };
@@ -161,35 +167,36 @@ function NowPlaying() {
                 );
               })}
             </div>
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel="next >"
-              onPageChange={handlePageClick}
-              pageRangeDisplayed={5}
-              pageCount={pageCount}
-              previousLabel="< previous"
-            />
 
-            {/* <div>
-              <span>Current Page: {page + 1}</span>
-              <button onClick={() => setPage(old => Math.max(old - 1, 0))} disabled={page === 1}>
-                Previous Page
-              </button>
-              <button
-                onClick={() => {
-                  if (movies.total_pages != page) {
-                    setPage(old => old + 1);
+            <div className="page-info">
+              <div className="page-info__details">
+                Showing {movies.results.length + 20 * page} from {movies.total_results} data
+              </div>
 
-                    //isPreviousData is always false
-                    console.log(isPreviousData);
-                  }
-                }}
-                // Disable the Next Page button until we know a next page is available
-                disabled={movies.total_pages == page}
-              >
-                Next Page
-              </button>
-            </div> */}
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="Next >> "
+                previousLabel="<< Previous"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={3}
+                marginPagesDisplayed={2}
+                pageCount={movies.total_pages}
+                forcePage={page}
+                className="pagination"
+                previousClassName="pagination__button"
+                previousLinkClassName="pagination__button-label"
+                pageClassName="pagination__pages"
+                pageLinkClassName="pagination__pages-label"
+                disabledClassName="pagination__button--disabled"
+                disabledLinkClassName="pagination__button-label--disabled"
+                nextClassName="pagination__button"
+                nextLinkClassName="pagination__button-label"
+                activeClassName="pagination__pages--active"
+                activeLinkClassName="pagination__pages-label--active"
+                breakClassName="pagination__pages"
+                breakLinkClassName="pagination__pages-label"
+              />
+            </div>
           </>
         ) : (
           <Loader />
