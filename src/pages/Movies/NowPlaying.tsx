@@ -126,7 +126,7 @@ function NowPlaying() {
   const handleSearch = (e: any) => {
     setSearchInput(e.target.value);
   };
-  const handleFilterChange = (value: any) => {
+  const handleSortChange = (value: any) => {
     setSortFilter(value);
   };
 
@@ -137,7 +137,7 @@ function NowPlaying() {
         <MoviesHeader
           title="Now Playing"
           handleSearch={(e: any) => handleSearch(e)}
-          handleFilterChange={(e: any) => handleFilterChange(e)}
+          handleSortChange={(e: any) => handleSortChange(e)}
         />
 
         {statusGenres === "success" && statusMovies === "success" ? (

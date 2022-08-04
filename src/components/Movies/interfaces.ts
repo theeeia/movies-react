@@ -8,14 +8,14 @@ export interface MovieCardProps {
   rating: number;
 }
 
-export interface MovieFilterDropdownItemProps {
+export interface MovieSortDropdownItemProps {
   label: string;
   className: string;
   value: number;
 }
 
-export interface MovieFilterDropdownProps {
-  filterIcon: React.ReactNode;
+export interface MovieSortDropdownProps {
+  sortIcon: React.ReactNode;
   dropdownItems: any;
-  handleFilterChange: (arg: number) => void;
+  handleSortChange: (arg: number) => void;
 }

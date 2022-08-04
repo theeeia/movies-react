@@ -1,16 +1,16 @@
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
-import { ReactComponent as FilterIcon } from "../../assets/images/filter.svg";
+import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
 
-import MovieFilterDropdownTest from "./MovieFilterDropdown";
+import MovieSortDropdown from "./MovieSortDropdown";
 
 function MoviesHeader({
   title,
   handleSearch,
-  handleFilterChange,
+  handleSortChange,
 }: {
   title: string;
   handleSearch: (e: any) => void;
-  handleFilterChange: (e: any) => void;
+  handleSortChange: (e: any) => void;
 }) {
   const dropdownItems = [
     {
@@ -45,9 +45,9 @@ function MoviesHeader({
           />
         </div>
         <div className="movies-header__filter">
-          <MovieFilterDropdownTest
-            filterIcon={<FilterIcon />}
-            handleFilterChange={handleFilterChange}
+          <MovieSortDropdown
+            sortIcon={<SortIcon />}
+            handleSortChange={handleSortChange}
             dropdownItems={dropdownItems}
           />
         </div>
