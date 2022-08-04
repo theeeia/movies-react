@@ -3,7 +3,7 @@ import { useField } from "formik";
 // Interfaces
 import { FormCheckboxProps } from "./interfaces";
 
-export default function FormCheckbox(props: FormCheckboxProps) {
+const FormCheckbox = (props: FormCheckboxProps) => {
   const { label, ...properties } = props;
 
   const [field] = useField(properties);
@@ -15,4 +15,5 @@ export default function FormCheckbox(props: FormCheckboxProps) {
       </div>
     </>
   );
-}
+};
+export default FormCheckbox;

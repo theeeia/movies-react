@@ -18,7 +18,7 @@ import handleFetchCall from "../../utils/handleFetchCall";
 // Interfaces
 import { GenreProps, MovieProps } from "./interfaces";
 
-function NowPlaying() {
+const NowPlaying = () => {
   const { handleFetch } = handleFetchCall();
 
   /*================
@@ -208,5 +208,5 @@ function NowPlaying() {
       </div>
     </>
   );
-}
+};
 export default NowPlaying;

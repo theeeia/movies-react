@@ -12,7 +12,7 @@ import handleFetchCall from "../utils/handleFetchCall";
 import handleLogoutUser from "../utils/handleLogoutUser";
 import { useMutation } from "@tanstack/react-query";
 
-export default function Home() {
+const Home = () => {
   const { user } = useContext(AuthContext);
 
   /*================
@@ -81,4 +81,5 @@ export default function Home() {
       </Link>
     </div>
   );
-}
+};
+export default Home;

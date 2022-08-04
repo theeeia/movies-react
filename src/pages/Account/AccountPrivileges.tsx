@@ -9,7 +9,7 @@ import handleFetchCall from "../../utils/handleFetchCall";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 
-function Admin() {
+const AccountPrivileges = () => {
   const navigate = useNavigate();
 
   /*================
@@ -55,6 +55,6 @@ function Admin() {
       )}
     </div>
   );
-}
+};
 
-export default Admin;
+export default AccountPrivileges;

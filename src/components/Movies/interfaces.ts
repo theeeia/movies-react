@@ -1,3 +1,9 @@
+export interface MoviesHeaderProps {
+  title: string;
+  handleSearch: (e: any) => void;
+  handleSortChange: (e: any) => void;
+}
+
 export interface MovieCardProps {
   genre: string;
   title: string;
@@ -6,16 +12,4 @@ export interface MovieCardProps {
   poster: string;
   starsNumber: number;
   rating: number;
-}
-
-export interface MovieSortDropdownItemProps {
-  label: string;
-  className: string;
-  value: number;
-}
-
-export interface MovieSortDropdownProps {
-  sortIcon: React.ReactNode;
-  dropdownItems: any;
-  handleSortChange: (arg: number) => void;
 }

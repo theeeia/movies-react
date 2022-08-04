@@ -3,13 +3,10 @@ import { useContext, useState } from "react";
 
 // Icons;
 import { ReactComponent as UserIcon } from "../../assets/images/user.svg";
-import { ReactComponent as SettingsIcon } from "../../assets/images/settings.svg";
-import { ReactComponent as LogoutIcon } from "../../assets/images/logout.svg";
 import { ReactComponent as MiruLogo } from "../../assets/images/logo.svg";
 
 // Components
-import Loader from "../Loader/Loader";
-import NavigationBarDropdown from "./NavigationBarDropdown";
+import Dropdown from "../Dropdown/Dropdown";
 
 // Context
 import { AuthContext } from "../../context/AuthContext";
@@ -17,12 +14,17 @@ import { AuthContext } from "../../context/AuthContext";
 // Utilities
 import handleLogoutUser from "../../utils/handleLogoutUser";
 
-function NavigationBar() {
+// Statics
+import { NAVIGATION_DROPDOWN_ITEMS } from "../../statics/dropdownItems";
+
+const NavigationBar = () => {
   const { user } = useContext(AuthContext);
 
   // Loader for the logout button while user is being logged out
   const [loadingLogout, setLoadingLogout] = useState(false);
+
   const handleLogout = async () => {
+    console.log(loadingLogout);
     setLoadingLogout(true);
     try {
       await handleLogoutUser();
@@ -38,40 +40,14 @@ function NavigationBar() {
   ================*/
 
   const navigate = useNavigate();
-  const dropdownItems = [
-    {
-      label: (
-        <>
-          <SettingsIcon />
-          Settings
-        </>
-      ),
-      onClick: () => navigate("/account/edit"),
-      className: "dropdown__item dropdown__item--line",
-    },
-    {
-      label: (
-        <>
-          <LogoutIcon />
-          Privileges
-        </>
-      ),
-      onClick: () => navigate("/account/privileges"),
-      className: "dropdown__item dropdown__item--line",
-    },
-    {
-      label: loadingLogout ? (
-        <Loader />
-      ) : (
-        <>
-          <LogoutIcon />
-          Log out
-        </>
-      ),
-      onClick: handleLogout,
-      className: "dropdown__item dropdown__item--line",
-    },
-  ];
+
+  const handleChange = (value: string) => {
+    if (value === "logout") {
+      handleLogout();
+    } else {
+      navigate(value);
+    }
+  };
 
   return (
     <div className="navigation">
@@ -100,18 +76,20 @@ function NavigationBar() {
           </Link>
         </div>
 
-        <NavigationBarDropdown
-          user={
-            <>
-              <UserIcon />
-              {user}
-            </>
-          }
-          dropdownItems={dropdownItems}
-        />
+        <div className="navigation__dropdown">
+          <Dropdown
+            dropdownBorderClass="dropdown__button--border"
+            modifierClass=" dropdown--lg-wide "
+            defaultValue={user}
+            isButtonStatic={false}
+            icon={<UserIcon />}
+            handleChange={handleChange}
+            dropdownItems={NAVIGATION_DROPDOWN_ITEMS}
+          />
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default NavigationBar;

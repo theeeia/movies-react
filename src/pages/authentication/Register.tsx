@@ -20,7 +20,7 @@ import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg"
 // Utilities
 import { toast } from "react-toastify";
 
-export default function Register() {
+const Register = () => {
   /*================
   REGISTER USER
 
@@ -185,4 +185,5 @@ export default function Register() {
       </Formik>
     </div>
   );
-}
+};
+export default Register;

@@ -5,7 +5,7 @@ import { AUTHENTICATION_ROUTES } from "../routes/authentication";
 
 const UNAUTHENTICATED_ROUTES = [...AUTHENTICATION_ROUTES];
 
-function UnauthenticatedApp() {
+const UnauthenticatedApp = () => {
   return (
     <Routes>
       {UNAUTHENTICATED_ROUTES.map(route => {
@@ -15,6 +15,6 @@ function UnauthenticatedApp() {
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
-}
+};
 
 export default UnauthenticatedApp;

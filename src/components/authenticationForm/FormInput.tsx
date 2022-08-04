@@ -3,7 +3,7 @@ import { useField } from "formik";
 // Interfaces
 import { FormInputProps } from "./interfaces";
 
-export default function FormInput(props: FormInputProps) {
+const FormInput = (props: FormInputProps) => {
   const { label, required, handleIconClick, icon, ...properties } = props;
   const [field, meta] = useField(properties);
 
@@ -31,4 +31,5 @@ export default function FormInput(props: FormInputProps) {
       </div>
     </div>
   );
-}
+};
+export default FormInput;

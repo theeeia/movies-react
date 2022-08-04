@@ -24,7 +24,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 
-export default function Account() {
+const Account = () => {
   const [editDetailsFormValues, setEditDetailsFormValues] = useState<EditAccountValues>({
     first_name: "",
     last_name: "",
@@ -245,4 +245,5 @@ export default function Account() {
       )}
     </div>
   );
-}
+};
+export default Account;

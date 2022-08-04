@@ -1,4 +1,4 @@
-function FormButton({ ...props }) {
+const FormButton = ({ ...props }) => {
   const { label, modifierClass, ...properties } = props;
 
   return (
@@ -6,6 +6,6 @@ function FormButton({ ...props }) {
       {label}
     </button>
   );
-}
+};
 
 export default FormButton;

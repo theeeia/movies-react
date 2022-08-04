@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 
-export default function Login() {
+const Login = () => {
   // Get remembered user from local storage if it exists
   const rememberedUser = localStorage.getItem("rememberedUser")
     ? JSON.parse(localStorage.getItem("rememberedUser") || "")
@@ -169,4 +169,5 @@ export default function Login() {
       </Formik>
     </div>
   );
-}
+};
+export default Login;

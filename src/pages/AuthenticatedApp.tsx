@@ -7,7 +7,7 @@ import { MOVIE_ROUTES } from "../routes/movies";
 
 const AUTHENTICATED_ROUTES = [...HOME_ROUTE, ...ACCOUNT_ROUTE, ...MOVIE_ROUTES];
 
-function AuthenticatedApp() {
+const AuthenticatedApp = () => {
   return (
     <Routes>
       {AUTHENTICATED_ROUTES.map(route => {
@@ -16,6 +16,6 @@ function AuthenticatedApp() {
       <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   );
-}
+};
 
 export default AuthenticatedApp;

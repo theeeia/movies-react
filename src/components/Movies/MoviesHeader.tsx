@@ -1,36 +1,11 @@
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
 
-import MovieSortDropdown from "./MovieSortDropdown";
+import { MOVIE_DROPDOWN_SORT_ITEMS } from "../../statics/dropdownItems";
+import { MoviesHeaderProps } from "./interfaces";
+import Dropdown from "../Dropdown/Dropdown";
 
-function MoviesHeader({
-  title,
-  handleSearch,
-  handleSortChange,
-}: {
-  title: string;
-  handleSearch: (e: any) => void;
-  handleSortChange: (e: any) => void;
-}) {
-  const dropdownItems = [
-    {
-      label: "Newest",
-      className: "dropdown__item",
-      value: "release_date",
-    },
-    {
-      label: "Title",
-
-      className: "dropdown__item",
-      value: "title",
-    },
-    {
-      label: "Popular",
-      className: "dropdown__item",
-      value: "vote_average",
-    },
-  ];
-
+const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderProps) => {
   return (
     <div className="movies-header">
       <div className="movies-header__title">{title}</div>
@@ -45,14 +20,16 @@ function MoviesHeader({
           />
         </div>
         <div className="movies-header__filter">
-          <MovieSortDropdown
-            sortIcon={<SortIcon />}
-            handleSortChange={handleSortChange}
-            dropdownItems={dropdownItems}
+          <Dropdown
+            modifierClass=" dropdown--md-wide ml--20"
+            isButtonStatic={true}
+            icon={<SortIcon />}
+            handleChange={handleSortChange}
+            dropdownItems={MOVIE_DROPDOWN_SORT_ITEMS}
           />
         </div>
       </div>
     </div>
   );
-}
+};
 export default MoviesHeader;

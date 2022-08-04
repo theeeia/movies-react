@@ -5,8 +5,15 @@ import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 // Interfaces
 import { MovieCardProps } from "./interfaces";
 
-function MovieCard(props: MovieCardProps) {
-  const { genre, title, year, language, poster, starsNumber, rating } = props;
+const MovieCard = ({
+  genre,
+  title,
+  year,
+  language,
+  poster,
+  starsNumber,
+  rating,
+}: MovieCardProps) => {
   const stars = [];
 
   for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon key={i} />);
@@ -37,5 +44,5 @@ function MovieCard(props: MovieCardProps) {
       </div>
     </div>
   );
-}
+};
 export default MovieCard;
