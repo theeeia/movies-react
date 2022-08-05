@@ -4,6 +4,7 @@ import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
 // Interfaces
 import { MovieCardProps } from "./interfaces";
+import { useEffect, useRef, useState } from "react";
 
 const MovieCard = ({
   genre,
@@ -14,13 +15,17 @@ const MovieCard = ({
   starsNumber,
   rating,
 }: MovieCardProps) => {
-  const stars = [];
+  const [stars, setStars] = useState<React.ReactNode[]>([]);
+  const isFirstRun = useRef(true);
+  useEffect(() => {
+    if (stars.length == 0 && isFirstRun.current) {
+      for (let i = 0; i < starsNumber; i++) {
+        setStars((stars: React.ReactNode[]) => [...stars, <StarIcon key={i} />]);
+      }
+      isFirstRun.current = false;
+    }
+  }, []);
 
-  for (let i = 0; i < starsNumber; i++) stars.push(<StarIcon key={i} />);
-  if (starsNumber % 1 !== 0) {
-    stars.pop();
-    stars.push(<HeartIcon key={stars.length} />);
-  }
   return (
     <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb--70">
       <div className="movie-card">

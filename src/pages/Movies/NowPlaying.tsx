@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import ReactPaginate from "react-paginate";
 
 // Components
 import Loader from "../../components/Loader/Loader";
 import MovieCard from "../../components/Movies/MovieCard";
 import MoviesHeader from "../../components/Movies/MoviesHeader";
+import Pagination from "../../components/Pagination/Pagination";
 
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 
@@ -14,6 +14,8 @@ import useDebounce from "../../hooks/useDebounce";
 
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
+import handleListFilter from "../../utils/handleListFilter";
+import handleListSort from "../../utils/handleListSort";
 
 // Interfaces
 import { GenreProps, MovieProps } from "./interfaces";
@@ -54,64 +56,14 @@ const NowPlaying = () => {
    Return the number of stars based on the movie average votes
   ================*/
   const getStarsNumber = (rating: number) => {
-    if (rating > 8) {
-      return 5;
-    } else if (rating == 8) {
-      return 4.5;
-    } else if (rating < 8 && rating > 6) {
-      return 4;
-    } else if (rating == 6) {
-      return 3.5;
-    } else if (rating < 6 && rating > 4) {
-      return 3;
-    } else if (rating == 4) {
-      return 2.5;
-    } else if (rating < 4 && rating > 2) {
-      return 2;
-    } else if (rating == 2) {
-      return 1.5;
-    } else if (rating <= 2 && rating != 0) {
-      if (rating == 1) return 0.5;
-      return 1;
-    } else return 0;
-  };
-
-  /*================
-    FILTER MOVIES
-
-   Filter the movies by the input in the search 
-  ================*/
-  const filterMovies = () => {
-    let filteredMovies = [];
-    //check if input is not empty
-    if (debouncedSearch != null && debouncedSearch != "") {
-      filteredMovies = movies.results.filter((movie: MovieProps) =>
-        movie.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
-      );
+    let count = 1;
+    while (rating > 0) {
+      if (rating - 2 > 0) {
+        count++;
+        rating -= 2;
+      } else break;
     }
-
-    // return original list if there is not input
-    const movieList =
-      debouncedSearch != "" && debouncedSearch != null ? filteredMovies : movies.results;
-
-    //sort if a sort parameter is chosen
-    return sortMovies(movieList);
-  };
-
-  /*================
-    SORT MOVIES
-
-   Sort movies by parameter if one is chosen 
-  ================*/
-  const sortMovies = (movieList: any) => {
-    if (sortFilter != null) {
-      movieList.sort((a: MovieProps, b: MovieProps) => {
-        return b[sortFilter] > a[sortFilter] ? 1 : -1;
-      });
-
-      if (sortFilter === "title") return movieList.reverse();
-    }
-    return movieList;
+    return count;
   };
 
   /*================
@@ -136,10 +88,6 @@ const NowPlaying = () => {
     setSortFilter(value);
   };
 
-  // const handleDropdownItem = () => {
-
-  // }
-
   return (
     <>
       <div className="container">
@@ -153,23 +101,25 @@ const NowPlaying = () => {
         {statusGenres === "success" && statusMovies === "success" ? (
           <>
             <div className="row mt--30">
-              {filterMovies().map((movie: MovieProps) => {
-                const genre = genres.genres.filter(
-                  (genre: GenreProps) => genre.id === movie.genre_ids[0],
-                )[0];
-                return (
-                  <MovieCard
-                    rating={movie.vote_average}
-                    key={movie.id}
-                    poster={movie.poster_path}
-                    title={movie.title}
-                    year={movie.release_date}
-                    language={movie.original_language}
-                    genre={genre?.name}
-                    starsNumber={getStarsNumber(movie.vote_average)}
-                  />
-                );
-              })}
+              {handleListSort(handleListFilter(movies, debouncedSearch), sortFilter).map(
+                (movie: MovieProps) => {
+                  const genre = genres.genres.filter(
+                    (genre: GenreProps) => genre.id === movie.genre_ids[0],
+                  )[0];
+                  return (
+                    <MovieCard
+                      rating={movie.vote_average}
+                      key={movie.id}
+                      poster={movie.poster_path}
+                      title={movie.title}
+                      year={movie.release_date}
+                      language={movie.original_language}
+                      genre={genre?.name}
+                      starsNumber={getStarsNumber(movie.vote_average)}
+                    />
+                  );
+                },
+              )}
             </div>
 
             <div className="page-info">
@@ -177,28 +127,10 @@ const NowPlaying = () => {
                 Showing {movies.results.length + 20 * page} from {movies.total_results} data
               </div>
 
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel="Next >> "
-                previousLabel="<< Previous"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={2}
-                pageCount={movies.total_pages}
-                forcePage={page}
-                className="pagination"
-                previousClassName="pagination__button"
-                previousLinkClassName="pagination__button-label"
-                pageClassName="pagination__pages"
-                pageLinkClassName="pagination__pages-label"
-                disabledClassName="pagination__button--disabled"
-                disabledLinkClassName="pagination__button-label--disabled"
-                nextClassName="pagination__button"
-                nextLinkClassName="pagination__button-label"
-                activeClassName="pagination__pages--active"
-                activeLinkClassName="pagination__pages-label--active"
-                breakClassName="pagination__pages"
-                breakLinkClassName="pagination__pages-label"
+              <Pagination
+                handlePageClick={handlePageClick}
+                totalPages={movies.total_pages}
+                page={page}
               />
             </div>
           </>

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 // Icons;
 import { ReactComponent as UserIcon } from "../../assets/images/user.svg";
@@ -21,16 +21,9 @@ const NavigationBar = () => {
   const { user } = useContext(AuthContext);
 
   // Loader for the logout button while user is being logged out
-  const [loadingLogout, setLoadingLogout] = useState(false);
 
   const handleLogout = async () => {
-    console.log(loadingLogout);
-    setLoadingLogout(true);
-    try {
-      await handleLogoutUser();
-    } finally {
-      setLoadingLogout(false);
-    }
+    await handleLogoutUser();
   };
 
   /*================
