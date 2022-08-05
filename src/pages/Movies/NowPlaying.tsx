@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-// import DropdownTest, { DropdownItemProps } from "../../components/Dropdown/DropdownTest";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -20,7 +19,6 @@ import handleListSort from "../../utils/handleListSort";
 
 // Interfaces
 import { GenreApiProps, MovieApiProps } from "./interfaces";
-// import { MOVIES_DROPDOWN_SORT_ITEMS } from "./statics";
 
 const NowPlaying = () => {
   const { handleFetch } = handleFetchCall();
@@ -118,7 +116,7 @@ const NowPlaying = () => {
 
         {statusGenres === "success" && statusMovies === "success" ? (
           <>
-            <div className="row mt--30">
+            <div className="row">
               {moviesList.map((movie: MovieApiProps) => {
                 const genre = genres.genres.filter(
                   (genre: GenreApiProps) => genre.id === movie.genre_ids[0],

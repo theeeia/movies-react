@@ -81,9 +81,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
         background-color: white;
         border-radius: 20px;
-
+        
     }
+
+    &--favorite {
+        path {
+            fill: "#FF055F"
+        }
+    }
+    &--not-favorite {
+        path {
+            fill: "#2D2D2D"
+        }
+    }
+
 }

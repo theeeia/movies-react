@@ -22,13 +22,15 @@ const MovieCard = ({
     setStars(starsArray);
   }, []);
 
-  const [isFavorite, setIsFavorite] = useState<"#2D2D2D" | "#FF055F">("#2D2D2D");
+  const [isFavorite, setIsFavorite] = useState<"dropdown--not-favorite" | "dropdown--favorite">(
+    "dropdown--not-favorite",
+  );
 
   const handleFavorite = () => {
-    if (isFavorite == "#2D2D2D") {
-      setIsFavorite("#FF055F");
+    if (isFavorite == "dropdown--not-favorite") {
+      setIsFavorite("dropdown--favorite");
     } else {
-      setIsFavorite("#2D2D2D");
+      setIsFavorite("dropdown--not-favorite");
     }
   };
 
