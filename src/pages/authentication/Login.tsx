@@ -3,9 +3,9 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Components
-import FormCheckbox from "../../components/authenticationForm/FormCheckbox";
-import FormInput from "../../components/authenticationForm/FormInput";
-import FormButton from "../../components/authenticationForm/FormButton";
+import FormCheckbox from "../../components/Form/FormCheckbox";
+import FormInput from "../../components/Form/FormInput";
+import FormButton from "../../components/Form/FormButton";
 import Loader from "../../components/Loader/Loader";
 
 // Schemas

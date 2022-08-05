@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // Components
-import FormInput from "../../components/authenticationForm/FormInput";
-import FormButton from "../../components/authenticationForm/FormButton";
+import FormInput from "../../components/Form/FormInput";
+import FormButton from "../../components/Form/FormButton";
 import Loader from "../../components/Loader/Loader";
 
 // Schema
