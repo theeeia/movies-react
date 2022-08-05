@@ -87,6 +87,18 @@ const NowPlaying = () => {
   const handleSortChange = (value: any) => {
     setSortFilter(value);
   };
+  const handleMovies = () => {
+    let moviesList = movies.results;
+    if (debouncedSearch != null && debouncedSearch != "") {
+      moviesList = handleListFilter(moviesList, debouncedSearch);
+    }
+
+    if (sortFilter != null) {
+      moviesList = handleListSort(moviesList, sortFilter);
+    }
+
+    return moviesList;
+  };
 
   return (
     <>
@@ -101,25 +113,23 @@ const NowPlaying = () => {
         {statusGenres === "success" && statusMovies === "success" ? (
           <>
             <div className="row mt--30">
-              {handleListSort(handleListFilter(movies, debouncedSearch), sortFilter).map(
-                (movie: MovieProps) => {
-                  const genre = genres.genres.filter(
-                    (genre: GenreProps) => genre.id === movie.genre_ids[0],
-                  )[0];
-                  return (
-                    <MovieCard
-                      rating={movie.vote_average}
-                      key={movie.id}
-                      poster={movie.poster_path}
-                      title={movie.title}
-                      year={movie.release_date}
-                      language={movie.original_language}
-                      genre={genre?.name}
-                      starsNumber={getStarsNumber(movie.vote_average)}
-                    />
-                  );
-                },
-              )}
+              {handleMovies().map((movie: MovieProps) => {
+                const genre = genres.genres.filter(
+                  (genre: GenreProps) => genre.id === movie.genre_ids[0],
+                )[0];
+                return (
+                  <MovieCard
+                    rating={movie.vote_average}
+                    key={movie.id}
+                    poster={movie.poster_path}
+                    title={movie.title}
+                    year={movie.release_date}
+                    language={movie.original_language}
+                    genre={genre?.name}
+                    starsNumber={getStarsNumber(movie.vote_average)}
+                  />
+                );
+              })}
             </div>
 
             <div className="page-info">
