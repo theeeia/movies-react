@@ -2,10 +2,10 @@ import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 
 // Components
-import FormButton from "../../components/authenticationForm/FormButton";
-import FormInput from "../../components/authenticationForm/FormInput";
+import FormButton from "../../components/Form/FormButton";
+import FormInput from "../../components/Form/FormInput";
 import Loader from "../../components/Loader/Loader";
-import FormToggleButton from "../../components/authenticationForm/FormToggleButton";
+import FormToggleButton from "../../components/Form/FormToggleButton";
 
 // Interfaces
 import { EditAccountValues } from "./interfaces";

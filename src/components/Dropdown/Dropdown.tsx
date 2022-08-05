@@ -1,82 +1,75 @@
-import { useEffect, useRef, useState } from "react";
-
-// Interfaces
-import { DropdownProps } from "./interfaces";
+import { useRef, useState } from "react";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
+import { DropdownItemProps, DropdownProps } from "./interfaces";
 
 const Dropdown = ({
-  dropdownBorderClass,
-  modifierClass,
-  defaultValue,
-  isButtonStatic,
+  title,
+  items,
+  handleDropdownItem,
   icon,
-  handleChange,
-  dropdownItems,
+  downIcon,
+  isDisplayedTextStatic = false,
+  //   isLoading = false, TODO: Add loader
+  modifierClass = "",
+  disabled = false,
 }: DropdownProps) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [displayText, setDisplayedText] = useState<string>(title);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  // Take selected item or default static value for button
-  const { label, value } = !isButtonStatic
-    ? { label: defaultValue, value: defaultValue }
-    : dropdownItems[activeIndex];
+  const handleDropdownMenu = () => {
+    if (disabled) return;
 
-  /*================
-    OPEN MENU
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-   Open menu on button click or close it if clicked outside
-  ================*/
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+  const handleClickedItem = (item: DropdownItemProps) => {
+    // Prevent function call if item is disabled
+    if (item.disabled) return;
 
-  useEffect(() => {
-    const closeDropdown = (e: any) => {
-      if (e.path[0] !== menuButtonRef.current) {
-        setIsMenuOpen(false);
-      }
-    };
+    // Update the text to be displayed
+    // if the dropdown is not supposed to be static
+    if (!isDisplayedTextStatic) setDisplayedText(item.text);
 
-    document.body.addEventListener("click", closeDropdown);
+    // Call the callback function passed as prop
+    handleDropdownItem(item);
 
-    return () => document.body.removeEventListener("click", closeDropdown);
-  }, []);
+    // Close menu
+    setIsMenuOpen(false);
+  };
+
+  // Close menu if clicked outside of it
+  const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
+  useOnClickOutside(dropdownMenuRef, () => setIsMenuOpen(false));
 
   return (
-    <div className={`dropdown ${modifierClass}`}>
-      <button
-        ref={menuButtonRef}
-        className={`dropdown__button  ${dropdownBorderClass}`}
-        value={value}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        {icon}
-        {label}
-      </button>
-
-      <div
-        className={`dropdown__content ${dropdownBorderClass} ${modifierClass} ${
-          isMenuOpen && "dropdown__clicked"
-        }`}
-      >
-        {dropdownItems.map((item: any, index: number) => {
-          const { label, value, ...properties } = item;
-
-          if (isButtonStatic && index == activeIndex) return;
-
-          return (
-            <button
-              key={index}
-              {...properties}
-              onClick={() => {
-                setIsMenuOpen(false);
-                setActiveIndex(index);
-                handleChange(value);
-              }}
-            >
-              {label}
-            </button>
-          );
-        })}
+    <div
+      className={`dropdown ${disabled ? `dropdown--disabled` : ""} ${modifierClass}`}
+      onClick={handleDropdownMenu}
+      ref={dropdownMenuRef}
+    >
+      <div className="dropdown__button">
+        {icon && icon}
+        <span> {displayText}</span>
+        {downIcon && downIcon}
+        {/* TODO: ADD LOADER */}
       </div>
+
+      {isMenuOpen && (
+        <ul className="dropdown__content">
+          {items.map((item: DropdownItemProps, index: number) => (
+            <li
+              key={`${item.text}-${index}`}
+              className={`dropdown__item ${item.disabled ? "dropdown__item--disabled" : ""}`}
+              onClick={() => handleClickedItem(item)}
+            >
+              {item.icon && item.icon}
+              {item.text}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
+
 export default Dropdown;

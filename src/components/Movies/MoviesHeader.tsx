@@ -1,11 +1,20 @@
+// Icons
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
 
-import { MOVIE_DROPDOWN_SORT_ITEMS } from "../../statics/dropdownItems";
+// Interfaces
 import { MoviesHeaderProps } from "./interfaces";
+import { DropdownItemProps } from "../Dropdown/interfaces";
+
+// Statics
+import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
+
+// Components
 import Dropdown from "../Dropdown/Dropdown";
 
 const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderProps) => {
+  const handleDropdownItem = (item: DropdownItemProps) => handleSortChange(item.value);
+
   return (
     <div className="movies-header">
       <div className="movies-header__title">{title}</div>
@@ -21,11 +30,11 @@ const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderPro
         </div>
         <div className="movies-header__filter">
           <Dropdown
-            modifierClass=" dropdown--md-wide ml--20"
-            isButtonStatic={true}
+            title="Sorting"
             icon={<SortIcon />}
-            handleChange={handleSortChange}
-            dropdownItems={MOVIE_DROPDOWN_SORT_ITEMS}
+            items={MOVIES_DROPDOWN_SORT_ITEMS}
+            handleDropdownItem={handleDropdownItem}
+            modifierClass={"dropdown--md-wide dropdown--ml-20"}
           />
         </div>
       </div>

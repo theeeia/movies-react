@@ -1,4 +1,4 @@
-export interface MovieProps {
+export interface MovieApiProps {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
@@ -15,7 +15,7 @@ export interface MovieProps {
   vote_count: number;
 }
 
-export interface GenreProps {
+export interface GenreApiProps {
   id: number;
   name: string;
 }

@@ -4,6 +4,7 @@ import { useContext } from "react";
 // Icons;
 import { ReactComponent as UserIcon } from "../../assets/images/user.svg";
 import { ReactComponent as MiruLogo } from "../../assets/images/logo.svg";
+import { ReactComponent as DropdownArrow } from "../../assets/images/dropdown-arrow.svg";
 
 // Components
 import Dropdown from "../Dropdown/Dropdown";
@@ -14,8 +15,7 @@ import { AuthContext } from "../../context/AuthContext";
 // Utilities
 import handleLogoutUser from "../../utils/handleLogoutUser";
 
-// Statics
-import { NAVIGATION_DROPDOWN_ITEMS } from "../../statics/dropdownItems";
+import { NAVIGATION_DROPDOWN_ITEMS } from "./statics";
 
 const NavigationBar = () => {
   const { user } = useContext(AuthContext);
@@ -34,11 +34,11 @@ const NavigationBar = () => {
 
   const navigate = useNavigate();
 
-  const handleChange = (value: string) => {
-    if (value === "logout") {
+  const handleChange = (item: any) => {
+    if (item.value === "logout") {
       handleLogout();
     } else {
-      navigate(value);
+      navigate(item.value);
     }
   };
 
@@ -71,13 +71,13 @@ const NavigationBar = () => {
 
         <div className="navigation__dropdown">
           <Dropdown
-            dropdownBorderClass="dropdown__button--border"
-            modifierClass=" dropdown--lg-wide "
-            defaultValue={user}
-            isButtonStatic={false}
+            title={user}
             icon={<UserIcon />}
-            handleChange={handleChange}
-            dropdownItems={NAVIGATION_DROPDOWN_ITEMS}
+            downIcon={<DropdownArrow />}
+            isDisplayedTextStatic={true}
+            items={NAVIGATION_DROPDOWN_ITEMS}
+            handleDropdownItem={handleChange}
+            modifierClass={"dropdown--border dropdown--lg-wide dropdown--line"}
           />
         </div>
       </div>

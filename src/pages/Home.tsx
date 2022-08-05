@@ -62,7 +62,7 @@ const Home = () => {
   };
 
   return (
-    <div className="home-page container ">
+    <div className="home-page container default-page-height ">
       <div>
         Hello <>{user}</>
       </div>

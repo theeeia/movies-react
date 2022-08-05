@@ -1,10 +1,18 @@
 .dropdown {
-    overflow: hidden;  
     float: right;
 
-    &--lg-wide { width: 225px; }
+    &--lg-wide { width: 225px; 
+        & > .dropdown__content{
+            width: 225px; 
+        }
+    }
 
-    &--md-wide { width: 125px; }
+    &--md-wide { width: 135px;
+        & > .dropdown__content{
+            width: 125px;
+        } }
+
+    &--ml-20 > .dropdown__content { margin-left: 20px;}
 
     & &__button {
         position:relative;
@@ -17,14 +25,18 @@
         font-size: 16px;  
         font-weight: 600;  
         color: white;   
-
-        &--border {
-            border: 1px solid white;
-            border-radius: 20px;
-        }
     }
 
     &__button {
+        svg {
+            flex-shrink: 0;
+        }
+        span {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap; 
+        }
+        
         width: 100%;
         display: flex;
         gap: 10px;
@@ -33,22 +45,18 @@
     }
 
     &__content {
-        display: none;
         position: absolute;       
         background-color: #151515;
         z-index: 1;
+    }
 
-        &--border {
-            border: 1px solid white;
-            border-radius: 20px;
-        }
-
-       button {
-            border: none;
-            outline: none;
-            background-color: #151515;
-            border-radius: 20px;
-        } 
+    &--border &__button {
+        border: 1px solid white;
+        border-radius: 20px;
+    }
+    &--border &__content {
+        border: 1px solid white;
+        border-radius: 20px;
     }
 
     &__item {
@@ -58,28 +66,32 @@
         gap: 10px;
         align-items: center;
         float: none;
-        padding: 12px 16px;
+        padding: 10px 15px;
+        margin: 0;
         color: white;
         text-decoration: none;
         text-align: left;
         font-size: 16px;
         font-weight: 600;
 
-        &--line {
-            &:not(:last-child):after{
-                position: absolute;
-                bottom: 0;
-                content:"";
-                display: block;
-                border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
-                max-width: 190px;
-                width: 100%;
-            }
+        &:hover { 
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.6)
         }
-
-        &:hover { color: rgba(255, 255, 255, 0.6) }
     }
 
-    &__clicked { display: block; }
+    &--line &__item {
+        &:not(:last-child):after{
+            position: absolute;
+            bottom: 0;
+            content:"";
+            display: block;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
+            max-width: 190px;
+            width: 100%;
+        }
+    }
+
+
 }
 

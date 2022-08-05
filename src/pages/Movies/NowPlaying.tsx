@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+// import DropdownTest, { DropdownItemProps } from "../../components/Dropdown/DropdownTest";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -18,7 +19,8 @@ import handleListFilter from "../../utils/handleListFilter";
 import handleListSort from "../../utils/handleListSort";
 
 // Interfaces
-import { GenreProps, MovieProps } from "./interfaces";
+import { GenreApiProps, MovieApiProps } from "./interfaces";
+// import { MOVIES_DROPDOWN_SORT_ITEMS } from "./statics";
 
 const NowPlaying = () => {
   const { handleFetch } = handleFetchCall();
@@ -55,7 +57,7 @@ const NowPlaying = () => {
 
    Return the number of stars based on the movie average votes
   ================*/
-  const getStarsNumber = (rating: number) => {
+  const getStarsNumberFromRating = (rating: number) => {
     let count = 1;
     while (rating > 0) {
       if (rating - 2 > 0) {
@@ -87,22 +89,26 @@ const NowPlaying = () => {
   const handleSortChange = (value: any) => {
     setSortFilter(value);
   };
-  const handleMovies = () => {
+
+  const moviesList: Record<string, any> = useMemo(() => {
+    if (!movies || !Object.entries(movies).length) return [];
+
     let moviesList = movies.results;
-    if (debouncedSearch != null && debouncedSearch != "") {
+
+    if (debouncedSearch) {
       moviesList = handleListFilter(moviesList, debouncedSearch);
     }
 
-    if (sortFilter != null) {
+    if (sortFilter) {
       moviesList = handleListSort(moviesList, sortFilter);
     }
 
     return moviesList;
-  };
+  }, [debouncedSearch, sortFilter, movies]);
 
   return (
     <>
-      <div className="container">
+      <div className="container default-page-height">
         <div className="breadcrumbs">Home</div>
         <MoviesHeader
           title="Now Playing"
@@ -113,9 +119,9 @@ const NowPlaying = () => {
         {statusGenres === "success" && statusMovies === "success" ? (
           <>
             <div className="row mt--30">
-              {handleMovies().map((movie: MovieProps) => {
+              {moviesList.map((movie: MovieApiProps) => {
                 const genre = genres.genres.filter(
-                  (genre: GenreProps) => genre.id === movie.genre_ids[0],
+                  (genre: GenreApiProps) => genre.id === movie.genre_ids[0],
                 )[0];
                 return (
                   <MovieCard
@@ -126,7 +132,7 @@ const NowPlaying = () => {
                     year={movie.release_date}
                     language={movie.original_language}
                     genre={genre?.name}
-                    starsNumber={getStarsNumber(movie.vote_average)}
+                    starsNumber={getStarsNumberFromRating(movie.vote_average)}
                   />
                 );
               })}
@@ -137,11 +143,13 @@ const NowPlaying = () => {
                 Showing {movies.results.length + 20 * page} from {movies.total_results} data
               </div>
 
-              <Pagination
-                handlePageClick={handlePageClick}
-                totalPages={movies.total_pages}
-                page={page}
-              />
+              {!searchInput && (
+                <Pagination
+                  handlePageClick={handlePageClick}
+                  totalPages={movies.total_pages}
+                  page={page}
+                />
+              )}
             </div>
           </>
         ) : (
