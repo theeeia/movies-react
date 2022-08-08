@@ -22,16 +22,16 @@ const MovieCard = ({
     setStars(starsArray);
   }, []);
 
-  const [isFavorite, setIsFavorite] = useState<"dropdown--not-favorite" | "dropdown--favorite">(
-    "dropdown--not-favorite",
+  const [isFavorite, setIsFavorite] = useState<"movie-card--not-favorite" | "movie-card--favorite">(
+    "movie-card--not-favorite",
   );
 
   // Toogle between favorite classes
   const handleFavorite = () => {
-    if (isFavorite == "dropdown--not-favorite") {
-      setIsFavorite("dropdown--favorite");
+    if (isFavorite == "movie-card--not-favorite") {
+      setIsFavorite("movie-card--favorite");
     } else {
-      setIsFavorite("dropdown--not-favorite");
+      setIsFavorite("movie-card--not-favorite");
     }
   };
 

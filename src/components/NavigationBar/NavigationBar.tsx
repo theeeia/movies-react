@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 
 // Icons;
@@ -55,24 +55,54 @@ const NavigationBar = () => {
           <MiruLogo />
         </div>
         <div className="navigation__links">
-          <Link to={"/movies/now-playing"} className="navigation__link">
+          <NavLink
+            to={"/movies/now-playing"}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
             Now Playing
-          </Link>
-          <Link to={"/movies/upcoming"} className="navigation__link">
+          </NavLink>
+          <NavLink
+            to={"/movies/upcoming"}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
             Upcoming
-          </Link>
-          <Link to={"/movies/top-rated"} className="navigation__link">
+          </NavLink>
+          <NavLink
+            to={"/movies/top-rated"}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
             Top Rated
-          </Link>
-          <Link to={"/movies/favorites"} className="navigation__link">
+          </NavLink>
+          <NavLink
+            to={"/movies/favorites"}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
             Favorites
-          </Link>
-          <Link to={"/"} className="navigation__link">
+          </NavLink>
+          <NavLink
+            to={"/"}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
             Statistics
-          </Link>
-          <Link to={"/"} className="navigation__link">
+          </NavLink>
+          <NavLink
+            to={"/"}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
             Search
-          </Link>
+          </NavLink>
         </div>
 
         <div className="navigation__dropdown">

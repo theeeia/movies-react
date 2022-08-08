@@ -19,6 +19,7 @@ import handleListFilter from "../../utils/handleListFilter";
 
 // Interfaces
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
+import { DropdownItemProps } from "../Dropdown/interfaces";
 
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const { handleFetch } = handleFetchCall();
@@ -72,7 +73,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   );
 
   // Store the value of the search input
-  const handleSearch = ({ target: { value } }: { target: Record<string, string> }) => {
+  const handleSearch = ({ value }: { value: any }) => {
     setSearchInput(value);
   };
 
@@ -111,7 +112,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         <div className="breadcrumbs">Home</div>
         <MoviesHeader
           title={title}
-          handleSearch={(e: any) => handleSearch(e)}
+          handleSearch={(e: DropdownItemProps) => handleSearch(e)}
           handleSortChange={(e: any) => handleSortChange(e)}
         />
 
@@ -128,7 +129,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                     key={movie.id}
                     poster={movie.poster_path}
                     title={movie.title}
-                    year={movie.release_date}
+                    year={movie.release_date.split("-")[0]}
                     language={movie.original_language}
                     genre={genre?.name}
                     starsNumber={getStarsNumberFromRating(movie.vote_average)}
