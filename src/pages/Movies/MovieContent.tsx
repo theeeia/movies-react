@@ -24,14 +24,6 @@ import { GenreApiProps, MovieApiProps, MovieContentProps } from "./interfaces";
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const { handleFetch } = handleFetchCall();
 
-  const handleSearch = (e: any) => {
-    setSearchInput(e.target.value);
-  };
-
-  const handleSortChange = (value: any) => {
-    setSortFilter(value);
-  };
-
   /*================
    Pagination
 
@@ -67,8 +59,10 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const getStarsNumberFromRating = (rating: number) => {
     let count = 1;
     while (rating > 0) {
+      // Add a star if rating is greater than two
       if (rating - 2 > 0) {
         count++;
+        // Subtract rating by 2
         rating -= 2;
       } else break;
     }
@@ -80,11 +74,22 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   Get the parameters on input change 
   ================*/
+
   const [searchInput, setSearchInput] = useState<string | null>(null);
 
-  const [sortFilter, setSortFilter] = useState<"title" | "release_date" | "vote_average" | null>(
+  const [sortParameter, setSortFilter] = useState<"title" | "release_date" | "vote_average" | null>(
     null,
   );
+
+  // Store the value of the search input
+  const handleSearch = (e: any) => {
+    setSearchInput(e.target.value);
+  };
+
+  // Store the parameter for sorting
+  const handleSortChange = (value: any) => {
+    setSortFilter(value);
+  };
 
   // Debounce the input to update every second
   const debouncedSearch = useDebounce(searchInput, 1000);
@@ -93,17 +98,19 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     if (!movies || !Object.entries(movies).length) return [];
 
     let moviesList = movies.results;
-
+    // Filter movies if there is a input
     if (debouncedSearch) {
       moviesList = handleListFilter(moviesList, debouncedSearch);
     }
 
-    if (sortFilter) {
-      moviesList = handleListSort(moviesList, sortFilter);
+    // Sort movies if a parameter is selected
+    if (sortParameter) {
+      moviesList = handleListSort(moviesList, sortParameter);
     }
 
     return moviesList;
-  }, [debouncedSearch, sortFilter, movies]);
+  }, [debouncedSearch, sortParameter, movies]);
+
   return (
     <>
       <div className="container default-page-height">
