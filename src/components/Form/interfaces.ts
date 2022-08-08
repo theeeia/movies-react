@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface FormCheckboxProps {
   label: string;
   name: string;
@@ -19,4 +21,11 @@ export interface FormToggleButtonProps {
   label: string;
   name: string;
   checked: boolean;
+}
+export interface FormButtonProps {
+  label: string | React.ReactNode;
+  modifierClass: string;
+  type?: "button" | "submit" | "reset" | undefined;
+  isDisabled: boolean;
+  onClick?: () => void;
 }

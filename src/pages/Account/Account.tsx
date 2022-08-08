@@ -225,13 +225,13 @@ const Account = () => {
               />
               <FormButton
                 label={isSubmitting ? <Loader /> : "Edit"}
-                disabled={isSubmitting}
+                isDisabled={isSubmitting}
                 type="submit"
                 modifierClass="btn__form btn__form--submit"
               />
               <FormButton
                 label="Back"
-                disabled={isSubmitting}
+                isDisabled={isSubmitting}
                 modifierClass="btn__form btn__form--back"
                 onClick={() => {
                   navigate("/home");

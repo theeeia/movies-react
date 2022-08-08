@@ -16,7 +16,7 @@ const MovieCard = ({
   rating,
 }: MovieCardProps) => {
   const [stars, setStars] = useState<React.ReactNode[]>([]);
-
+  // Create an array with number of stars as length
   useEffect(() => {
     const starsArray = Array(starsNumber).fill(1);
     setStars(starsArray);
@@ -26,6 +26,7 @@ const MovieCard = ({
     "dropdown--not-favorite",
   );
 
+  // Toogle between favorite classes
   const handleFavorite = () => {
     if (isFavorite == "dropdown--not-favorite") {
       setIsFavorite("dropdown--favorite");

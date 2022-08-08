@@ -31,11 +31,11 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
    Page has offset in the fetch because the pages start from 1.
   ================*/
   // Store the current page starting from 0
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState<number>(0);
 
   // Set selected page in state
-  const handlePageClick = (event: any) => {
-    setPage(event.selected);
+  const handlePageClick = ({ selected }: { selected: number }) => {
+    setPage(selected);
   };
 
   // Get the genres ids and names from API
@@ -57,16 +57,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
    Return the number of stars based on the movie average votes
   ================*/
   const getStarsNumberFromRating = (rating: number) => {
-    let count = 1;
-    while (rating > 0) {
-      // Add a star if rating is greater than two
-      if (rating - 2 > 0) {
-        count++;
-        // Subtract rating by 2
-        rating -= 2;
-      } else break;
-    }
-    return count;
+    return Math.ceil(rating / 2);
   };
 
   /*================
@@ -82,12 +73,12 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   );
 
   // Store the value of the search input
-  const handleSearch = (e: any) => {
-    setSearchInput(e.target.value);
+  const handleSearch = ({ target: { value } }: { target: Record<string, string> }) => {
+    setSearchInput(value);
   };
 
   // Store the parameter for sorting
-  const handleSortChange = (value: any) => {
+  const handleSortChange = (value: "title" | "release_date" | "vote_average") => {
     setSortFilter(value);
   };
 

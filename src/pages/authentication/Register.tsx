@@ -169,7 +169,7 @@ const Register = () => {
 
             <FormButton
               label={isSubmitting ? <Loader /> : "Register"}
-              disabled={isSubmitting}
+              isDisabled={isSubmitting}
               type="submit"
               modifierClass="btn__form btn__form--submit"
             />
