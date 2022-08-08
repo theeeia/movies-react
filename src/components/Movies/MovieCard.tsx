@@ -56,8 +56,8 @@ const MovieCard = ({
           </div>
         </div>
 
-        <div className="movie-card__favorite">
-          <HeartIcon className={isFavorite} onClick={handleFavorite} />
+        <div className="movie-card__favorite" onClick={handleFavorite}>
+          <HeartIcon className={isFavorite} />
         </div>
       </div>
     </div>

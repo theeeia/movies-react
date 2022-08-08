@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { parseISO, getYear } from "date-fns";
 
 // Components
 import Loader from "../Loader/Loader";
@@ -104,6 +105,11 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     return moviesList;
   }, [debouncedSearch, sortParameter, movies]);
 
+  const handleGetYear = (date: string) => {
+    const dates = parseISO(date);
+    return getYear(dates).toString();
+  };
+
   return (
     <>
       <div className="breadcrumbs">Home</div>
@@ -126,7 +132,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   key={movie.id}
                   poster={movie.poster_path}
                   title={movie.title}
-                  year={movie.release_date.split("-")[0]}
+                  year={handleGetYear(movie.release_date)}
                   language={movie.original_language}
                   genre={genre?.name}
                   starsNumber={handleStarsNumberFromRating(movie.vote_average)}
