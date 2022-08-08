@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
+import Loader from "../Loader/Loader";
 import { DropdownItemProps, DropdownProps } from "./interfaces";
 
 const Dropdown = ({
@@ -9,7 +10,7 @@ const Dropdown = ({
   icon,
   downIcon,
   isDisplayedTextStatic = false,
-  //   isLoading = false, TODO: Add loader
+  isLoading = false,
   modifierClass = "",
   disabled = false,
 }: DropdownProps) => {
@@ -48,10 +49,15 @@ const Dropdown = ({
       ref={dropdownMenuRef}
     >
       <div className="dropdown__button">
-        {icon && icon}
-        <span> {displayText}</span>
-        {downIcon && downIcon}
-        {/* TODO: ADD LOADER */}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            {icon && icon}
+            <span> {displayText}</span>
+            {downIcon && downIcon}
+          </>
+        )}
       </div>
 
       {isMenuOpen && (
