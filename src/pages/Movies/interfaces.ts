@@ -19,3 +19,8 @@ export interface GenreApiProps {
   id: number;
   name: string;
 }
+
+export interface MovieContentProps {
+  title: string;
+  apiKey: string;
+}

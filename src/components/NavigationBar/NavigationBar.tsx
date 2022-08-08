@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 // Icons;
 import { ReactComponent as UserIcon } from "../../assets/images/user.svg";
@@ -15,15 +15,21 @@ import { AuthContext } from "../../context/AuthContext";
 // Utilities
 import handleLogoutUser from "../../utils/handleLogoutUser";
 
+// Statics
 import { NAVIGATION_DROPDOWN_ITEMS } from "./statics";
 
 const NavigationBar = () => {
   const { user } = useContext(AuthContext);
 
   // Loader for the logout button while user is being logged out
-
+  const [loadingLogout, setLoadingLogout] = useState(false);
   const handleLogout = async () => {
-    await handleLogoutUser();
+    setLoadingLogout(true);
+    try {
+      await handleLogoutUser();
+    } finally {
+      setLoadingLogout(false);
+    }
   };
 
   /*================
@@ -72,6 +78,7 @@ const NavigationBar = () => {
         <div className="navigation__dropdown">
           <Dropdown
             title={user}
+            isLoading={loadingLogout}
             icon={<UserIcon />}
             downIcon={<DropdownArrow />}
             isDisplayedTextStatic={true}
