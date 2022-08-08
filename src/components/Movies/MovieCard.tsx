@@ -7,6 +7,7 @@ import { MovieCardProps } from "./interfaces";
 import { useEffect, useState } from "react";
 
 const MovieCard = ({
+  movieId,
   genre,
   title,
   year,
@@ -14,6 +15,8 @@ const MovieCard = ({
   poster,
   starsNumber,
   rating,
+  isInFavorites = false,
+  handleAddToFavorites,
 }: MovieCardProps) => {
   const [stars, setStars] = useState<React.ReactNode[]>([]);
   // Create an array with number of stars as length
@@ -22,17 +25,12 @@ const MovieCard = ({
     setStars(starsArray);
   }, []);
 
-  const [isFavorite, setIsFavorite] = useState<"movie-card--not-favorite" | "movie-card--favorite">(
-    "movie-card--not-favorite",
-  );
+  const [isFavorite, setIsFavorite] = useState(isInFavorites);
 
   // Toogle between favorite classes
-  const handleFavorite = () => {
-    if (isFavorite == "movie-card--not-favorite") {
-      setIsFavorite("movie-card--favorite");
-    } else {
-      setIsFavorite("movie-card--not-favorite");
-    }
+  const handleFavorite = (movieId: number) => {
+    setIsFavorite(!isFavorite);
+    handleAddToFavorites(movieId);
   };
 
   return (
@@ -56,8 +54,8 @@ const MovieCard = ({
           </div>
         </div>
 
-        <div className="movie-card__favorite" onClick={handleFavorite}>
-          <HeartIcon className={isFavorite} />
+        <div className="movie-card__favorite" onClick={() => handleFavorite(movieId)}>
+          <HeartIcon className={isFavorite ? "movie-card--favorite" : "movie-card--not-favorite"} />
         </div>
       </div>
     </div>

@@ -23,6 +23,17 @@ import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Mov
 import { SortValueTypes } from "./interfaces";
 
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
+  let favoritesList = localStorage.getItem("favoritesList")
+    ? JSON.parse(localStorage.getItem("favoritesList") || "")
+    : [];
+
+  const handleAddToFavorites = (movieId: number) => {
+    favoritesList = favoritesList.includes(movieId)
+      ? favoritesList.filter((id: number) => id != movieId)
+      : [...favoritesList, movieId];
+    localStorage.setItem("favoritesList", JSON.stringify(favoritesList));
+  };
+
   const { handleFetch } = handleFetchCall();
 
   /*================
@@ -105,6 +116,11 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     return moviesList;
   }, [debouncedSearch, sortParameter, movies]);
 
+  /*================
+    GET YEAR
+
+  Parse the date from api response and get the year
+  ================*/
   const handleGetYear = (date: string) => {
     const dates = parseISO(date);
     return getYear(dates).toString();
@@ -128,6 +144,8 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
               )[0];
               return (
                 <MovieCard
+                  movieId={movie.id}
+                  isInFavorites={favoritesList.includes(movie.id)}
                   rating={movie.vote_average}
                   key={movie.id}
                   poster={movie.poster_path}
@@ -136,6 +154,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   language={movie.original_language}
                   genre={genre?.name}
                   starsNumber={handleStarsNumberFromRating(movie.vote_average)}
+                  handleAddToFavorites={handleAddToFavorites}
                 />
               );
             })}

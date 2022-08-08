@@ -5,6 +5,7 @@ export interface MoviesHeaderProps {
 }
 
 export interface MovieCardProps {
+  movieId: number;
   genre: string;
   title: string;
   year: string;
@@ -12,6 +13,8 @@ export interface MovieCardProps {
   poster: string;
   starsNumber: number;
   rating: number;
+  isInFavorites: boolean;
+  handleAddToFavorites: (movieId: number) => void;
 }
 
 export type SortValueTypes = "title" | "release_date" | "vote_average";
