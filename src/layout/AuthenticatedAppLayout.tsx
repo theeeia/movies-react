@@ -9,7 +9,10 @@ const AuthenticatedAppLayout = () => {
   return (
     <>
       <NavigationBar />
-      <AuthenticatedApp />
+      <div className="container minimal-page-height">
+        <AuthenticatedApp />
+      </div>
+
       <Footer />
     </>
   );

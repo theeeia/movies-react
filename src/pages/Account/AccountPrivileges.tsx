@@ -40,7 +40,7 @@ const AccountPrivileges = () => {
   }, [data, role]);
 
   return (
-    <div className="account-privilege container pt--40 minimal-page-height">
+    <div className="account-privilege pt--40 ">
       {status !== "success" ? (
         <Loader />
       ) : role == "user" ? (
