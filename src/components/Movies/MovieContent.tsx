@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 
 // Components
-import Loader from "../../components/Loader/Loader";
-import MovieCard from "../../components/Movies/MovieCard";
-import MoviesHeader from "../../components/Movies/MoviesHeader";
-import Pagination from "../../components/Pagination/Pagination";
+import Loader from "../Loader/Loader";
+import MovieCard from "./MovieCard";
+import MoviesHeader from "./MoviesHeader";
+import Pagination from "../Pagination/Pagination";
 
 // Configs
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
@@ -19,7 +19,7 @@ import handleListFilter from "../../utils/handleListFilter";
 import handleListSort from "../../utils/handleListSort";
 
 // Interfaces
-import { GenreApiProps, MovieApiProps, MovieContentProps } from "./interfaces";
+import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
 
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const { handleFetch } = handleFetchCall();
