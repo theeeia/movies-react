@@ -16,7 +16,6 @@ import useDebounce from "../../hooks/useDebounce";
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
-import handleListSort from "../../utils/handleListSort";
 
 // Interfaces
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
@@ -91,12 +90,16 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     let moviesList = movies.results;
     // Filter movies if there is a input
     if (debouncedSearch) {
-      moviesList = handleListFilter(moviesList, debouncedSearch);
+      moviesList = handleListFilter(moviesList, debouncedSearch, "title");
     }
 
     // Sort movies if a parameter is selected
     if (sortParameter) {
-      moviesList = handleListSort(moviesList, sortParameter);
+      moviesList.sort((a: Record<string, any>, b: Record<string, any>) => {
+        return b[sortParameter] > a[sortParameter] ? 1 : -1;
+      });
+
+      if (sortParameter === "title") return moviesList.reverse();
     }
 
     return moviesList;
@@ -104,7 +107,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   return (
     <>
-      <div className="container default-page-height">
+      <div className="container minimal-page-height">
         <div className="breadcrumbs">Home</div>
         <MoviesHeader
           title={title}
