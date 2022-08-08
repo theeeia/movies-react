@@ -4,7 +4,7 @@
 
 body { background-color: $bg-color; }
 
-.default-page-height {
+.minimal-page-height {
     min-height: calc(100vh - 215px);
 }
 
@@ -12,7 +12,19 @@ body { background-color: $bg-color; }
     display: block;
     margin: 60px auto 100px auto;
 }
-.home-page {
+
+.page-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__details {
+        color: #3E4954;
+        font-size: 16px;
+    }
+}
+
+.account-privilege {
     height: 70vh;
     color: white;
     font-size: 30px;
@@ -28,14 +40,3 @@ body { background-color: $bg-color; }
 }
 
 .link-button { padding: 5px 30px; }
-
-.page-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    &__details {
-        color: #3E4954;
-        font-size: 16px;
-    }
-}

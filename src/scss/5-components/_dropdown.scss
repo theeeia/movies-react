@@ -1,6 +1,7 @@
 .dropdown {
-    float: right;
-
+    
+    margin-left: auto; 
+    margin-right: 0;
     &--lg-wide { width: 225px; 
         & > .dropdown__content{
             width: 225px; 
