@@ -1,4 +1,7 @@
+// Components
+import MovieContent from "../../components/Movies/MovieContent";
+
 const Upcoming = () => {
-  return <div>Upcoming</div>;
+  return <MovieContent title="Upcoming" apiKey="upcoming" />;
 };
 export default Upcoming;
