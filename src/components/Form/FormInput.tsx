@@ -9,9 +9,7 @@ const FormInput = ({
   type,
   placeholder,
   icon,
-  handleIconClick = () => {
-    return;
-  },
+  handleIconClick,
   required,
 }: FormInputProps) => {
   const [field, meta] = useField({ name, type, required });

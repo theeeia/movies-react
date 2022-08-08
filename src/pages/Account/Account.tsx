@@ -233,7 +233,7 @@ const Account = () => {
                 label="Back"
                 isDisabled={isSubmitting}
                 modifierClass="btn__form btn__form--back"
-                onClick={() => {
+                handleOnClick={() => {
                   navigate("/home");
                 }}
               />

@@ -27,5 +27,5 @@ export interface FormButtonProps {
   modifierClass: string;
   type?: "button" | "submit" | "reset" | undefined;
   isDisabled: boolean;
-  onClick?: () => void;
+  handleOnClick?: () => void;
 }

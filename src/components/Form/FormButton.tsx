@@ -5,13 +5,11 @@ const FormButton = ({
   modifierClass,
   type = "button",
   isDisabled = false,
-  onClick = () => {
-    return;
-  },
+  handleOnClick,
 }: FormButtonProps) => {
   return (
     <button
-      onClick={onClick}
+      onClick={handleOnClick}
       type={type}
       disabled={isDisabled}
       className={`btn ${modifierClass} ${isDisabled && "btn--disabled"}`}
