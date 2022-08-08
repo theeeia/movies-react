@@ -143,19 +143,21 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
               })}
             </div>
 
-            <div className="page-info">
-              <div className="page-info__details">
-                Showing {movies.results.length + 20 * page} from {movies.total_results} data
-              </div>
+            {!searchInput ? (
+              <div className="page-info">
+                <div className="page-info__details">
+                  Showing {movies.results.length + 20 * page} from {movies.total_results} data
+                </div>
 
-              {!searchInput && (
                 <Pagination
                   handlePageClick={handlePageClick}
                   totalPages={movies.total_pages}
                   page={page}
                 />
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="txt--center">No Results </div>
+            )}
           </>
         ) : (
           <Loader />
