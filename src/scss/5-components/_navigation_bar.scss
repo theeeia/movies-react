@@ -2,20 +2,20 @@
 
     background-color: #131313;
     padding: 35px 0 ;
+    height: 130px;
     
-
+    
     &__content {
         display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     &__logo {
         display: flex;
         flex: 1;
         justify-content: left;
-       
     }
 
     &__links {
@@ -28,7 +28,9 @@
 
     &__link {
         font-size: 16px;
-        color: rgba(255, 255, 255, 0.6);;
+        color: white;
+        
+        &--unselected {  color: rgba(255, 255, 255, 0.6); }
     }
      
     &__dropdown {

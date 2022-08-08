@@ -2,10 +2,10 @@ import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 
 // Components
-import FormButton from "../../components/authenticationForm/FormButton";
-import FormInput from "../../components/authenticationForm/FormInput";
+import FormButton from "../../components/Form/FormButton";
+import FormInput from "../../components/Form/FormInput";
 import Loader from "../../components/Loader/Loader";
-import FormToggleButton from "../../components/authenticationForm/FormToggleButton";
+import FormToggleButton from "../../components/Form/FormToggleButton";
 
 // Interfaces
 import { EditAccountValues } from "./interfaces";
@@ -24,7 +24,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
 
-export default function Account() {
+const Account = () => {
   const [editDetailsFormValues, setEditDetailsFormValues] = useState<EditAccountValues>({
     first_name: "",
     last_name: "",
@@ -225,15 +225,15 @@ export default function Account() {
               />
               <FormButton
                 label={isSubmitting ? <Loader /> : "Edit"}
-                disabled={isSubmitting}
+                isDisabled={isSubmitting}
                 type="submit"
                 modifierClass="btn__form btn__form--submit"
               />
               <FormButton
                 label="Back"
-                disabled={isSubmitting}
+                isDisabled={isSubmitting}
                 modifierClass="btn__form btn__form--back"
-                onClick={() => {
+                handleOnClick={() => {
                   navigate("/home");
                 }}
               />
@@ -245,4 +245,5 @@ export default function Account() {
       )}
     </div>
   );
-}
+};
+export default Account;

@@ -1,5 +1,4 @@
-function Loader({ ...props }) {
-  const { modifierClass } = props;
+const Loader = ({ modifierClass = "" }) => {
   return (
     <div className={`lds-ellipsis ${modifierClass}`}>
       <div></div>
@@ -8,6 +7,6 @@ function Loader({ ...props }) {
       <div></div>
     </div>
   );
-}
+};
 
 export default Loader;

@@ -9,7 +9,7 @@ import handleFetchCall from "../../utils/handleFetchCall";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 
-function Admin() {
+const AccountPrivileges = () => {
   const navigate = useNavigate();
 
   /*================
@@ -40,7 +40,7 @@ function Admin() {
   }, [data, role]);
 
   return (
-    <div className="home-page">
+    <div className="account-privilege pt--40 ">
       {status !== "success" ? (
         <Loader />
       ) : role == "user" ? (
@@ -55,6 +55,6 @@ function Admin() {
       )}
     </div>
   );
-}
+};
 
-export default Admin;
+export default AccountPrivileges;

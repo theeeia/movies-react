@@ -3,9 +3,16 @@ import { useField } from "formik";
 // Interfaces
 import { FormInputProps } from "./interfaces";
 
-export default function FormInput(props: FormInputProps) {
-  const { label, required, handleIconClick, icon, ...properties } = props;
-  const [field, meta] = useField(properties);
+const FormInput = ({
+  label,
+  name,
+  type,
+  placeholder,
+  icon,
+  handleIconClick,
+  required,
+}: FormInputProps) => {
+  const [field, meta] = useField({ name, type, required });
 
   return (
     <div>
@@ -17,7 +24,8 @@ export default function FormInput(props: FormInputProps) {
       <div className="form__field">
         <input
           {...field}
-          {...properties}
+          type={type}
+          placeholder={placeholder}
           className={`form__input  ${meta.touched && meta.error ? "form__input--error" : ""}`}
         />
 
@@ -31,4 +39,5 @@ export default function FormInput(props: FormInputProps) {
       </div>
     </div>
   );
-}
+};
+export default FormInput;
