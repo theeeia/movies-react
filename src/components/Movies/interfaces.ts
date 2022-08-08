@@ -1,9 +1,7 @@
 export interface MoviesHeaderProps {
   title: string;
-  handleSearch: (e: any) => void;
-  handleSortChange: (
-    e: "title" | "release_date" | "vote_average" | string | number | boolean,
-  ) => void;
+  handleSearch: (searchedValue: string) => void;
+  handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
 }
 
 export interface MovieCardProps {
@@ -15,3 +13,5 @@ export interface MovieCardProps {
   starsNumber: number;
   rating: number;
 }
+
+export type SortValueTypes = "title" | "release_date" | "vote_average";

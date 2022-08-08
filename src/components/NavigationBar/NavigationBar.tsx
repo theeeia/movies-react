@@ -17,6 +17,7 @@ import handleLogoutUser from "../../utils/handleLogoutUser";
 
 // Statics
 import { NAVIGATION_DROPDOWN_ITEMS } from "./statics";
+import { DropdownItemProps } from "../Dropdown/interfaces";
 
 const NavigationBar = () => {
   const { user } = useContext(AuthContext);
@@ -40,11 +41,12 @@ const NavigationBar = () => {
 
   const navigate = useNavigate();
 
-  const handleChange = (item: any) => {
-    if (item.value === "logout") {
+  const handleChange = (navigationItem: DropdownItemProps) => {
+    const value = navigationItem.value as string;
+    if (value === "logout") {
       handleLogout();
     } else {
-      navigate(item.value);
+      navigate(value);
     }
   };
 

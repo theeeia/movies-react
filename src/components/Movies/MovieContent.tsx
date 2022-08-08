@@ -19,7 +19,7 @@ import handleListFilter from "../../utils/handleListFilter";
 
 // Interfaces
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
-import { DropdownItemProps } from "../Dropdown/interfaces";
+import { SortValueTypes } from "./interfaces";
 
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const { handleFetch } = handleFetchCall();
@@ -56,7 +56,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
    Return the number of stars based on the movie average votes
   ================*/
-  const getStarsNumberFromRating = (rating: number) => {
+  const handleStarsNumberFromRating = (rating: number) => {
     return Math.ceil(rating / 2);
   };
 
@@ -66,19 +66,17 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   Get the parameters on input change 
   ================*/
 
-  const [searchInput, setSearchInput] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState<string>("");
 
-  const [sortParameter, setSortFilter] = useState<"title" | "release_date" | "vote_average" | null>(
-    null,
-  );
+  const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
 
   // Store the value of the search input
-  const handleSearch = ({ value }: { value: any }) => {
+  const handleSearch = (value: string) => {
     setSearchInput(value);
   };
 
   // Store the parameter for sorting
-  const handleSortChange = (value: "title" | "release_date" | "vote_average") => {
+  const handleSortChange = (value: SortValueTypes) => {
     setSortFilter(value);
   };
 
@@ -108,56 +106,54 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   return (
     <>
-      <div className="container minimal-page-height">
-        <div className="breadcrumbs">Home</div>
-        <MoviesHeader
-          title={title}
-          handleSearch={(e: DropdownItemProps) => handleSearch(e)}
-          handleSortChange={(e: any) => handleSortChange(e)}
-        />
+      <div className="breadcrumbs">Home</div>
+      <MoviesHeader
+        title={title}
+        handleSearch={(searchValue: string) => handleSearch(searchValue)}
+        handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
+      />
 
-        {statusGenres === "success" && statusMovies === "success" ? (
-          <>
-            <div className="row">
-              {moviesList.map((movie: MovieApiProps) => {
-                const genre = genres.genres.filter(
-                  (genre: GenreApiProps) => genre.id === movie.genre_ids[0],
-                )[0];
-                return (
-                  <MovieCard
-                    rating={movie.vote_average}
-                    key={movie.id}
-                    poster={movie.poster_path}
-                    title={movie.title}
-                    year={movie.release_date.split("-")[0]}
-                    language={movie.original_language}
-                    genre={genre?.name}
-                    starsNumber={getStarsNumberFromRating(movie.vote_average)}
-                  />
-                );
-              })}
-            </div>
-
-            {!searchInput ? (
-              <div className="page-info">
-                <div className="page-info__details">
-                  Showing {movies.results.length + 20 * page} from {movies.total_results} data
-                </div>
-
-                <Pagination
-                  handlePageClick={handlePageClick}
-                  totalPages={movies.total_pages}
-                  page={page}
+      {statusGenres === "success" && statusMovies === "success" ? (
+        <>
+          <div className="row">
+            {moviesList.map((movie: MovieApiProps) => {
+              const genre = genres.genres.filter(
+                (genre: GenreApiProps) => genre.id === movie.genre_ids[0],
+              )[0];
+              return (
+                <MovieCard
+                  rating={movie.vote_average}
+                  key={movie.id}
+                  poster={movie.poster_path}
+                  title={movie.title}
+                  year={movie.release_date.split("-")[0]}
+                  language={movie.original_language}
+                  genre={genre?.name}
+                  starsNumber={handleStarsNumberFromRating(movie.vote_average)}
                 />
+              );
+            })}
+          </div>
+
+          {!searchInput ? (
+            <div className="page-info">
+              <div className="page-info__details">
+                Showing {movies.results.length + 20 * page} from {movies.total_results} data
               </div>
-            ) : (
-              <div className="txt--center">No Results </div>
-            )}
-          </>
-        ) : (
-          <Loader />
-        )}
-      </div>
+
+              <Pagination
+                handlePageClick={handlePageClick}
+                totalPages={movies.total_pages}
+                page={page}
+              />
+            </div>
+          ) : (
+            <div className="txt--center">No Results </div>
+          )}
+        </>
+      ) : (
+        <Loader />
+      )}
     </>
   );
 };

@@ -3,7 +3,7 @@ import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
 
 // Interfaces
-import { MoviesHeaderProps } from "./interfaces";
+import { MoviesHeaderProps, SortValueTypes } from "./interfaces";
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 // Statics
@@ -13,7 +13,10 @@ import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 import Dropdown from "../Dropdown/Dropdown";
 
 const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderProps) => {
-  const handleDropdownItem = (item: DropdownItemProps) => handleSortChange(item.value);
+  const handleDropdownItem = (item: DropdownItemProps) => {
+    const sortValue = item.value as SortValueTypes;
+    handleSortChange(sortValue);
+  };
 
   return (
     <div className="movies-header">
@@ -25,7 +28,9 @@ const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderPro
           <input
             className="movies-header__input"
             placeholder="Search titles here..."
-            onChange={handleSearch}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              handleSearch(event.currentTarget.value)
+            }
           />
         </div>
         <div className="movies-header__filter">
