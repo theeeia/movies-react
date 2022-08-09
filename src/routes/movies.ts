@@ -1,4 +1,5 @@
 import Favorites from "../pages/Movies/Favorites";
+import MovieDetails from "../pages/Movies/MovieDetails";
 import NowPlaying from "../pages/Movies/NowPlaying";
 import TopRated from "../pages/Movies/TopRated";
 import Upcoming from "../pages/Movies/Upcoming";
@@ -20,5 +21,9 @@ export const MOVIE_ROUTES: RoutesProps[] = [
   {
     path: "/movies/favorites",
     component: Favorites,
+  },
+  {
+    path: "/movies/details/:id",
+    component: MovieDetails,
   },
 ];

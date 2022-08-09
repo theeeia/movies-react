@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
@@ -34,9 +35,15 @@ const MovieCard = ({
     handleAddToFavorites(movieId);
   };
 
+  const navigate = useNavigate();
+
+  const handleMovieDetails = () => {
+    navigate("/movies/details/" + movieId);
+  };
+
   return (
     <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb--70">
-      <div className="movie-card">
+      <div className="movie-card" onClick={() => handleMovieDetails()}>
         <div className="movie-card__image-box">
           <div className="movie-card__genre">{genre}</div>
           <img className="movie-card__image" src={`https://image.tmdb.org/t/p/w500/${poster}`} />
