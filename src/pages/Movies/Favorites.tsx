@@ -53,7 +53,7 @@ const Favorites = () => {
 
   Removes the movie from list of favorites
   ================*/
-  const handleAddMovieToFavorites = (movieId: number) => {
+  const handleRemoveMovieFromFavorites = (movieId: number) => {
     const newFavoriteMoviesIdsList = favoriteMoviesIdsList.filter((id: number) => id != movieId);
     // Save new list in local storage
     localStorage.setItem("favoritesList", JSON.stringify(newFavoriteMoviesIdsList));
@@ -159,7 +159,7 @@ const Favorites = () => {
                   genre={movie.genres[0].name}
                   starsNumber={handleStarsNumberFromRating(movie.vote_average)}
                   isInFavorites={true}
-                  handleAddToFavorites={handleAddMovieToFavorites}
+                  handleAddToFavorites={handleRemoveMovieFromFavorites}
                 />
               );
             })}

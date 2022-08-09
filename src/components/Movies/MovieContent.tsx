@@ -28,14 +28,22 @@ import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const { handleFetch } = handleFetchCall();
 
+  // Read list from local storage
   let favoriteMoviesIdsList = localStorage.getItem("favoritesList")
     ? JSON.parse(localStorage.getItem("favoritesList") || "")
     : [];
 
+  /*================
+  HANDLE FAVORITE BUTTON 
+
+  Adds or removes the movie from list of favorites
+  ================*/
   const handleAddMovieToFavorites = (movieId: number) => {
     favoriteMoviesIdsList = favoriteMoviesIdsList.includes(movieId)
       ? favoriteMoviesIdsList.filter((id: number) => id != movieId)
       : [...favoriteMoviesIdsList, movieId];
+
+    // Stores the new list to local storage
     localStorage.setItem("favoritesList", JSON.stringify(favoriteMoviesIdsList));
   };
 
