@@ -14,7 +14,6 @@ const MovieCard = ({
   language,
   poster,
   starsNumber,
-  rating,
   isInFavorites = false,
   handleAddToFavorites,
 }: MovieCardProps) => {
@@ -45,7 +44,6 @@ const MovieCard = ({
           <div className="movie-card__title">{title}</div>
           <div className="movie-card__info">
             <p>{year}</p>
-            <p>{rating}</p>
             <p className="txt--uppercase">{language}</p>
           </div>
           <div className="movie-card__rating">

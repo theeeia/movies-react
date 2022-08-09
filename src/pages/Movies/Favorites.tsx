@@ -79,7 +79,6 @@ const Favorites = () => {
 
     // Map the query responses to a list of movies
     let moviesList = favoriteMoviesResponses.map((movie: Record<string, any>) => {
-      console.log(movie.data);
       return movie.data;
     });
 
@@ -140,7 +139,6 @@ const Favorites = () => {
               return (
                 <MovieCard
                   movieId={movie.id}
-                  rating={Number(movie.vote_average.toFixed(1))}
                   key={movie.id}
                   poster={movie.poster_path}
                   title={movie.title}

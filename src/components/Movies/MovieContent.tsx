@@ -145,7 +145,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
               return (
                 <MovieCard
                   movieId={movie.id}
-                  rating={movie.vote_average}
                   key={movie.id}
                   poster={movie.poster_path}
                   title={movie.title}
