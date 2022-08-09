@@ -30,7 +30,8 @@ const MovieCard = ({
   const [isFavorite, setIsFavorite] = useState(isInFavorites);
 
   // Toogle between favorite classes
-  const handleFavorite = (movieId: number) => {
+  const handleFavorite = (event: any) => {
+    event.stopPropagation();
     setIsFavorite(!isFavorite);
     handleAddToFavorites(movieId);
   };
@@ -65,7 +66,7 @@ const MovieCard = ({
           className={`movie-card__favorite ${
             isFavorite ? "movie-card--favorite" : "movie-card--not-favorite"
           }  `}
-          onClick={() => handleFavorite(movieId)}
+          onClick={event => handleFavorite(event)}
         >
           {favoriteIcon}
         </div>
