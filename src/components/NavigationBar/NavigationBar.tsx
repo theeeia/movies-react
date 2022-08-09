@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 
-// Icons;
+// Icons
 import { ReactComponent as UserIcon } from "../../assets/images/user.svg";
 import { ReactComponent as MiruLogo } from "../../assets/images/logo.svg";
 import { ReactComponent as DropdownArrow } from "../../assets/images/dropdown-arrow.svg";
@@ -17,6 +17,8 @@ import handleLogoutUser from "../../utils/handleLogoutUser";
 
 // Statics
 import { NAVIGATION_DROPDOWN_ITEMS } from "./statics";
+
+// Interfaces
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 const NavigationBar = () => {

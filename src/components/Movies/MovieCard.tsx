@@ -1,38 +1,37 @@
+import { useEffect, useState } from "react";
+
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
-import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
 // Interfaces
 import { MovieCardProps } from "./interfaces";
-import { useEffect, useState } from "react";
 
 const MovieCard = ({
+  favoriteIcon,
+  movieId,
   genre,
   title,
   year,
   language,
   poster,
   starsNumber,
-  rating,
+  isInFavorites = false,
+  handleAddToFavorites,
 }: MovieCardProps) => {
   const [stars, setStars] = useState<React.ReactNode[]>([]);
+
   // Create an array with number of stars as length
   useEffect(() => {
     const starsArray = Array(starsNumber).fill(1);
     setStars(starsArray);
   }, []);
 
-  const [isFavorite, setIsFavorite] = useState<"movie-card--not-favorite" | "movie-card--favorite">(
-    "movie-card--not-favorite",
-  );
+  const [isFavorite, setIsFavorite] = useState(isInFavorites);
 
   // Toogle between favorite classes
-  const handleFavorite = () => {
-    if (isFavorite == "movie-card--not-favorite") {
-      setIsFavorite("movie-card--favorite");
-    } else {
-      setIsFavorite("movie-card--not-favorite");
-    }
+  const handleFavorite = (movieId: number) => {
+    setIsFavorite(!isFavorite);
+    handleAddToFavorites(movieId);
   };
 
   return (
@@ -46,7 +45,6 @@ const MovieCard = ({
           <div className="movie-card__title">{title}</div>
           <div className="movie-card__info">
             <p>{year}</p>
-            <p>{rating}</p>
             <p className="txt--uppercase">{language}</p>
           </div>
           <div className="movie-card__rating">
@@ -56,8 +54,13 @@ const MovieCard = ({
           </div>
         </div>
 
-        <div className="movie-card__favorite" onClick={handleFavorite}>
-          <HeartIcon className={isFavorite} />
+        <div
+          className={`movie-card__favorite ${
+            isFavorite ? "movie-card--favorite" : "movie-card--not-favorite"
+          }  `}
+          onClick={() => handleFavorite(movieId)}
+        >
+          {favoriteIcon}
         </div>
       </div>
     </div>

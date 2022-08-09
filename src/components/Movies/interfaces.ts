@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface MoviesHeaderProps {
   title: string;
   handleSearch: (searchedValue: string) => void;
@@ -5,13 +7,16 @@ export interface MoviesHeaderProps {
 }
 
 export interface MovieCardProps {
+  favoriteIcon: React.ReactNode;
+  movieId: number;
   genre: string;
   title: string;
   year: string;
   language: string;
   poster: string;
   starsNumber: number;
-  rating: number;
+  isInFavorites: boolean;
+  handleAddToFavorites: (movieId: number) => void;
 }
 
 export type SortValueTypes = "title" | "release_date" | "vote_average";
