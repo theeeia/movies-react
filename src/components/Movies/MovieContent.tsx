@@ -23,6 +23,8 @@ import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Mov
 import { SortValueTypes } from "./interfaces";
 
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
+  const { handleFetch } = handleFetchCall();
+
   let favoritesList = localStorage.getItem("favoritesList")
     ? JSON.parse(localStorage.getItem("favoritesList") || "")
     : [];
@@ -33,8 +35,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       : [...favoritesList, movieId];
     localStorage.setItem("favoritesList", JSON.stringify(favoritesList));
   };
-
-  const { handleFetch } = handleFetchCall();
 
   /*================
    Pagination
@@ -145,7 +145,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
               return (
                 <MovieCard
                   movieId={movie.id}
-                  isInFavorites={favoritesList.includes(movie.id)}
                   rating={movie.vote_average}
                   key={movie.id}
                   poster={movie.poster_path}
@@ -154,6 +153,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   language={movie.original_language}
                   genre={genre?.name}
                   starsNumber={handleStarsNumberFromRating(movie.vote_average)}
+                  isInFavorites={favoritesList.includes(movie.id)}
                   handleAddToFavorites={handleAddToFavorites}
                 />
               );
@@ -173,7 +173,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
               />
             </div>
           ) : (
-            <div className="txt--center">No Results </div>
+            <div className="txt--center txt--white">No Results </div>
           )}
         </>
       ) : (

@@ -19,6 +19,7 @@ const MovieCard = ({
   handleAddToFavorites,
 }: MovieCardProps) => {
   const [stars, setStars] = useState<React.ReactNode[]>([]);
+
   // Create an array with number of stars as length
   useEffect(() => {
     const starsArray = Array(starsNumber).fill(1);
