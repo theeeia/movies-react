@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { parseISO, getYear } from "date-fns";
 
 // Components
 import Loader from "../Loader/Loader";
@@ -17,6 +16,7 @@ import useDebounce from "../../hooks/useDebounce";
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
+import handleGetYear from "../../utils/handleGetYear";
 
 // Interfaces
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
@@ -126,16 +126,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
     return moviesList;
   }, [debouncedSearch, sortParameter, movies]);
-
-  /*================
-    GET YEAR
-
-  Parse the date from api response and get the year
-  ================*/
-  const handleGetYear = (date: string) => {
-    const dates = parseISO(date);
-    return getYear(dates).toString();
-  };
 
   return (
     <>

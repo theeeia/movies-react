@@ -1,6 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { parseISO, getYear } from "date-fns";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -20,6 +19,7 @@ import useDebounce from "../../hooks/useDebounce";
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
+import handleGetYear from "../../utils/handleGetYear";
 
 // Icons
 import { ReactComponent as TrashIcon } from "../../assets/images/trash.svg";
@@ -117,16 +117,6 @@ const Favorites = () => {
   ================*/
   const handleStarsNumberFromRating = (rating: number) => {
     return Math.ceil(rating / 2);
-  };
-
-  /*================
-    GET YEAR
-
-  Parse the date from api response and get the year
-  ================*/
-  const handleGetYear = (date: string) => {
-    const dates = parseISO(date);
-    return getYear(dates).toString();
   };
 
   // Set to true if any query is still loading
