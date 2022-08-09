@@ -9,7 +9,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState(() =>
     localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "") : null,
   );
-
   const contextData = {
     user: user,
     setUser: setUser,

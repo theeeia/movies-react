@@ -1,0 +1,62 @@
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    &__button {
+        background-color: rgba(255, 255, 255, 0.09);
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+    
+        &--disabled {
+            background-color: rgb(100, 98, 98);
+            color:rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+        }
+    }
+
+    &__button-label {
+        color: white;
+
+        &--disabled { color:rgb(65, 62, 62); }
+    }
+
+    &__pages {
+        background-color: rgba(0, 15, 147, 0.15);
+        padding: 10px 20px;
+        border-top: solid 1px #000F93;
+        border-bottom : solid 1px #000F93;
+        
+
+        &--active { padding: 10px 0; }        
+    }
+
+    & > li:nth-child(2) {
+        border-bottom-left-radius: 20px ;
+        border-left: solid 1px #000F93;
+        border-top-left-radius: 20px;
+        margin-left: 15px;           
+        }
+
+    & > li:nth-last-child(2) {
+        border-bottom-right-radius: 20px ;
+        border-right: solid 1px #000F93;
+        margin-right: 15px;
+        border-top-right-radius: 20px;          
+    }
+
+    &__pages-label {
+        color: #000F93;
+        cursor: pointer;
+
+        &--active {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: #000F93;
+            color: white;
+        }   
+    }
+}
+

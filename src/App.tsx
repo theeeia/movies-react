@@ -6,16 +6,18 @@ import "react-toastify/dist/ReactToastify.css";
 // Context
 import { AuthContext } from "./context/AuthContext";
 
-//Pages
-import AuthenticatedApp from "./pages/AuthenticatedApp";
+// Pages
 import UnauthenticatedApp from "./pages/UnauthenticatedApp";
+
+// Layouts
+import AuthenticatedAppLayout from "./layout/AuthenticatedAppLayout";
 
 export default function App() {
   const { user } = useContext(AuthContext);
 
   return (
     <>
-      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {user ? <AuthenticatedAppLayout /> : <UnauthenticatedApp />}
       <ToastContainer />
     </>
   );
