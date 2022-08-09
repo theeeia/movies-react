@@ -87,6 +87,11 @@
         cursor: pointer;
     
     }
+    &__rating {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
 
     &--favorite {
         path {
