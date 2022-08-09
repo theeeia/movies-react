@@ -25,15 +25,15 @@ import { SortValueTypes } from "./interfaces";
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const { handleFetch } = handleFetchCall();
 
-  let favoritesList = localStorage.getItem("favoritesList")
+  let favoriteMoviesIdsList = localStorage.getItem("favoritesList")
     ? JSON.parse(localStorage.getItem("favoritesList") || "")
     : [];
 
-  const handleAddToFavorites = (movieId: number) => {
-    favoritesList = favoritesList.includes(movieId)
-      ? favoritesList.filter((id: number) => id != movieId)
-      : [...favoritesList, movieId];
-    localStorage.setItem("favoritesList", JSON.stringify(favoritesList));
+  const handleAddMovieToFavorites = (movieId: number) => {
+    favoriteMoviesIdsList = favoriteMoviesIdsList.includes(movieId)
+      ? favoriteMoviesIdsList.filter((id: number) => id != movieId)
+      : [...favoriteMoviesIdsList, movieId];
+    localStorage.setItem("favoritesList", JSON.stringify(favoriteMoviesIdsList));
   };
 
   /*================
@@ -152,8 +152,8 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   language={movie.original_language}
                   genre={genre?.name}
                   starsNumber={handleStarsNumberFromRating(movie.vote_average)}
-                  isInFavorites={favoritesList.includes(movie.id)}
-                  handleAddToFavorites={handleAddToFavorites}
+                  isInFavorites={favoriteMoviesIdsList.includes(movie.id)}
+                  handleAddToFavorites={handleAddMovieToFavorites}
                 />
               );
             })}

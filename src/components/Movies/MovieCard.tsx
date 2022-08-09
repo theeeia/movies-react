@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
 // Interfaces
 import { MovieCardProps } from "./interfaces";
-import { useEffect, useState } from "react";
 
 const MovieCard = ({
   movieId,

@@ -1,21 +1,29 @@
 import { useQueries } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { parseISO, getYear } from "date-fns";
+
+// Components
 import Loader from "../../components/Loader/Loader";
-import { SortValueTypes } from "../../components/Movies/interfaces";
 import MovieCard from "../../components/Movies/MovieCard";
 import MoviesHeader from "../../components/Movies/MoviesHeader";
 
+// Interfaces
+import { SortValueTypes } from "../../components/Movies/interfaces";
+import { MovieDetailsApiProps } from "./interfaces";
+
+// Config
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
+
+// Hooks
 import useDebounce from "../../hooks/useDebounce";
 
+// Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
-import { MovieDetailsApiProps } from "./interfaces";
-import { parseISO, getYear } from "date-fns";
 
 const Favorites = () => {
   // Read list from local storage
-  const [favoritesList, setFavoritesList] = useState(() =>
+  const [favoriteMoviesIdsList, setFavoriteMoviesIdsList] = useState(() =>
     localStorage.getItem("favoritesList")
       ? JSON.parse(localStorage.getItem("favoritesList") || "")
       : [],
@@ -25,7 +33,7 @@ const Favorites = () => {
 
   // Fetch movie details for every movie in the list
   const favoriteMoviesResponses = useQueries({
-    queries: favoritesList.map((movieId: number) => {
+    queries: favoriteMoviesIdsList.map((movieId: number) => {
       return {
         queryKey: ["favorite-movies", movieId],
         queryFn: () =>
@@ -42,12 +50,12 @@ const Favorites = () => {
 
   Removes the movie from list of favorites
   ================*/
-  const handleAddToFavorites = (movieId: number) => {
-    const newFavoritesList = favoritesList.filter((id: number) => id != movieId);
+  const handleAddMovieToFavorites = (movieId: number) => {
+    const newFavoriteMoviesIdsList = favoriteMoviesIdsList.filter((id: number) => id != movieId);
     // Save new list in local storage
-    localStorage.setItem("favoritesList", JSON.stringify(newFavoritesList));
+    localStorage.setItem("favoritesList", JSON.stringify(newFavoriteMoviesIdsList));
     // Save new list in state
-    setFavoritesList(newFavoritesList);
+    setFavoriteMoviesIdsList(newFavoriteMoviesIdsList);
   };
 
   /*================
@@ -130,7 +138,7 @@ const Favorites = () => {
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 
-      {favoritesList.length != 0 ? (
+      {favoriteMoviesIdsList.length != 0 ? (
         isLoading ? (
           <Loader />
         ) : (
@@ -147,7 +155,7 @@ const Favorites = () => {
                   genre={movie.genres[0].name}
                   starsNumber={handleStarsNumberFromRating(movie.vote_average)}
                   isInFavorites={true}
-                  handleAddToFavorites={handleAddToFavorites}
+                  handleAddToFavorites={handleAddMovieToFavorites}
                 />
               );
             })}

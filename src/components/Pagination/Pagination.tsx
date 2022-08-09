@@ -1,4 +1,5 @@
 import ReactPaginate from "react-paginate";
+// Interfaces
 import { PaginationProps } from "./interfaces";
 
 const Pagination = ({ handlePageClick, totalPages, page }: PaginationProps) => {

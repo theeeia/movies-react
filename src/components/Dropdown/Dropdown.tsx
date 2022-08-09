@@ -1,6 +1,10 @@
 import { useRef, useState } from "react";
+
+// Hooks
 import useOnClickOutside from "../../hooks/useOnClickOutside";
+// Components
 import Loader from "../Loader/Loader";
+// Interfaces
 import { DropdownItemProps, DropdownProps } from "./interfaces";
 
 const Dropdown = ({
