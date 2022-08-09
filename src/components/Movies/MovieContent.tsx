@@ -22,6 +22,9 @@ import handleListFilter from "../../utils/handleListFilter";
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
 import { SortValueTypes } from "./interfaces";
 
+// Icons
+import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
+
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   const { handleFetch } = handleFetchCall();
 
@@ -144,6 +147,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
               )[0];
               return (
                 <MovieCard
+                  favoriteIcon={<HeartIcon />}
                   movieId={movie.id}
                   key={movie.id}
                   poster={movie.poster_path}

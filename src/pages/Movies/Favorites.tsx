@@ -21,6 +21,9 @@ import useDebounce from "../../hooks/useDebounce";
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
 
+// Icons
+import { ReactComponent as TrashIcon } from "../../assets/images/trash.svg";
+
 const Favorites = () => {
   // Read list from local storage
   const [favoriteMoviesIdsList, setFavoriteMoviesIdsList] = useState(() =>
@@ -146,6 +149,7 @@ const Favorites = () => {
             {moviesList.map((movie: MovieDetailsApiProps) => {
               return (
                 <MovieCard
+                  favoriteIcon={<TrashIcon />}
                   movieId={movie.id}
                   key={movie.id}
                   poster={movie.poster_path}

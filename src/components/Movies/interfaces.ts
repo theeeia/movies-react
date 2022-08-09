@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface MoviesHeaderProps {
   title: string;
   handleSearch: (searchedValue: string) => void;
@@ -5,6 +7,7 @@ export interface MoviesHeaderProps {
 }
 
 export interface MovieCardProps {
+  favoriteIcon: React.ReactNode;
   movieId: number;
   genre: string;
   title: string;

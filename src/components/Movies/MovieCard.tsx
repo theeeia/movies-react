@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
-import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
 // Interfaces
 import { MovieCardProps } from "./interfaces";
 
 const MovieCard = ({
+  favoriteIcon,
   movieId,
   genre,
   title,
@@ -53,8 +54,13 @@ const MovieCard = ({
           </div>
         </div>
 
-        <div className="movie-card__favorite" onClick={() => handleFavorite(movieId)}>
-          <HeartIcon className={isFavorite ? "movie-card--favorite" : "movie-card--not-favorite"} />
+        <div
+          className={`movie-card__favorite ${
+            isFavorite ? "movie-card--favorite" : "movie-card--not-favorite"
+          }  `}
+          onClick={() => handleFavorite(movieId)}
+        >
+          {favoriteIcon}
         </div>
       </div>
     </div>
