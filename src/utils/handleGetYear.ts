@@ -1,11 +1,11 @@
 import { parseISO, getYear } from "date-fns";
 /**
- *  Utility for parsing date from string and returning the year
+ *  Utility for parsing date from string and returning the year as string
  * @param date The date as a string
  */
 const handleGetYear = (date: string) => {
-  const dates = parseISO(date);
-  return getYear(dates).toString();
+  const parsedDate = parseISO(date);
+  return getYear(parsedDate).toString();
 };
 
 export default handleGetYear;
