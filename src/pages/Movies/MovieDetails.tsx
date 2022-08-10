@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 import handleFetchCall from "../../utils/handleFetchCall";
@@ -8,27 +8,114 @@ import handleGetYear from "../../utils/handleGetYear";
 
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
+import { ReactComponent as ShowLessArrowIcon } from "../../assets/images/arrow-less.svg";
+import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-more.svg";
 
 const MovieDetails = () => {
   // Get movie parameter from path
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   const { handleFetch } = handleFetchCall();
 
-  // Fetch movie details with id
+  /*================
+    FETCH MOVIE DETAILS
+
+  Fetch the details of the movie
+  ================*/
   const { status: statusMovie, data: movie } = useQuery(["movie", id], () =>
     handleFetch(`${API_ENDPOINT_BASE}/movie/${id}?api_key=${API_KEY}&language=en-US`, "GET"),
   );
 
-  // Fetch actors for movie
-  const { status: statusActors, data: actors } = useQuery(["actors", id], () =>
-    handleFetch(
-      `${API_ENDPOINT_BASE}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`,
-      "GET",
-    ),
+  // Check if movie is loaded
+  const movieLoaded = movie?.id;
+
+  /*================
+    FETCH ACTORS
+
+  Fetch list of actors for movie
+  ================*/
+  const { status: statusActors, data: actors } = useQuery(
+    ["actors", id],
+    () =>
+      handleFetch(
+        `${API_ENDPOINT_BASE}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`,
+        "GET",
+      ),
+    {
+      enabled: !!movieLoaded,
+    },
   );
 
-  // Make an array with number of stars
+  /*================
+    FETCH RECOMENDATIONS
+
+   Get recomended list of movies based on the movie genre
+  ================*/
+  let recomendationGenresIds: string = "";
+  // Concatenate the genre ids if the movie is loaded
+  if (movieLoaded) {
+    movie.genres.map(
+      (genre: any) =>
+        (recomendationGenresIds = recomendationGenresIds.concat("&with_genres=" + genre.id)),
+    );
+  }
+
+  // Fetch the list of recomendations
+  const { status: statusRecomendedMovies, data: recomendedMovies } = useQuery(
+    ["recomended", id],
+    () =>
+      handleFetch(
+        `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1${recomendationGenresIds}`,
+        "GET",
+      ),
+    {
+      enabled: !!movieLoaded,
+    },
+  );
+
+  const recomendedMoviesIdList: number[] = [];
+  // Get a list of ids for the first 5 recomendations
+  if (statusRecomendedMovies == "success") {
+    recomendedMovies.results
+      .filter((movie: any) => movie.id != id)
+      .slice(0, 5)
+      .map((movie: any) => recomendedMoviesIdList.push(movie.id));
+  }
+
+  /*================
+    FETCH RECOMENDED MOVIES DETAILS
+
+   Get details for each recomended movie
+  ================*/
+
+  // Fetch movie details for every recomended movie in the list
+  const recomendedMoviesResponses = useQueries({
+    queries: recomendedMoviesIdList.map((movieId: number) => {
+      return {
+        queryKey: ["recomended-movies", movieId],
+        queryFn: () =>
+          handleFetch(
+            `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
+            "GET",
+          ),
+        enabled: recomendedMoviesIdList.length > 0,
+      };
+    }),
+  });
+
+  // Set to false if all queries are loaded
+
+  const isMovieRecomendationDetailsLoading = recomendedMoviesResponses.some(
+    (query: any) => query.isLoading,
+  );
+
+  /*================
+    RATING STARS
+
+   Return the number of stars based on the movie average votes
+  ================*/
   const [stars, setStars] = useState<React.ReactNode[]>([]);
   useEffect(() => {
     if (!movie || !Object.entries(movie).length) return;
@@ -40,63 +127,115 @@ const MovieDetails = () => {
   const [isShowMore, setIsShowMore] = useState(false);
 
   return (
-    <div className="row pt--50 mb--100">
-      {statusMovie === "success" ? (
-        <>
-          <div className="col-8">
-            <img
-              className="movie-details__img"
-              src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-            />
-            <div className="movie-details__info">
-              <div className="movie-details__title">{movie.title}</div>
-              <div className="movie-details__year">({handleGetYear(movie.release_date)})</div>
-              <div className="movie-details__rating">
-                {stars.map((_, index: number) => (
-                  <StarIcon key={index} />
-                ))}
+    <>
+      <div className="row pt--50 mb--100">
+        {statusMovie === "success" ? (
+          <>
+            <div className="col-8">
+              <img
+                className="movie-details__img"
+                src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+              />
+              <div className="movie-details__info">
+                <h2 className="movie-details__title">{movie.title}</h2>
+                <div className="movie-details__year">({handleGetYear(movie.release_date)})</div>
+                <div className="movie-details__rating">
+                  {stars.map((_, index: number) => (
+                    <StarIcon key={index} />
+                  ))}
+                </div>
+              </div>
+              <div className="movie-details__info">
+                <div className="movie-details__label mr--30">{movie.runtime}min</div>
+                <div className="movie-details__label ">Published on {movie.release_date}</div>
+
+                <div className="movie-details__label movie-details__revenue">
+                  {movie.revenue !== 0 && "Revenue " + movie.revenue}
+                </div>
+              </div>
+              <div className="movie-details__summary">{movie.overview}</div>
+              {isShowMore && (
+                <>
+                  <div className="movie-details__title pb--20">Plot</div>
+                  <div className="movie-details__summary"> {movie.overview} </div>
+                </>
+              )}
+              <button
+                className="movie-details__more-btn"
+                onClick={() => setIsShowMore(!isShowMore)}
+              >
+                {isShowMore ? (
+                  <div className="movie-details__more-label">
+                    Read Less <ShowLessArrowIcon />
+                  </div>
+                ) : (
+                  <div className="movie-details__more-label">
+                    Read More <ShowMoreArrowIcon />
+                  </div>
+                )}
+              </button>
+            </div>
+            <div className="col-4">
+              <h3 className="pb--20">Cast</h3>
+              <div className="movie-details__cast">
+                {statusActors == "success" && Object.entries(actors).length ? (
+                  <div className="row">
+                    {actors?.cast.slice(0, 10).map((actor: any) => {
+                      return (
+                        <div className="col-6 pb--20" key={actor.id}>
+                          <img
+                            className="movie-details__actor-img"
+                            src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
+                          />
+                          <h5 className="movie-details__actor-name">{actor.name}</h5>
+                          <div className="movie-details__role-name">as {actor.character}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <Loader />
+                )}
               </div>
             </div>
-            <div className="movie-details__summary">{movie.overview}</div>
-            {isShowMore && (
+          </>
+        ) : (
+          <Loader />
+        )}
+      </div>
+      <div>
+        <h1 className="mb--70">Recomended For You</h1>
+        <div className="recomendations mb--100">
+          {recomendedMoviesIdList.length != 0 ? (
+            isMovieRecomendationDetailsLoading ? (
               <>
-                <div className="movie-details__title pb--20">Plot</div>
-                <div className="movie-details__summary"> {movie.overview} </div>
-              </>
-            )}
-            <button className="movie-details__more-btn" onClick={() => setIsShowMore(!isShowMore)}>
-              Read More
-            </button>
-          </div>
-          <div className="col-4">
-            <div className="movie-details__title2 pb--20">Cast</div>
-            <div className="movie-details__cast">
-              {statusActors == "success" ? (
-                <div className="row">
-                  {actors.cast.slice(0, 10).map((actor: any) => {
-                    console.log(actor);
-                    return (
-                      <div className="col-6 pb--20">
-                        <img
-                          className="movie-details__actor-img"
-                          src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
-                        />
-                        <div className="movie-details__actor-name">{actor.name}</div>
-                        <div className="movie-details__role-name">as {actor.character}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
+                {isMovieRecomendationDetailsLoading}
                 <Loader />
-              )}
-            </div>
-          </div>
-        </>
-      ) : (
-        <Loader />
-      )}
-    </div>
+              </>
+            ) : (
+              recomendedMoviesResponses
+                .map((movie: any) => movie.data)
+                .map((movie: any) => {
+                  return (
+                    <div onClick={() => navigate("/movies/details/" + movie.id)}>
+                      <img
+                        className="recomendations__image mb--20"
+                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                      />
+                      <div className="recomendations__title">{movie.title}</div>
+                      <div className="recomendations__year">
+                        {handleGetYear(movie.release_date)}
+                      </div>
+                    </div>
+                  );
+                })
+            )
+          ) : (
+            "No recomendations"
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 export default MovieDetails;
