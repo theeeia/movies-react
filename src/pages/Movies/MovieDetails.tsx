@@ -1,6 +1,6 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
 
 // Config
@@ -12,9 +12,11 @@ import handleGetYear from "../../utils/handleGetYear";
 
 // Components
 import Loader from "../../components/Loader/Loader";
+import MovieCast from "../../components/Movies/MovieCast";
+import MovieRecommendations from "../../components/Movies/MovieRecommendations";
 
 // Interfaces
-import { ActorApiProps, MovieDetailsApiProps } from "./interfaces";
+import { MovieDetailsApiProps } from "./interfaces";
 
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
@@ -23,8 +25,6 @@ import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-m
 const MovieDetails = () => {
   // Get movie parameter from path
   const { id } = useParams();
-
-  const navigate = useNavigate();
 
   const { handleFetch } = handleFetchCall();
 
@@ -41,42 +41,25 @@ const MovieDetails = () => {
   const movieLoaded = movie?.id;
 
   /*================
-    FETCH ACTORS
+    FETCH RECOMMENDATIONS
 
-  Fetch list of actors for movie
+   Get recommended list of movies based on the movie genre
   ================*/
-  const { status: statusActors, data: actors } = useQuery(
-    ["actors", id],
-    () =>
-      handleFetch(
-        `${API_ENDPOINT_BASE}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`,
-        "GET",
-      ),
-    {
-      enabled: !!movieLoaded,
-    },
-  );
-
-  /*================
-    FETCH RECOMENDATIONS
-
-   Get recomended list of movies based on the movie genre
-  ================*/
-  let recomendationGenresIds: string = "";
+  let recommendationGenresIds: string = "";
   // Concatenate the genre ids if the movie is loaded
   if (movieLoaded) {
     movie.genres.map(
       (genre: Record<string, string | number>) =>
-        (recomendationGenresIds = recomendationGenresIds.concat("&with_genres=" + genre.id)),
+        (recommendationGenresIds = recommendationGenresIds.concat("&with_genres=" + genre.id)),
     );
   }
 
-  // Fetch the list of recomendations
-  const { status: statusRecomendedMovies, data: recomendedMovies } = useQuery(
-    ["recomended", id],
+  // Fetch the list of recommendations when movie is loaded
+  const { status: statusrecommendedMovies, data: recommendedMovies } = useQuery(
+    ["recommended", id],
     () =>
       handleFetch(
-        `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1${recomendationGenresIds}`,
+        `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1${recommendationGenresIds}`,
         "GET",
       ),
     {
@@ -84,41 +67,15 @@ const MovieDetails = () => {
     },
   );
 
-  const recomendedMoviesIdList: number[] = [];
-  // Get a list of ids for the first 5 recomendations
-  if (statusRecomendedMovies == "success") {
-    recomendedMovies.results
+  const recommendedMoviesIdList: number[] = [];
+
+  // Get a list of ids for the first 5 recommendations that dont include the original movie
+  if (statusrecommendedMovies == "success") {
+    recommendedMovies.results
       .filter((movie: MovieDetailsApiProps) => movie.id != Number(id))
       .slice(0, 5)
-      .map((movie: MovieDetailsApiProps) => recomendedMoviesIdList.push(movie.id));
+      .map((movie: MovieDetailsApiProps) => recommendedMoviesIdList.push(movie.id));
   }
-
-  /*================
-    FETCH RECOMENDED MOVIES DETAILS
-
-   Get details for each recomended movie
-  ================*/
-
-  // Fetch movie details for every recomended movie in the list
-  const recomendedMoviesResponses = useQueries({
-    queries: recomendedMoviesIdList.map((movieId: number) => {
-      return {
-        queryKey: ["recomended-movies", movieId],
-        queryFn: () =>
-          handleFetch(
-            `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
-            "GET",
-          ),
-        enabled: recomendedMoviesIdList.length > 0,
-      };
-    }),
-  });
-
-  // Set to false if all queries are loaded
-
-  const isMovieRecomendationDetailsLoading = recomendedMoviesResponses.some(
-    (query: any) => query.isLoading,
-  );
 
   /*================
     RATING STARS
@@ -217,74 +174,9 @@ const MovieDetails = () => {
                 </button>
               ) : null}
             </div>
-            <div className="col-4">
-              <h3 className="pb--20">Cast</h3>
-              <div className="movie-details__cast">
-                {statusActors == "success" && Object.entries(actors).length ? (
-                  <div className="row">
-                    {actors?.cast.slice(0, 10).map((actor: ActorApiProps) => {
-                      return (
-                        <div className="col-6 pb--20" key={actor.id}>
-                          {actor.profile_path ? (
-                            <img
-                              className="movie-details__actor-img"
-                              src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
-                            />
-                          ) : (
-                            <img
-                              className="movie-details__actor-img"
-                              src={require("../../assets/images/placeholder.png")}
-                            />
-                          )}
-
-                          <h5 className="movie-details__actor-name">{actor.name}</h5>
-                          <div className="movie-details__role-name">as {actor.character}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <Loader />
-                )}
-              </div>
-            </div>
+            <div className="col-4">{movieLoaded && <MovieCast movieId={movie.id} />}</div>
           </div>
-          <div>
-            <h1 className="mb--70">Recomended For You</h1>
-            <div className="recomendations mb--100">
-              {recomendedMoviesIdList.length != 0 ? (
-                isMovieRecomendationDetailsLoading ? (
-                  <>
-                    {isMovieRecomendationDetailsLoading}
-                    <Loader />
-                  </>
-                ) : (
-                  recomendedMoviesResponses
-                    .map((movie: Record<string, any>) => movie.data)
-                    .map((movie: MovieDetailsApiProps) => {
-                      return (
-                        <div
-                          className="recomendations__card"
-                          onClick={() => navigate("/movies/details/" + movie.id)}
-                          key={movie.id}
-                        >
-                          <img
-                            className="recomendations__image mb--20"
-                            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                          />
-                          <div className="recomendations__title">{movie.title}</div>
-                          <div className="recomendations__year">
-                            {handleGetYear(movie.release_date)}
-                          </div>
-                        </div>
-                      );
-                    })
-                )
-              ) : (
-                "No recomendations"
-              )}
-            </div>
-          </div>
+          <MovieRecommendations recommendedMoviesIdList={recommendedMoviesIdList} />
         </>
       ) : (
         <div className="txt--center">
