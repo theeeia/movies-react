@@ -14,7 +14,7 @@
         flex-wrap: wrap;
     }   
 
-    &__title { margin-right: 15px;   }
+    &__title { margin-right: 15px; }
 
     &__year { font-size: 18px; }
 
@@ -28,8 +28,8 @@
     &__label {
         color:white;
         font-size: 16px;
-
     }
+
     &__revenue { 
         margin-left: auto;
         margin-right: 0;
@@ -92,6 +92,10 @@
         align-items:center;
         justify-content: center;
         gap: 10px;
-
      }
+
+     &__flip-icon svg { transform: rotateX(180deg); }
+       
+
+     
 }

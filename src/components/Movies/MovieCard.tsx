@@ -46,8 +46,16 @@ const MovieCard = ({
     <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb--70">
       <div className="movie-card" onClick={() => handleMovieDetails()}>
         <div className="movie-card__image-box">
-          <div className="movie-card__genre">{genre}</div>
-          <img className="movie-card__image" src={`https://image.tmdb.org/t/p/w500/${poster}`} />
+          {genre && <div className="movie-card__genre">{genre}</div>}
+
+          {poster ? (
+            <img className="movie-card__image" src={`https://image.tmdb.org/t/p/w500/${poster}`} />
+          ) : (
+            <img
+              className="movie-card__image"
+              src={require("../../assets/images/placeholder.png")}
+            />
+          )}
         </div>
         <div className="movie-card__details">
           <div className="movie-card__title">{title}</div>

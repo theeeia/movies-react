@@ -4,10 +4,10 @@
 
 body { background-color: $bg-color; }
 
-.minimal-page-height {
-    min-height: calc(100vh - 215px);
+.minimal-page-height { min-height: calc(100vh - 215px); }
+.content-center {
+    margin: 0 auto;
 }
-
 .logo {
     display: block;
     margin: 60px auto 100px auto;
@@ -41,12 +41,11 @@ body { background-color: $bg-color; }
 
 .link-button { padding: 5px 30px; }
 
-
 .recomendations {
     display: flex;
     justify-content: space-between;
     
-    &__card {cursor: pointer;}
+    &__card { cursor: pointer; }
     &__image{
         object-fit: cover;
         border-radius: 20px;
@@ -64,8 +63,6 @@ body { background-color: $bg-color; }
     &__year {
         color: rgba(255, 255, 255, 0.6);
         font-size:14px;   
-
-
     }
 
 }

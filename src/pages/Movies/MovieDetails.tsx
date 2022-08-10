@@ -1,17 +1,24 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Loader from "../../components/Loader/Loader";
+import { format, parseISO } from "date-fns";
+
+// Config
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
+
+// Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleGetYear from "../../utils/handleGetYear";
-import { format, parseISO } from "date-fns";
+
+// Components
+import Loader from "../../components/Loader/Loader";
+
+// Interfaces
+import { ActorApiProps, MovieDetailsApiProps } from "./interfaces";
 
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
-import { ReactComponent as ShowLessArrowIcon } from "../../assets/images/arrow-less.svg";
 import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-more.svg";
-import { ActorApiProps, MovieDetailsApiProps } from "./interfaces";
 
 const MovieDetails = () => {
   // Get movie parameter from path
@@ -130,14 +137,22 @@ const MovieDetails = () => {
 
   return (
     <>
-      <div className="row pt--50 mb--100">
-        {statusMovie === "success" ? (
-          <>
+      {movie && statusMovie === "success" ? (
+        <>
+          <div className="row pt--50 mb--100">
             <div className="col-8">
-              <img
-                className="movie-details__img"
-                src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-              />
+              {movie.backdrop_path ? (
+                <img
+                  className="movie-details__img"
+                  src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+                />
+              ) : (
+                <img
+                  className="movie-details__img"
+                  src={require("../../assets/images/poster-placeholder.png")}
+                />
+              )}
+
               <div className="movie-details__info">
                 <h2 className="movie-details__title">{movie.title}</h2>
                 <div className="movie-details__year">({handleGetYear(movie.release_date)})</div>
@@ -172,7 +187,7 @@ const MovieDetails = () => {
               <div className="movie-details__info">
                 {movie.genres.map((genre: Record<string, string | number>) => {
                   return (
-                    <div className="movie-details__genre txt--uppercase" key={genre.id}>
+                    <div className="movie-details__genre txt--uppercase mb--10" key={genre.id}>
                       {genre.name}
                     </div>
                   );
@@ -185,20 +200,22 @@ const MovieDetails = () => {
                   <div className="movie-details__summary"> {movie.overview} </div>
                 </>
               )}
-              <button
-                className="movie-details__more-btn"
-                onClick={() => setIsShowMore(!isShowMore)}
-              >
-                {isShowMore ? (
-                  <div className="movie-details__more-label">
-                    Read Less <ShowLessArrowIcon />
-                  </div>
-                ) : (
-                  <div className="movie-details__more-label">
-                    Read More <ShowMoreArrowIcon />
-                  </div>
-                )}
-              </button>
+              {movie.revenue ? (
+                <button
+                  className="movie-details__more-btn"
+                  onClick={() => setIsShowMore(!isShowMore)}
+                >
+                  {isShowMore ? (
+                    <div className="movie-details__more-label movie-details__flip-icon">
+                      Read Less <ShowMoreArrowIcon />
+                    </div>
+                  ) : (
+                    <div className="movie-details__more-label">
+                      Read More <ShowMoreArrowIcon />
+                    </div>
+                  )}
+                </button>
+              ) : null}
             </div>
             <div className="col-4">
               <h3 className="pb--20">Cast</h3>
@@ -208,10 +225,18 @@ const MovieDetails = () => {
                     {actors?.cast.slice(0, 10).map((actor: ActorApiProps) => {
                       return (
                         <div className="col-6 pb--20" key={actor.id}>
-                          <img
-                            className="movie-details__actor-img"
-                            src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
-                          />
+                          {actor.profile_path ? (
+                            <img
+                              className="movie-details__actor-img"
+                              src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
+                            />
+                          ) : (
+                            <img
+                              className="movie-details__actor-img"
+                              src={require("../../assets/images/placeholder.png")}
+                            />
+                          )}
+
                           <h5 className="movie-details__actor-name">{actor.name}</h5>
                           <div className="movie-details__role-name">as {actor.character}</div>
                         </div>
@@ -223,47 +248,49 @@ const MovieDetails = () => {
                 )}
               </div>
             </div>
-          </>
-        ) : (
+          </div>
+          <div>
+            <h1 className="mb--70">Recomended For You</h1>
+            <div className="recomendations mb--100">
+              {recomendedMoviesIdList.length != 0 ? (
+                isMovieRecomendationDetailsLoading ? (
+                  <>
+                    {isMovieRecomendationDetailsLoading}
+                    <Loader />
+                  </>
+                ) : (
+                  recomendedMoviesResponses
+                    .map((movie: Record<string, any>) => movie.data)
+                    .map((movie: MovieDetailsApiProps) => {
+                      return (
+                        <div
+                          className="recomendations__card"
+                          onClick={() => navigate("/movies/details/" + movie.id)}
+                          key={movie.id}
+                        >
+                          <img
+                            className="recomendations__image mb--20"
+                            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                          />
+                          <div className="recomendations__title">{movie.title}</div>
+                          <div className="recomendations__year">
+                            {handleGetYear(movie.release_date)}
+                          </div>
+                        </div>
+                      );
+                    })
+                )
+              ) : (
+                "No recomendations"
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="txt--center">
           <Loader />
-        )}
-      </div>
-      <div>
-        <h1 className="mb--70">Recomended For You</h1>
-        <div className="recomendations mb--100">
-          {recomendedMoviesIdList.length != 0 ? (
-            isMovieRecomendationDetailsLoading ? (
-              <>
-                {isMovieRecomendationDetailsLoading}
-                <Loader />
-              </>
-            ) : (
-              recomendedMoviesResponses
-                .map((movie: Record<string, any>) => movie.data)
-                .map((movie: MovieDetailsApiProps) => {
-                  return (
-                    <div
-                      className="recomendations__card"
-                      onClick={() => navigate("/movies/details/" + movie.id)}
-                      key={movie.id}
-                    >
-                      <img
-                        className="recomendations__image mb--20"
-                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                      />
-                      <div className="recomendations__title">{movie.title}</div>
-                      <div className="recomendations__year">
-                        {handleGetYear(movie.release_date)}
-                      </div>
-                    </div>
-                  );
-                })
-            )
-          ) : (
-            "No recomendations"
-          )}
         </div>
-      </div>
+      )}
     </>
   );
 };

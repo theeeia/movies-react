@@ -146,7 +146,7 @@ const Favorites = () => {
                   title={movie.title}
                   year={handleGetYear(movie.release_date)}
                   language={movie.original_language}
-                  genre={movie.genres[0].name}
+                  genre={movie?.genres[0]?.name ? movie.genres[0].name : ""}
                   starsNumber={handleStarsNumberFromRating(movie.vote_average)}
                   isInFavorites={true}
                   handleAddToFavorites={handleRemoveMovieFromFavorites}
