@@ -5,11 +5,13 @@ import Loader from "../../components/Loader/Loader";
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleGetYear from "../../utils/handleGetYear";
+import { format, parseISO } from "date-fns";
 
 // Icons
 import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
 import { ReactComponent as ShowLessArrowIcon } from "../../assets/images/arrow-less.svg";
 import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-more.svg";
+import { ActorApiProps, MovieDetailsApiProps } from "./interfaces";
 
 const MovieDetails = () => {
   // Get movie parameter from path
@@ -57,7 +59,7 @@ const MovieDetails = () => {
   // Concatenate the genre ids if the movie is loaded
   if (movieLoaded) {
     movie.genres.map(
-      (genre: any) =>
+      (genre: Record<string, string | number>) =>
         (recomendationGenresIds = recomendationGenresIds.concat("&with_genres=" + genre.id)),
     );
   }
@@ -74,14 +76,15 @@ const MovieDetails = () => {
       enabled: !!movieLoaded,
     },
   );
+  console.log(movie);
 
   const recomendedMoviesIdList: number[] = [];
   // Get a list of ids for the first 5 recomendations
   if (statusRecomendedMovies == "success") {
     recomendedMovies.results
-      .filter((movie: any) => movie.id != id)
+      .filter((movie: MovieDetailsApiProps) => movie.id != Number(id))
       .slice(0, 5)
-      .map((movie: any) => recomendedMoviesIdList.push(movie.id));
+      .map((movie: MovieDetailsApiProps) => recomendedMoviesIdList.push(movie.id));
   }
 
   /*================
@@ -147,16 +150,38 @@ const MovieDetails = () => {
               </div>
               <div className="movie-details__info">
                 <div className="movie-details__label mr--30">{movie.runtime}min</div>
-                <div className="movie-details__label ">Published on {movie.release_date}</div>
+                <div className="movie-details__label mr--30">
+                  {movie.status == "Released" ? (
+                    <>Published on {format(parseISO(movie.release_date), "PPP")}</>
+                  ) : (
+                    <>Will publish on {format(parseISO(movie.release_date), "PPP")}</>
+                  )}
+                </div>
+                <div className="movie-details__label">Status: {movie.status}</div>
 
                 <div className="movie-details__label movie-details__revenue">
-                  {movie.revenue !== 0 && "Revenue " + movie.revenue}
+                  {movie.revenue !== 0 &&
+                    "Revenue " +
+                      Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                        maximumSignificantDigits: 9,
+                      }).format(movie.revenue)}
                 </div>
+              </div>
+              <div className="movie-details__info">
+                {movie.genres.map((genre: Record<string, string | number>) => {
+                  return (
+                    <div className="movie-details__genre txt--uppercase" key={genre.id}>
+                      {genre.name}
+                    </div>
+                  );
+                })}
               </div>
               <div className="movie-details__summary">{movie.overview}</div>
               {isShowMore && (
                 <>
-                  <div className="movie-details__title pb--20">Plot</div>
+                  <h2 className="movie-details__title pb--20">Plot</h2>
                   <div className="movie-details__summary"> {movie.overview} </div>
                 </>
               )}
@@ -180,7 +205,7 @@ const MovieDetails = () => {
               <div className="movie-details__cast">
                 {statusActors == "success" && Object.entries(actors).length ? (
                   <div className="row">
-                    {actors?.cast.slice(0, 10).map((actor: any) => {
+                    {actors?.cast.slice(0, 10).map((actor: ActorApiProps) => {
                       return (
                         <div className="col-6 pb--20" key={actor.id}>
                           <img
@@ -214,10 +239,10 @@ const MovieDetails = () => {
               </>
             ) : (
               recomendedMoviesResponses
-                .map((movie: any) => movie.data)
-                .map((movie: any) => {
+                .map((movie: Record<string, any>) => movie.data)
+                .map((movie: MovieDetailsApiProps) => {
                   return (
-                    <div onClick={() => navigate("/movies/details/" + movie.id)}>
+                    <div onClick={() => navigate("/movies/details/" + movie.id)} key={movie.id}>
                       <img
                         className="recomendations__image mb--20"
                         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
