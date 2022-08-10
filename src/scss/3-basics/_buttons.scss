@@ -22,6 +22,10 @@
     &--back{ background: rgb(43, 43, 56); }
   }
 
+  &--disabled {
+      background: #000f9323;
+      cursor: not-allowed;
+  }
 
   //button size
   &--xl { }
