@@ -78,15 +78,23 @@ const MovieDetails = () => {
   }
 
   /*================
-    RATING STARS
+    RATING STARS AND REVENUE FORMAT
 
-   Return the number of stars based on the movie average votes
+   Return the number of stars based on the movie average votes and format revenue as currency
   ================*/
   const [stars, setStars] = useState<React.ReactNode[]>([]);
+  const [revenue, setRevenue] = useState<string>("");
   useEffect(() => {
     if (!movie || !Object.entries(movie).length) return;
     const starsArray = Array(Math.ceil(movie.vote_average / 2)).fill(1);
     setStars(starsArray);
+    setRevenue(
+      Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumSignificantDigits: 9,
+      }).format(movie.revenue),
+    );
   }, [movie]);
 
   // State for show more button
@@ -131,20 +139,13 @@ const MovieDetails = () => {
                 <div className="movie-details__label">Status: {movie.status}</div>
 
                 <div className="movie-details__label movie-details__revenue">
-                  Revenue{" "}
-                  {movie.revenue == 0
-                    ? "-"
-                    : Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                        maximumSignificantDigits: 9,
-                      }).format(movie.revenue)}
+                  Revenue {movie.revenue == 0 ? "-" : revenue}
                 </div>
               </div>
               <div className="movie-details__info">
                 {movie.genres.map((genre: Record<string, string | number>) => {
                   return (
-                    <div className="movie-details__genre txt--uppercase mb--10" key={genre.id}>
+                    <div className="movie-details__genre mb--10" key={genre.id}>
                       {genre.name}
                     </div>
                   );
