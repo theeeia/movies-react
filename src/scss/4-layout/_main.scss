@@ -40,3 +40,32 @@ body { background-color: $bg-color; }
 }
 
 .link-button { padding: 5px 30px; }
+
+
+.recomendations {
+    display: flex;
+    justify-content: space-between;
+    
+
+    &__image{
+        object-fit: cover;
+        border-radius: 20px;
+        width: 240px;
+        height: 340px
+    }
+
+    &__title {
+        max-width: 240px;
+        color: white;
+        font-size:20px;   
+        font-weight: 500;     
+    }
+
+    &__year {
+        color: rgba(255, 255, 255, 0.6);
+        font-size:14px;   
+
+
+    }
+
+}

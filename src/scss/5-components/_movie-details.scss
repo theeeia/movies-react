@@ -1,26 +1,23 @@
 .movie-details{
     
-
     &__img {
-      
         width: 100%;
-   
         border-radius: 20px;
         margin-bottom: 80px;
     }
 
     &__info {
         width:100%;
+        margin-bottom: 15px;
         display: flex;
         align-items: baseline;
-
     }   
 
     &__title {
-       font-size: 30px;
-        color:white;
+     
         margin-right: 15px;
     }
+
     &__year {
         font-size: 18px;
     }
@@ -31,11 +28,25 @@
         margin-left: auto;
         margin-right: 0;
     }
+
+    &__label {
+        color:white;
+        font-size: 16px;
+
+    }
+    &__revenue {
+      
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+
     &__summary {
         margin-bottom: 15px;
         font-size: 14px;
         color: rgba(255, 255, 255, 0.7);
     }
+
     &__more-btn {
         width: 100%;
         padding: 25px 0;
@@ -45,12 +56,6 @@
         color: #0012B6;
         background-color: #000000;
      }
-     // Change to headers
-     &__title2 {
-        font-size: 26px;
-         color:white;
-         margin-right: 15px;
-     }
 
      &__cast {
         width: 100%;
@@ -58,7 +63,6 @@
         border-radius: 20px;
         padding: 30px;
         text-align: center;
-
      }
 
      &__actor-img {
@@ -76,5 +80,13 @@
      &__role-name {
         font-size: 14px;
         color:rgba(255, 255, 255, 0.6);
+     }
+
+     &__more-label {
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        gap: 10px;
+
      }
 }
