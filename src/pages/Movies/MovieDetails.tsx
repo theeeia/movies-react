@@ -159,9 +159,10 @@ const MovieDetails = () => {
                 <div className="movie-details__label">Status: {movie.status}</div>
 
                 <div className="movie-details__label movie-details__revenue">
-                  {movie.revenue !== 0 &&
-                    "Revenue " +
-                      Intl.NumberFormat("en-US", {
+                  Revenue{" "}
+                  {movie.revenue == 0
+                    ? "-"
+                    : Intl.NumberFormat("en-US", {
                         style: "currency",
                         currency: "USD",
                         maximumSignificantDigits: 9,
