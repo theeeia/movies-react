@@ -76,7 +76,6 @@ const MovieDetails = () => {
       enabled: !!movieLoaded,
     },
   );
-  console.log(movie);
 
   const recomendedMoviesIdList: number[] = [];
   // Get a list of ids for the first 5 recomendations
@@ -242,7 +241,11 @@ const MovieDetails = () => {
                 .map((movie: Record<string, any>) => movie.data)
                 .map((movie: MovieDetailsApiProps) => {
                   return (
-                    <div onClick={() => navigate("/movies/details/" + movie.id)} key={movie.id}>
+                    <div
+                      className="recomendations__card"
+                      onClick={() => navigate("/movies/details/" + movie.id)}
+                      key={movie.id}
+                    >
                       <img
                         className="recomendations__image mb--20"
                         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}

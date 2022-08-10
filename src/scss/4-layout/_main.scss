@@ -46,7 +46,7 @@ body { background-color: $bg-color; }
     display: flex;
     justify-content: space-between;
     
-
+    &__card {cursor: pointer;}
     &__image{
         object-fit: cover;
         border-radius: 20px;
