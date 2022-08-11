@@ -36,48 +36,56 @@ const MovieDetails = () => {
   const { status: statusMovie, data: movie } = useQuery(["movie", id], () =>
     handleFetch(`${API_ENDPOINT_BASE}/movie/${id}?api_key=${API_KEY}&language=en-US`, "GET"),
   );
-
-  // Check if movie is loaded
-  const movieLoaded = movie?.id;
-
   /*================
     FETCH RECOMMENDATIONS
 
    Get recommended list of movies based on the movie genre
   ================*/
-  let recommendationGenresIds: string = "&with_genres=";
+
+  const [movieGenresIds, setMovieGenresIds] = useState<string>("");
+
   // Concatenate the genre ids if the movie is loaded
-  if (movieLoaded) {
-    movie.genres.map(
-      (genre: Record<string, string | number>) =>
-        (recommendationGenresIds = recommendationGenresIds.concat(genre.id + ",")),
+
+  useEffect(() => {
+    if (!movie || !Object.entries(movie).length) return;
+
+    const recommendationsList = movie.genres.map(
+      (genre: Record<string, string | number>) => genre.id,
     );
-    recommendationGenresIds = recommendationGenresIds.slice(0, -1);
-    console.log(recommendationGenresIds);
-  }
+    console.log(recommendationsList);
+    if (recommendationsList.length != 0) {
+      setMovieGenresIds("&with_genres=" + recommendationsList.join(","));
+    }
+  }, [movie]);
 
   // Fetch the list of recommendations when movie is loaded
-  const { status: statusrecommendedMovies, data: recommendedMovies } = useQuery(
+  const { data: recommendedMovies } = useQuery(
     ["recommended", id],
     () =>
       handleFetch(
-        `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1${recommendationGenresIds}`,
+        `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1${movieGenresIds}`,
         "GET",
       ),
     {
-      enabled: !!movieLoaded,
+      enabled: movieGenresIds !== "",
     },
   );
 
-  const recommendedMoviesIdList: number[] = [];
+  const [recommendedMoviesIdList, setRecommendedMoviesIdList] = useState<number[]>([]);
 
   // Get a list of ids for the first 5 recommendations that dont include the original movie
-  if (statusrecommendedMovies == "success") {
+
+  useEffect(() => {
+    if (!recommendedMovies || !Object.entries(recommendedMovies).length) return;
+
+    const recommendedMoviesIds: number[] = [];
     recommendedMovies.results
       .filter((movie: MovieDetailsApiProps) => movie.id != Number(id))
       .slice(0, 5)
-      .map((movie: MovieDetailsApiProps) => recommendedMoviesIdList.push(movie.id));
-  }
+      .map((movie: MovieDetailsApiProps) => recommendedMoviesIds.push(movie.id));
+
+    setRecommendedMoviesIdList(recommendedMoviesIds);
+  }, [recommendedMovies]);
 
   /*================
     RATING STARS AND REVENUE FORMAT
@@ -177,7 +185,9 @@ const MovieDetails = () => {
                 </button>
               ) : null}
             </div>
-            <div className="col-4">{movieLoaded && <MovieCast movieId={movie.id} />}</div>
+            <div className="col-4">
+              <MovieCast movieId={movie.id} />
+            </div>
           </div>
           <MovieRecommendations recommendedMoviesIdList={recommendedMoviesIdList} />
         </>
