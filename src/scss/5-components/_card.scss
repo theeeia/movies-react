@@ -1,0 +1,36 @@
+.card {
+    padding-bottom: 20px;
+
+    &--clickable &__content   { cursor: pointer; }
+
+    &__image{
+        object-fit: cover;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        
+    }
+    &--img-lg &__image {
+        width: 240px;
+        height: 340px
+
+    }
+    &--img-lg  &__content { width: 240px; }
+
+    &--img-sm &__image {
+        width: 90px;
+        height: 90px
+    }
+
+    &__title {
+        max-width: 240px;
+        color: white;
+        font-size:20px;   
+        font-weight: 500;     
+    }
+
+    &__sub-title {
+        color: rgba(255, 255, 255, 0.6);
+        font-size:14px;   
+    }
+
+}

@@ -20,7 +20,7 @@ const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderPro
 
   return (
     <div className="movies-header">
-      <div className="movies-header__title">{title}</div>
+      <h4 className="movies-header__title">{title}</h4>
 
       <div className="movies-header__search">
         <div className="movies-header__search-box">

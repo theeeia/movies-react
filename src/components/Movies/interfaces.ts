@@ -13,10 +13,15 @@ export interface MovieCardProps {
   title: string;
   year: string;
   language: string;
-  poster: string;
-  starsNumber: number;
+  poster: string | undefined;
+  votes: number;
   isInFavorites: boolean;
   handleAddToFavorites: (movieId: number) => void;
 }
 
 export type SortValueTypes = "title" | "release_date" | "vote_average";
+
+export interface MovieGenresProps {
+  genres: Record<string, any>;
+  modifierClass?: string;
+}
