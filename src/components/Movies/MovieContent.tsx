@@ -139,7 +139,11 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   favoriteIcon={<HeartIcon />}
                   movieId={movie.id}
                   key={movie.id}
-                  poster={movie.poster_path}
+                  poster={
+                    movie.poster_path
+                      ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                      : undefined
+                  }
                   title={movie.title}
                   year={handleGetYear(movie.release_date)}
                   language={movie.original_language}

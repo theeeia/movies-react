@@ -39,7 +39,11 @@ const MovieCast = ({ movieId }: { movieId: string }) => {
                 <Card
                   key={actor.id}
                   id={actor.id}
-                  imagePath={actor.profile_path}
+                  imagePath={
+                    actor.profile_path
+                      ? "https://image.tmdb.org/t/p/w500" + actor.profile_path
+                      : undefined
+                  }
                   title={actor.name}
                   subtitle={"as " + actor.character}
                   modifierClass={"col-6 card--img-sm "}

@@ -64,7 +64,11 @@ const MovieRecommendations = ({
                   <Card
                     key={movie.id}
                     id={movie.id}
-                    imagePath={movie.poster_path}
+                    imagePath={
+                      movie.poster_path
+                        ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                        : undefined
+                    }
                     title={movie.title}
                     onCardClick={() => navigate("/movies/details/" + movie.id)}
                     subtitle={handleGetYear(movie.release_date)}

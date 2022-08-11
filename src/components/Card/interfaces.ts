@@ -1,6 +1,6 @@
 export interface CardProps {
   id: number;
-  imagePath: string;
+  imagePath: string | undefined;
   title: string;
   subtitle: string;
   modifierClass?: string;

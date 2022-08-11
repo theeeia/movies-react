@@ -14,17 +14,11 @@ const MovieCard = ({
   title,
   year,
   language,
-  poster,
+  poster = require("../../assets/images/placeholder.png"),
   votes,
   isInFavorites = false,
   handleAddToFavorites,
 }: MovieCardProps) => {
-  if (poster) {
-    poster = `https://image.tmdb.org/t/p/w500/${poster}`;
-  } else {
-    poster = require("../../assets/images/placeholder.png");
-  }
-
   const [isFavorite, setIsFavorite] = useState(isInFavorites);
 
   // Toogle between favorite classes

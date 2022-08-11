@@ -3,17 +3,13 @@ import { CardProps } from "./interfaces";
 
 const Card = ({
   id,
-  imagePath,
+  imagePath = require("../../assets/images/placeholder.png"),
   title,
   subtitle,
   modifierClass = "",
   onCardClick = undefined,
 }: CardProps) => {
-  if (imagePath) {
-    imagePath = `https://image.tmdb.org/t/p/w500${imagePath}`;
-  } else {
-    imagePath = require("../../assets/images/placeholder.png");
-  }
+  console.log(imagePath);
   return (
     <div className={`card ${modifierClass}`} key={id}>
       <div onClick={onCardClick} className="card__content">
