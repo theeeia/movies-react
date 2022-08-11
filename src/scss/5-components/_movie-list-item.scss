@@ -1,0 +1,62 @@
+.movie-list-item {
+    display: flex;
+    padding: 30px;
+    background: #131313;
+    border-radius: 20px;
+    justify-content: space-between;
+    gap: 50px;
+
+
+    &__image img {
+        width: 150px;
+        height: 215px;       
+    }
+
+    &__image {
+        flex: 1;
+    }
+
+    &__row {
+        display: flex;
+        gap: 15px;   
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        flex: 5;
+        gap: 15px;
+
+    }
+
+    &__icon {   
+        padding: 5px 10px;
+        border-radius: 10px;
+        border: 1px solid #212121;
+    }
+
+    &__year {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 300;
+    }
+    &__language {
+        font-weight: 400;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    &__plot {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    &__rating {
+        display: flex;
+        gap: 5px;
+        flex: 1;
+    }
+    
+
+
+}
