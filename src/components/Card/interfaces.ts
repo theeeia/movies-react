@@ -4,5 +4,5 @@ export interface CardProps {
   title: string;
   subTitle: string;
   modifierClass?: string;
-  clickFn?: () => void;
+  onCardClick?: () => void;
 }
