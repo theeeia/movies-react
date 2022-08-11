@@ -14,7 +14,7 @@ export interface MovieCardProps {
   year: string;
   language: string;
   poster: string;
-  starsNumber: number;
+  votes: number;
   isInFavorites: boolean;
   handleAddToFavorites: (movieId: number) => void;
 }

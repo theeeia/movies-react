@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Icons
-import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
+// Components
+import MovieRatingStars from "./MovieRatingStars";
 
 // Interfaces
 import { MovieCardProps } from "./interfaces";
@@ -15,23 +15,15 @@ const MovieCard = ({
   year,
   language,
   poster,
-  starsNumber,
+  votes,
   isInFavorites = false,
   handleAddToFavorites,
 }: MovieCardProps) => {
-  const [stars, setStars] = useState<React.ReactNode[]>([]);
-
   if (poster) {
     poster = `https://image.tmdb.org/t/p/w500/${poster}`;
   } else {
     poster = require("../../assets/images/placeholder.png");
   }
-
-  // Create an array with number of stars as length
-  useEffect(() => {
-    const starsArray = Array(starsNumber).fill(1);
-    setStars(starsArray);
-  }, []);
 
   const [isFavorite, setIsFavorite] = useState(isInFavorites);
 
@@ -63,9 +55,7 @@ const MovieCard = ({
             <p className="txt--uppercase">{language}</p>
           </div>
           <div className="movie-card__rating">
-            {stars.map((_, index: number) => (
-              <StarIcon key={index} />
-            ))}
+            <MovieRatingStars votes={votes} />
           </div>
         </div>
 

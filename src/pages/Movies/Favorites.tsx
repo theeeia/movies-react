@@ -110,15 +110,6 @@ const Favorites = () => {
     return moviesList;
   }, [debouncedSearch, sortParameter, favoriteMoviesResponses]);
 
-  /*================
-    RATING STARS
-
-   Return the number of stars based on the movie average votes
-  ================*/
-  const handleStarsNumberFromRating = (rating: number) => {
-    return Math.ceil(rating / 2);
-  };
-
   // Set to true if any query is still loading
   const isLoading = favoriteMoviesResponses.some((query: Record<string, any>) => query.isLoading);
 
@@ -147,7 +138,7 @@ const Favorites = () => {
                   year={handleGetYear(movie.release_date)}
                   language={movie.original_language}
                   genre={movie?.genres[0]?.name ?? ""}
-                  starsNumber={handleStarsNumberFromRating(movie.vote_average)}
+                  votes={movie.vote_average}
                   isInFavorites={true}
                   handleAddToFavorites={handleRemoveMovieFromFavorites}
                 />

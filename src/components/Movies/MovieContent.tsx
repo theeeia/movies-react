@@ -75,15 +75,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   );
 
   /*================
-    RATING STARS
-
-   Return the number of stars based on the movie average votes
-  ================*/
-  const handleStarsNumberFromRating = (rating: number) => {
-    return Math.ceil(rating / 2);
-  };
-
-  /*================
     SORT AND FILTER PARAMETERS
 
   Get the parameters on input change 
@@ -153,7 +144,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   year={handleGetYear(movie.release_date)}
                   language={movie.original_language}
                   genre={genre?.name}
-                  starsNumber={handleStarsNumberFromRating(movie.vote_average)}
+                  votes={movie.vote_average}
                   isInFavorites={favoriteMoviesIdsList.includes(movie.id)}
                   handleAddToFavorites={handleAddMovieToFavorites}
                 />
