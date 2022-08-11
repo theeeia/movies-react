@@ -140,7 +140,17 @@ const MovieDetails = () => {
                     <>Will publish on {format(parseISO(movie.release_date), "PPP")}</>
                   )}
                 </div>
-                <div className="movie-details__label">Status: {movie.status}</div>
+                <div className="movie-details__label mr--30">Status: {movie.status}</div>
+                {movie.imdb_id && (
+                  <a
+                    href={"https://www.imdb.com/title/" + movie.imdb_id}
+                    target="_blank"
+                    rel="noopener"
+                    className="movie-details__btn"
+                  >
+                    imdb
+                  </a>
+                )}
 
                 <div className="movie-details__label movie-details__revenue">
                   Revenue {movie.revenue == 0 ? "-" : revenue}
