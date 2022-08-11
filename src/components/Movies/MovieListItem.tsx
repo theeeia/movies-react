@@ -1,29 +1,57 @@
+import { useState } from "react";
+import { MovieListItemProps } from "./interfaces";
+import MovieGenres from "./MovieGenres";
 import MovieRatingStars from "./MovieRatingStars";
 
-const MovieListItem = () => {
+const MovieListItem = ({
+  favoriteIcon,
+  movieId,
+  genres,
+  title,
+  year,
+  language,
+  poster = require("../../assets/images/list-placeholder.png"),
+  votes,
+  plot,
+  isInFavorites = false,
+  handleAddToFavorites,
+}: MovieListItemProps) => {
+  const [isFavorite, setIsFavorite] = useState(isInFavorites);
+
+  // Toogle between favorite classes
+  const handleFavorite = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
+    setIsFavorite(!isFavorite);
+    handleAddToFavorites(movieId);
+  };
   return (
     <div className="movie-list-item">
       <div className="movie-list-item__image">
-        <img src={require("../../assets/images/list-placeholder.png")} />
+        <img src={poster} />
       </div>
       <div className="movie-list-item__details">
         <div className="movie-list-item__row">
-          <h5>Title</h5>
-          <div className="movie-list-item__icon">icon</div>
+          <h5>{title}</h5>
+          <div
+            className={`movie-list-item__icon ${
+              isFavorite ? "movie-list-item--favorite" : "movie-list-item--not-favorite"
+            }  `}
+            onClick={event => handleFavorite(event)}
+          >
+            {favoriteIcon}
+          </div>
         </div>
         <div className="movie-list-item__row">
-          <div className="movie-list-item__year">2012</div>
-          <div className="movie-list-item__language">LANG</div>
+          <div className="movie-list-item__year">{year}</div>
+          <div className="movie-list-item__language">{language}</div>
         </div>
-        <div className="movie-list-item__plot">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris{" "}
+        <div className="movie-list-item__plot">{plot}</div>
+        <div className="movie-list-item__genre">
+          <MovieGenres genres={genres} />
         </div>
-        <div className="movie-list-item__genre">GEnre</div>
       </div>
       <div className="movie-list-item__rating">
-        <MovieRatingStars votes={10} />
+        <MovieRatingStars votes={votes} />
       </div>
     </div>
   );

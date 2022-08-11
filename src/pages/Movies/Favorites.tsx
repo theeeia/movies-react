@@ -139,7 +139,7 @@ const Favorites = () => {
                       : undefined
                   }
                   title={movie.title}
-                  year={handleGetYear(movie.release_date)}
+                  year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
                   language={movie.original_language}
                   genre={movie?.genres[0]?.name ?? ""}
                   votes={movie.vote_average}

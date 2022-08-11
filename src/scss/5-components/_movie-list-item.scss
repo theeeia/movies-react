@@ -1,8 +1,9 @@
 .movie-list-item {
+    height: 265px;
     display: flex;
     padding: 30px;
     background: #131313;
-    border-radius: 20px;
+    border-bottom: 1px #202020 solid;
     justify-content: space-between;
     gap: 50px;
 
@@ -18,7 +19,8 @@
 
     &__row {
         display: flex;
-        gap: 15px;   
+        gap: 15px;  
+        align-items: center; 
     }
 
     &__details {
@@ -26,14 +28,23 @@
         flex-direction: column;
         flex: 5;
         gap: 15px;
+        
 
     }
 
     &__icon {   
+        display: flex;
+        align-items: center; 
         padding: 5px 10px;
         border-radius: 10px;
         border: 1px solid #212121;
+
+        svg {
+            width: 20px;
+            height: 18px;
+        }
     }
+
 
     &__year {
         font-size: 16px;
@@ -47,8 +58,14 @@
     }
 
     &__plot {
+        position: relative;
+        width: 525px;
         font-size: 14px;
         color: rgba(255, 255, 255, 0.8);
+        overflow: hidden;
+   
+
+      
     }
 
     &__rating {
@@ -57,6 +74,18 @@
         flex: 1;
     }
     
+    
+    &--favorite {
+        path {
+            fill: #FF055F;
+        }
+    }
+    &--not-favorite {
+        path {
+            fill: #FFFFFF;
+        }
+    }
+
 
 
 }

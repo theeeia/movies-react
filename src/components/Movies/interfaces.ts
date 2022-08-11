@@ -25,3 +25,17 @@ export interface MovieGenresProps {
   genres: Record<string, any>;
   modifierClass?: string;
 }
+
+export interface MovieListItemProps {
+  favoriteIcon: React.ReactNode;
+  movieId: number;
+  genres: Record<string, any>;
+  title: string;
+  year: string;
+  language: string;
+  plot: string;
+  poster: string | undefined;
+  votes: number;
+  isInFavorites: boolean;
+  handleAddToFavorites: (movieId: number) => void;
+}

@@ -41,3 +41,16 @@ body { background-color: $bg-color; }
 
 .link-button { padding: 5px 30px; }
 
+.movie-list {
+    margin-bottom: 50px;
+    & > div:first-child {
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+    & >div:last-child {
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border: none;
+    }
+
+}

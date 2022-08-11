@@ -72,6 +72,7 @@ const MovieDetails = () => {
     },
   );
 
+  console.log(movie?.genres);
   const [recommendedMoviesIdList, setRecommendedMoviesIdList] = useState<number[]>([]);
 
   // Get a list of ids for the first 5 recommendations that dont include the original movie
@@ -102,7 +103,7 @@ const MovieDetails = () => {
     const valueInCurrency = handleFormatAsCurrency(movie.revenue, "USD");
     setRevenue(valueInCurrency);
   }, [movie]);
-  console.log(movie);
+
   // State for show more button
   const [isShowMore, setIsShowMore] = useState(false);
 

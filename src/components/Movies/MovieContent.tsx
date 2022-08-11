@@ -145,7 +145,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                       : undefined
                   }
                   title={movie.title}
-                  year={handleGetYear(movie.release_date)}
+                  year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
                   language={movie.original_language}
                   genre={genre?.name}
                   votes={movie.vote_average}
