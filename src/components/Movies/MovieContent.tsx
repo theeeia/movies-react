@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { parseISO, getYear } from "date-fns";
 
 // Components
 import Loader from "../Loader/Loader";
@@ -17,6 +16,7 @@ import useDebounce from "../../hooks/useDebounce";
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
+import handleGetYear from "../../utils/handleGetYear";
 
 // Interfaces
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
@@ -75,15 +75,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   );
 
   /*================
-    RATING STARS
-
-   Return the number of stars based on the movie average votes
-  ================*/
-  const handleStarsNumberFromRating = (rating: number) => {
-    return Math.ceil(rating / 2);
-  };
-
-  /*================
     SORT AND FILTER PARAMETERS
 
   Get the parameters on input change 
@@ -127,16 +118,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     return moviesList;
   }, [debouncedSearch, sortParameter, movies]);
 
-  /*================
-    GET YEAR
-
-  Parse the date from api response and get the year
-  ================*/
-  const handleGetYear = (date: string) => {
-    const dates = parseISO(date);
-    return getYear(dates).toString();
-  };
-
   return (
     <>
       <div className="breadcrumbs">Home</div>
@@ -158,12 +139,16 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   favoriteIcon={<HeartIcon />}
                   movieId={movie.id}
                   key={movie.id}
-                  poster={movie.poster_path}
+                  poster={
+                    movie.poster_path
+                      ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                      : undefined
+                  }
                   title={movie.title}
                   year={handleGetYear(movie.release_date)}
                   language={movie.original_language}
                   genre={genre?.name}
-                  starsNumber={handleStarsNumberFromRating(movie.vote_average)}
+                  votes={movie.vote_average}
                   isInFavorites={favoriteMoviesIdsList.includes(movie.id)}
                   handleAddToFavorites={handleAddMovieToFavorites}
                 />

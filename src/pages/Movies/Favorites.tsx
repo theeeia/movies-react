@@ -1,6 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { parseISO, getYear } from "date-fns";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -20,6 +19,7 @@ import useDebounce from "../../hooks/useDebounce";
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
+import handleGetYear from "../../utils/handleGetYear";
 
 // Icons
 import { ReactComponent as TrashIcon } from "../../assets/images/trash.svg";
@@ -110,27 +110,8 @@ const Favorites = () => {
     return moviesList;
   }, [debouncedSearch, sortParameter, favoriteMoviesResponses]);
 
-  /*================
-    RATING STARS
-
-   Return the number of stars based on the movie average votes
-  ================*/
-  const handleStarsNumberFromRating = (rating: number) => {
-    return Math.ceil(rating / 2);
-  };
-
-  /*================
-    GET YEAR
-
-  Parse the date from api response and get the year
-  ================*/
-  const handleGetYear = (date: string) => {
-    const dates = parseISO(date);
-    return getYear(dates).toString();
-  };
-
   // Set to true if any query is still loading
-  const isLoading = favoriteMoviesResponses.some((query: any) => query.isLoading);
+  const isLoading = favoriteMoviesResponses.some((query: Record<string, any>) => query.isLoading);
 
   return (
     <div>
@@ -152,12 +133,16 @@ const Favorites = () => {
                   favoriteIcon={<TrashIcon />}
                   movieId={movie.id}
                   key={movie.id}
-                  poster={movie.poster_path}
+                  poster={
+                    movie.poster_path
+                      ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                      : undefined
+                  }
                   title={movie.title}
                   year={handleGetYear(movie.release_date)}
                   language={movie.original_language}
-                  genre={movie.genres[0].name}
-                  starsNumber={handleStarsNumberFromRating(movie.vote_average)}
+                  genre={movie?.genres[0]?.name ?? ""}
+                  votes={movie.vote_average}
                   isInFavorites={true}
                   handleAddToFavorites={handleRemoveMovieFromFavorites}
                 />
