@@ -20,3 +20,8 @@ export interface MovieCardProps {
 }
 
 export type SortValueTypes = "title" | "release_date" | "vote_average";
+
+export interface MovieGenresProps {
+  genres: Record<string, any>;
+  modifierClass?: string;
+}

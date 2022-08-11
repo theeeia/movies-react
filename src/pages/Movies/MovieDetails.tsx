@@ -21,6 +21,7 @@ import { MovieDetailsApiProps } from "./interfaces";
 
 // Icons
 import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-more.svg";
+import MovieGenres from "../../components/Movies/MovieGenres";
 
 const MovieDetails = () => {
   // Get movie parameter from path
@@ -89,20 +90,8 @@ const MovieDetails = () => {
   /*================
     REVENUE FORMAT
 
-   Format revenue as currency
+   Format revenue as currency and set it to state
   ================*/
-
-  const [revenue, setRevenue] = useState<string>("");
-
-  useEffect(() => {
-    if (!movie || !Object.entries(movie).length) return;
-
-    handleConvertToCurrency(movie.revenue, "USD");
-  }, [movie]);
-
-  // State for show more button
-  const [isShowMore, setIsShowMore] = useState(false);
-
   const handleConvertToCurrency = (value: number, toCurrency: string) => {
     const valueInCurrency = Intl.NumberFormat("en-US", {
       style: "currency",
@@ -111,6 +100,17 @@ const MovieDetails = () => {
     }).format(value);
     setRevenue(valueInCurrency);
   };
+
+  const [revenue, setRevenue] = useState<string>("");
+
+  useEffect(() => {
+    if (!movie || !Object.entries(movie).length) return;
+    // Convert the movie revenue to dollars
+    handleConvertToCurrency(movie.revenue, "USD");
+  }, [movie]);
+
+  // State for show more button
+  const [isShowMore, setIsShowMore] = useState(false);
 
   return (
     <>
@@ -153,13 +153,7 @@ const MovieDetails = () => {
                 </div>
               </div>
               <div className="movie-details__info">
-                {movie.genres.map((genre: Record<string, string | number>) => {
-                  return (
-                    <div className="movie-details__genre mb--10" key={genre.id}>
-                      {genre.name}
-                    </div>
-                  );
-                })}
+                <MovieGenres genres={movie.genres} modifierClass={"movie-details__genre mb--10"} />
               </div>
               <div className="movie-details__summary">{movie.overview}</div>
               {isShowMore && (
