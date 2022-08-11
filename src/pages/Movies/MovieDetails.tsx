@@ -22,6 +22,7 @@ import { MovieDetailsApiProps } from "./interfaces";
 // Icons
 import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-more.svg";
 import MovieGenres from "../../components/Movies/MovieGenres";
+import handleFormatAsCurrency from "../../utils/handleFormatAsCurrency";
 
 const MovieDetails = () => {
   // Get movie parameter from path
@@ -92,21 +93,14 @@ const MovieDetails = () => {
 
    Format revenue as currency and set it to state
   ================*/
-  const handleConvertToCurrency = (value: number, toCurrency: string) => {
-    const valueInCurrency = Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: toCurrency,
-      maximumSignificantDigits: 9,
-    }).format(value);
-    setRevenue(valueInCurrency);
-  };
 
   const [revenue, setRevenue] = useState<string>("");
 
   useEffect(() => {
     if (!movie || !Object.entries(movie).length) return;
     // Convert the movie revenue to dollars
-    handleConvertToCurrency(movie.revenue, "USD");
+    const valueInCurrency = handleFormatAsCurrency(movie.revenue, "USD");
+    setRevenue(valueInCurrency);
   }, [movie]);
 
   // State for show more button
