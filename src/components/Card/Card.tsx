@@ -15,7 +15,7 @@ const Card = ({
     imagePath = require("../../assets/images/placeholder.png");
   }
   return (
-    <div className={`pb--20 ${modifierClass}`} key={id}>
+    <div className={`card ${modifierClass}`} key={id}>
       <div onClick={onCardClick} className="card__content">
         <img className="card__image" src={imagePath} />
         <h5 className="card__title">{title}</h5>
