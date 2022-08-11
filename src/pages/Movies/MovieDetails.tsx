@@ -45,13 +45,15 @@ const MovieDetails = () => {
 
    Get recommended list of movies based on the movie genre
   ================*/
-  let recommendationGenresIds: string = "";
+  let recommendationGenresIds: string = "&with_genres=";
   // Concatenate the genre ids if the movie is loaded
   if (movieLoaded) {
     movie.genres.map(
       (genre: Record<string, string | number>) =>
-        (recommendationGenresIds = recommendationGenresIds.concat("&with_genres=" + genre.id)),
+        (recommendationGenresIds = recommendationGenresIds.concat(genre.id + ",")),
     );
+    recommendationGenresIds = recommendationGenresIds.slice(0, -1);
+    console.log(recommendationGenresIds);
   }
 
   // Fetch the list of recommendations when movie is loaded
