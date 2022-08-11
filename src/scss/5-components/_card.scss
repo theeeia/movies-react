@@ -1,4 +1,6 @@
 .card {
+    padding-bottom: 20px;
+
     &--clickable &__content   { cursor: pointer; }
 
     &__image{
@@ -12,10 +14,7 @@
         height: 340px
 
     }
-    &--img-lg  &__content {
-        width: 240px;
-        height: 340px
-    }
+    &--img-lg  &__content { width: 240px; }
 
     &--img-sm &__image {
         width: 90px;

@@ -45,18 +45,19 @@ const MovieRecommendations = ({
 
   // Set to false if all queries are loaded
   const isMovierecommendationDetailsLoading = recommendedMoviesResponses.some(
-    (query: any) => query.isLoading,
+    (query: Record<string, any>) => query.isLoading,
   );
 
   return (
     <div>
       <h1 className="mb--70">Recommended For You</h1>
-      <div className="row mb--100">
-        {recommendedMoviesIdList.length != 0 ? (
-          isMovierecommendationDetailsLoading ? (
-            <Loader />
-          ) : (
-            recommendedMoviesResponses
+
+      {recommendedMoviesIdList.length != 0 ? (
+        isMovierecommendationDetailsLoading ? (
+          <Loader />
+        ) : (
+          <div className="row mb--50">
+            {recommendedMoviesResponses
               .map((movie: Record<string, any>) => movie.data)
               .map((movie: MovieDetailsApiProps) => {
                 return (
@@ -65,17 +66,17 @@ const MovieRecommendations = ({
                     id={movie.id}
                     imagePath={movie.poster_path}
                     title={movie.title}
-                    clickFn={() => navigate("/movies/details/" + movie.id)}
-                    subTitle={handleGetYear(movie.release_date)}
+                    onCardClick={() => navigate("/movies/details/" + movie.id)}
+                    subtitle={handleGetYear(movie.release_date)}
                     modifierClass={"card--img-lg col card--clickable"}
                   />
                 );
-              })
-          )
-        ) : (
-          "No recommendations"
-        )}
-      </div>
+              })}
+          </div>
+        )
+      ) : (
+        <div className="mb--30 txt--white txt--center">No recommendations</div>
+      )}
     </div>
   );
 };
