@@ -9,20 +9,20 @@ import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleGetYear from "../../utils/handleGetYear";
+import handleFormatAsCurrency from "../../utils/handleFormatAsCurrency";
 
 // Components
 import Loader from "../../components/Loader/Loader";
 import MovieCast from "../../components/Movies/MovieCast";
 import MovieRecommendations from "../../components/Movies/MovieRecommendations";
 import MovieRatingStars from "../../components/Movies/MovieRatingStars";
+import MovieGenres from "../../components/Movies/MovieGenres";
 
 // Interfaces
 import { MovieDetailsApiProps } from "./interfaces";
 
 // Icons
 import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-more.svg";
-import MovieGenres from "../../components/Movies/MovieGenres";
-import handleFormatAsCurrency from "../../utils/handleFormatAsCurrency";
 
 const MovieDetails = () => {
   // Get movie parameter from path

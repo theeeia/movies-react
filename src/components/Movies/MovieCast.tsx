@@ -1,7 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
+
+// Config
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
+
+// Interface
 import { ActorApiProps } from "../../pages/Movies/interfaces";
+
+// Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
+
+// Components
 import Loader from "../Loader/Loader";
 import Card from "../Card/Card";
 
