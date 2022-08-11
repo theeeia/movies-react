@@ -14,12 +14,12 @@ import handleGetYear from "../../utils/handleGetYear";
 import Loader from "../../components/Loader/Loader";
 import MovieCast from "../../components/Movies/MovieCast";
 import MovieRecommendations from "../../components/Movies/MovieRecommendations";
+import MovieRatingStars from "../../components/Movies/MovieRatingStars";
 
 // Interfaces
 import { MovieDetailsApiProps } from "./interfaces";
 
 // Icons
-import { ReactComponent as StarIcon } from "../../assets/images/star.svg";
 import { ReactComponent as ShowMoreArrowIcon } from "../../assets/images/arrow-more.svg";
 
 const MovieDetails = () => {
@@ -52,7 +52,6 @@ const MovieDetails = () => {
     const recommendationsList = movie.genres.map(
       (genre: Record<string, string | number>) => genre.id,
     );
-    console.log(recommendationsList);
     if (recommendationsList.length != 0) {
       setMovieGenresIds("&with_genres=" + recommendationsList.join(","));
     }
@@ -88,27 +87,30 @@ const MovieDetails = () => {
   }, [recommendedMovies]);
 
   /*================
-    RATING STARS AND REVENUE FORMAT
+    REVENUE FORMAT
 
-   Return the number of stars based on the movie average votes and format revenue as currency
+   Format revenue as currency
   ================*/
-  const [stars, setStars] = useState<React.ReactNode[]>([]);
+
   const [revenue, setRevenue] = useState<string>("");
+
   useEffect(() => {
     if (!movie || !Object.entries(movie).length) return;
-    const starsArray = Array(Math.ceil(movie.vote_average / 2)).fill(1);
-    setStars(starsArray);
-    setRevenue(
-      Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumSignificantDigits: 9,
-      }).format(movie.revenue),
-    );
+
+    handleConvertToCurrency(movie.revenue, "USD");
   }, [movie]);
 
   // State for show more button
   const [isShowMore, setIsShowMore] = useState(false);
+
+  const handleConvertToCurrency = (value: number, toCurrency: string) => {
+    const valueInCurrency = Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: toCurrency,
+      maximumSignificantDigits: 9,
+    }).format(value);
+    setRevenue(valueInCurrency);
+  };
 
   return (
     <>
@@ -132,9 +134,7 @@ const MovieDetails = () => {
                 <h2 className="movie-details__title">{movie.title}</h2>
                 <div className="movie-details__year">({handleGetYear(movie.release_date)})</div>
                 <div className="movie-details__rating">
-                  {stars.map((_, index: number) => (
-                    <StarIcon key={index} />
-                  ))}
+                  <MovieRatingStars votes={movie.vote_average} />
                 </div>
               </div>
               <div className="movie-details__info">
