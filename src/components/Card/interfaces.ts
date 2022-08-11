@@ -2,7 +2,7 @@ export interface CardProps {
   id: number;
   imagePath: string;
   title: string;
-  subTitle: string;
+  subtitle: string;
   modifierClass?: string;
   onCardClick?: () => void;
 }

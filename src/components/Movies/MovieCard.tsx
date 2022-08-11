@@ -21,6 +21,12 @@ const MovieCard = ({
 }: MovieCardProps) => {
   const [stars, setStars] = useState<React.ReactNode[]>([]);
 
+  if (poster) {
+    poster = `https://image.tmdb.org/t/p/w500/${poster}`;
+  } else {
+    poster = require("../../assets/images/placeholder.png");
+  }
+
   // Create an array with number of stars as length
   useEffect(() => {
     const starsArray = Array(starsNumber).fill(1);
@@ -30,7 +36,7 @@ const MovieCard = ({
   const [isFavorite, setIsFavorite] = useState(isInFavorites);
 
   // Toogle between favorite classes
-  const handleFavorite = (event: any) => {
+  const handleFavorite = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     setIsFavorite(!isFavorite);
     handleAddToFavorites(movieId);
@@ -48,14 +54,7 @@ const MovieCard = ({
         <div className="movie-card__image-box">
           {genre && <div className="movie-card__genre">{genre}</div>}
 
-          {poster ? (
-            <img className="movie-card__image" src={`https://image.tmdb.org/t/p/w500/${poster}`} />
-          ) : (
-            <img
-              className="movie-card__image"
-              src={require("../../assets/images/placeholder.png")}
-            />
-          )}
+          <img className="movie-card__image" src={poster} />
         </div>
         <div className="movie-card__details">
           <div className="movie-card__title">{title}</div>

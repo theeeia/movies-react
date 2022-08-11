@@ -29,11 +29,10 @@ const MovieCast = ({ movieId }: { movieId: string }) => {
             {actors?.cast.slice(0, 10).map((actor: ActorApiProps) => {
               return (
                 <Card
-                  key={actor.id}
                   id={actor.id}
                   imagePath={actor.profile_path}
                   title={actor.name}
-                  subTitle={"as " + actor.character}
+                  subtitle={"as " + actor.character}
                   modifierClass={"col-6 card--img-sm "}
                 />
               );
