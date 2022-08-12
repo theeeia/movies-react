@@ -6,6 +6,13 @@ export interface MoviesHeaderProps {
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
 }
 
+export interface MoviesSearchBarProps {
+  title: string;
+  handleSearch: (searchedValue: string) => void;
+  handleSearchFilter: (searchFilter: string) => void;
+  handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
+}
+
 export interface MovieCardProps {
   favoriteIcon: React.ReactNode;
   movieId: number;
