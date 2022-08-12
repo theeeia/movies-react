@@ -82,8 +82,12 @@ const Search = () => {
 
       <div className="row">
         <div className="col-4">
-          <h2>Filter Options</h2>
-          <MovieCategories />
+          {statusGenres == "success" && (
+            <>
+              <h2>Filter Options</h2>
+              <MovieCategories genres={genres.genres} />
+            </>
+          )}
         </div>
         <div className="col-8">
           <h2>Movies</h2>
