@@ -117,7 +117,7 @@ const Search = () => {
                           : undefined
                       }
                       title={movie.title}
-                      year={handleGetYear(movie.release_date)}
+                      year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
                       language={movie.original_language}
                       genres={handleGetGenreNames(movie.genre_ids)}
                       plot={movie.overview}

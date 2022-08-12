@@ -1,5 +1,4 @@
 .movie-list-item {
-    height: 265px;
     display: flex;
     padding: 25px 30px;
     background: #131313;
@@ -53,6 +52,7 @@
         font-weight: 400;
         font-size: 16px;
         color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
     }
 
     &__plot {
