@@ -1,21 +1,22 @@
 import { CheckboxProps } from "./interfaces";
 
-const Checkbox = ({ label, name, type, checked, onChange }: CheckboxProps) => {
+const Checkbox = ({ id, label, name, type, checked, onChange }: CheckboxProps) => {
   return (
-    <>
-      <div className="checkbox">
+    <div className="checkbox">
+      <label className="checkbox__box">
         <input
+          value={id}
           type={type}
           name={name}
           checked={checked}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            onChange(event.currentTarget.name)
+            onChange(event.currentTarget.value)
           }
-          className={"checkbox__input"}
         />
-        <p className="checkbox__label">{label}</p>
-      </div>
-    </>
+        <span></span>
+        {label}
+      </label>
+    </div>
   );
 };
 export default Checkbox;

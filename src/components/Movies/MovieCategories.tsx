@@ -8,9 +8,10 @@ const MovieCategories = ({ genres }: { genres: Record<string, any> }) => {
   const handleOnChange = (genre: string) => {
     let checkedList = checkedCategories;
     checkedList = checkedCategories.includes(genre)
-      ? checkedList.filter((genreName: string) => genreName != genre)
+      ? checkedList.filter((genreId: string) => genreId != genre)
       : [...checkedList, genre];
     setCheckedCategories(checkedList);
+    console.log(checkedList);
   };
 
   return (
@@ -21,9 +22,10 @@ const MovieCategories = ({ genres }: { genres: Record<string, any> }) => {
           return (
             <div className="col-6" key={genre.id}>
               <Checkbox
+                id={genre.id}
                 label={genre.name}
                 name={genre.name}
-                checked={checkedCategories.some((category: string) => category == genre.name)}
+                checked={checkedCategories.some((category: string) => category == genre.id)}
                 type="checkbox"
                 onChange={handleOnChange}
               />
