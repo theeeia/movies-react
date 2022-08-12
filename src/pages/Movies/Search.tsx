@@ -1,23 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 // Components
 import Loader from "../../components/Loader/Loader";
 import MovieListItem from "../../components/Movies/MovieListItem";
 import MovieCategories from "../../components/Movies/MovieCategories";
 import MoviesHeader from "../../components/Movies/MoviesHeader";
-
+import Pagination from "../../components/Pagination/Pagination";
 // Config
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
+import handleGetYear from "../../utils/handleGetYear";
+
+// Interfaces
 import { MovieApiProps } from "./interfaces";
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
-import handleGetYear from "../../utils/handleGetYear";
-import Pagination from "../../components/Pagination/Pagination";
-import { useState } from "react";
 
 const Search = () => {
   // Read list from local storage

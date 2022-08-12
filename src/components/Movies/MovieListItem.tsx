@@ -1,5 +1,9 @@
 import { useState } from "react";
+
+// Interfaces
 import { MovieListItemProps } from "./interfaces";
+
+// Components
 import MovieGenres from "./MovieGenres";
 import MovieRatingStars from "./MovieRatingStars";
 
