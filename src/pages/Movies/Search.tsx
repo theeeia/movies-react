@@ -67,6 +67,7 @@ const Search = () => {
     handleFetch(`${API_ENDPOINT_BASE}/genre/movie/list?api_key=${API_KEY}&language=en-US`, "GET"),
   );
 
+  // Return a list of genres for the movie
   const handleGetGenreNames = (genre_ids: number[]) => {
     const genresList = genre_ids.map((genre_id: number) => {
       return genres.genres.filter(

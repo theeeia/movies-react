@@ -2,8 +2,9 @@ import { useState } from "react";
 import Checkbox from "../Checkbox/Checkbox";
 
 const MovieCategories = ({ genres }: { genres: Record<string, any> }) => {
-  const [checkedCategories, setCheckedCategories] = useState<any>([]);
+  const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
 
+  // Add genre to list if its checked or remove if unchecked and update state
   const handleOnChange = (genre: string) => {
     let checkedList = checkedCategories;
     checkedList = checkedCategories.includes(genre)
