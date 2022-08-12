@@ -1,18 +1,31 @@
+import { useState } from "react";
+import Checkbox from "../Checkbox/Checkbox";
+
 const MovieCategories = ({ genres }: { genres: Record<string, any> }) => {
+  const [checkedCategories, setCheckedCategories] = useState<any>([]);
+
+  const handleOnChange = (genre: string) => {
+    let checkedList = checkedCategories;
+    checkedList = checkedCategories.includes(genre)
+      ? checkedList.filter((genreName: string) => genreName != genre)
+      : [...checkedList, genre];
+    setCheckedCategories(checkedList);
+  };
+
   return (
     <div className="movie-categories">
       <div className="movie-categories__title">By Category</div>
       <div className="row movie-categories__list">
         {genres.map((genre: Record<string, any>) => {
           return (
-            <div className="col-6">
-              <input
-                type="checkbox"
-                key={genre.id}
+            <div className="col-6" key={genre.id}>
+              <Checkbox
+                label={genre.name}
                 name={genre.name}
-                className="movie-categories__item"
+                checked={checkedCategories.some((category: string) => category == genre.name)}
+                type="checkbox"
+                onChange={handleOnChange}
               />
-              <label className="movie-categories__item">{genre.name}</label>
             </div>
           );
         })}
