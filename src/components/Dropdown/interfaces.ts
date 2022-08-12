@@ -6,7 +6,7 @@ export interface DropdownItemProps {
 }
 
 export interface DropdownProps {
-  title: string;
+  title?: string;
   items: DropdownItemProps[];
   handleDropdownItem: (item: DropdownItemProps) => void;
   icon?: React.ReactNode;
