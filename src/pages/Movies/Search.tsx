@@ -69,14 +69,11 @@ const Search = () => {
 
   const handleGetGenreNames = (genre_ids: number[]) => {
     const genres_names = genre_ids.map((genre_id: number) => {
-      const genre = genres.genres.filter(
+      return genres.genres.filter(
         (genre: Record<string, string | number>) => genre.id === genre_id,
-      );
-      console.log(genre);
-      return genre;
+      )[0];
     });
-
-    return { genres_names };
+    return genres_names;
   };
 
   return (

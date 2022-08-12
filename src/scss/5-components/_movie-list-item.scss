@@ -1,7 +1,7 @@
 .movie-list-item {
     height: 265px;
     display: flex;
-    padding: 30px;
+    padding: 25px 30px;
     background: #131313;
     border-bottom: 1px #202020 solid;
     justify-content: space-between;
@@ -10,12 +10,11 @@
 
     &__image img {
         width: 150px;
-        height: 215px;       
+        height: 215px; 
+        border-radius: 20px;    
     }
 
-    &__image {
-        flex: 1;
-    }
+    &__image { flex: 1; }
 
     &__row {
         display: flex;
@@ -28,8 +27,6 @@
         flex-direction: column;
         flex: 5;
         gap: 15px;
-        
-
     }
 
     &__icon {   
@@ -51,6 +48,7 @@
         color: rgba(255, 255, 255, 0.5);
         font-weight: 300;
     }
+
     &__language {
         font-weight: 400;
         font-size: 16px;
@@ -62,10 +60,27 @@
         width: 525px;
         font-size: 14px;
         color: rgba(255, 255, 255, 0.8);
-        overflow: hidden;
-   
+        overflow: hidden; 
+    }
 
-      
+    &__genre {
+        width:100%;
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+    }
+
+    &__genre-item {
+        display: flex;
+        padding: 5px 20px;
+        margin-right: 10px;
+        border-radius: 10px;
+        color:#1328E3;
+        border: 1px solid #000F93;
+        font-weight: 300;
+        font-size: 14px;
+        text-transform: uppercase; 
+        margin-bottom: 5px;
     }
 
     &__rating {

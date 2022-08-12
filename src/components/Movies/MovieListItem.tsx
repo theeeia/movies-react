@@ -51,7 +51,7 @@ const MovieListItem = ({
         </div>
         <div className="movie-list-item__plot">{plot}</div>
         <div className="movie-list-item__genre">
-          <MovieGenres genres={genres} />
+          <MovieGenres genres={genres} modifierClass={"movie-list-item__genre-item"} />
         </div>
       </div>
       <div className="movie-list-item__rating">
