@@ -14,6 +14,7 @@ import Dropdown from "../Dropdown/Dropdown";
 
 // Icons
 import { ReactComponent as DropdownArrow } from "../../assets/images/dropdown-arrow.svg";
+import SearchDropdown from "../Dropdown/SearchDropdown";
 
 const MovieSearchBar = ({
   title,
@@ -49,11 +50,10 @@ const MovieSearchBar = ({
           </span>
 
           <span className="search-bar__dropdown">
-            <Dropdown
+            <SearchDropdown
               icon={<DropdownArrow />}
               items={MOVIES_SEARCH_FILTER_ITEMS}
               handleDropdownItem={handleFilterDropdownItem}
-              modifierClass={"dropdown--no-title dropdown--ml-n30"}
             />
           </span>
         </div>
