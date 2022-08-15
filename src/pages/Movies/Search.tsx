@@ -41,7 +41,6 @@ const Search = () => {
     setSearchInput(value);
   };
 
-  const debouncedSearch = useDebounce(searchInput, 1000) as string;
   // Store the value of the search input
   const handleSearchFilter = (value: string) => {
     setSearchFilter(value);
@@ -84,24 +83,95 @@ const Search = () => {
     `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page + 1}`,
   );
 
+  const debouncedSearch = useDebounce(searchInput, 1000) as string;
+
+  // Get actors that match the input
+  const { data: actor } = useQuery(
+    ["actor", debouncedSearch, searchFilter],
+    () =>
+      handleFetch(
+        `${API_ENDPOINT_BASE}/search/person?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
+        "GET",
+      ),
+    {
+      // Get person if search filter and search input is okay
+      enabled: (searchFilter == "actor" || searchFilter == "director") && debouncedSearch != "",
+    },
+  );
+
+  // Actor id
+  const [personId, setPersonId] = useState<string>("");
+
+  // Set in state the most popular actor id
   useEffect(() => {
-    if (searchFilter === "movie") {
-      setSearchQuery(
-        `${API_ENDPOINT_BASE}/search/${searchFilter}?api_key=${API_KEY}&language=en-US&query=`,
-      );
-    } else if (searchFilter === "actor") {
-      setSearchQuery(`${API_ENDPOINT_BASE}/search/person?api_key=${API_KEY}&language=en-US&query=`);
+    if (!actor || !Object.entries(actor).length) return;
+
+    let searchedPerson = {} as Record<string, any>;
+    if (searchFilter == "actor") {
+      searchedPerson = actor.results.filter((actor: any) => {
+        return actor.known_for_department == "Acting";
+      })[0];
+    } else {
+      searchedPerson = actor.results.filter((actor: any) => {
+        return actor.known_for_department == "Directing";
+      })[0];
     }
-  }, [searchFilter]);
+
+    if (searchedPerson != null) {
+      setPersonId(searchedPerson.id);
+    } else {
+      // If no such person, set it to empty
+      setPersonId("");
+    }
+  }, [actor]);
+
+  // set search query based on filter and search input
+  useEffect(() => {
+    switch (true) {
+      // Get default now_playing movie list
+      case debouncedSearch == "":
+        setSearchQuery(`${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`);
+        break;
+
+      // Get movie list with input in the title
+      case debouncedSearch != "" && searchFilter == "movie":
+        setSearchQuery(
+          `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
+        );
+        break;
+
+      // Get movie list with actor from input
+      case debouncedSearch != "" && personId != "":
+        setSearchQuery(
+          `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${personId}`,
+        );
+        break;
+    }
+
+    // if (debouncedSearch === "") {
+    //   setSearchQuery(`${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`);
+    // } else {
+    //   if (searchFilter == "movie") {
+    //     setSearchQuery(
+    //       `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
+    //     );
+    //   } else if (personId) {
+    //     setSearchQuery(
+    //       `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${personId}`,
+    //     );
+    //   }
+    // }
+  }, [searchFilter, debouncedSearch, personId]);
 
   // Get the movies from API at the selected page
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, searchInput],
+    [`movies-search`, debouncedSearch, page, searchQuery, personId, searchFilter],
     () => {
-      return handleFetch(`${searchQuery}${debouncedSearch}&page=${page + 1}`, "GET");
+      return handleFetch(searchQuery, "GET");
     },
     {
-      enabled: debouncedSearch != "",
+      // Prevent getting movies if there is no actor or director with input
+      enabled: searchFilter == "movie" || personId != "",
     },
   );
 
@@ -112,7 +182,7 @@ const Search = () => {
 
   // Return a list of genres for the movie
   const handleGetGenreNames = (genre_ids: number[]) => {
-    const genresList = genre_ids.map((genre_id: number) => {
+    const genresList = genre_ids?.map((genre_id: number) => {
       return genres.genres.filter(
         (genre: Record<string, string | number>) => genre.id === genre_id,
       )[0];
@@ -143,27 +213,6 @@ const Search = () => {
   const moviesList: Record<string, any> = useMemo(() => {
     if (!movies || !Object.entries(movies).length) return [];
     let moviesList = movies.results;
-    let moviesData: any[] = [];
-
-    if (searchFilter !== "movie") {
-      // Return only actors
-
-      const actors = moviesList.filter((actor: any) => {
-        return actor.known_for_department == "Acting";
-      });
-      // Return  known for movie per actor
-      const moviesPerActor = actors.map((moviesPerActor: any) => {
-        return [...moviesPerActor.known_for];
-      });
-      // flatten array
-      moviesPerActor.forEach((movie: any) => {
-        moviesData = [...moviesData, ...movie];
-      });
-
-      console.log(moviesData);
-    }
-
-    // Filter movies if there is a input
 
     // Sort movies if a parameter is selected
     if (sortParameter) {
@@ -180,8 +229,9 @@ const Search = () => {
         });
       });
     }
+
     return moviesList;
-  }, [sortParameter, categoryFilterParameters, movies]);
+  }, [sortParameter, categoryFilterParameters, movies, personId]);
 
   return (
     <>
@@ -210,44 +260,48 @@ const Search = () => {
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
           />
 
-          {statusMovies === "success" && statusGenres === "success" && searchFilter == "movie" ? (
-            <>
-              <div className="movie-list">
-                {moviesList.map((movie: MovieApiProps) => {
-                  return (
-                    <MovieListItem
-                      favoriteIcon={<HeartIcon />}
-                      movieId={movie.id}
-                      key={movie.id}
-                      poster={
-                        movie.poster_path
-                          ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
-                          : undefined
-                      }
-                      title={movie.title}
-                      year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
-                      language={movie.original_language}
-                      genres={handleGetGenreNames(movie.genre_ids)}
-                      plot={movie.overview}
-                      votes={movie.vote_average}
-                      isInFavorites={favoriteMoviesIdsList.includes(movie.id)}
-                      handleAddToFavorites={handleAddMovieToFavorites}
-                    />
-                  );
-                })}
-              </div>
-              <div className="page-info">
-                <div className="page-info__details">
-                  Showing {movies.results.length + 20 * page} from {movies.total_results} data
+          {statusMovies === "success" && statusGenres === "success" ? (
+            moviesList ? (
+              <>
+                <div className="movie-list">
+                  {moviesList.map((movie: MovieApiProps) => {
+                    return (
+                      <MovieListItem
+                        favoriteIcon={<HeartIcon />}
+                        movieId={movie.id}
+                        key={movie.id}
+                        poster={
+                          movie.poster_path
+                            ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                            : undefined
+                        }
+                        title={movie.title}
+                        year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
+                        language={movie.original_language}
+                        genres={handleGetGenreNames(movie.genre_ids)}
+                        plot={movie.overview}
+                        votes={movie.vote_average}
+                        isInFavorites={favoriteMoviesIdsList.includes(movie.id)}
+                        handleAddToFavorites={handleAddMovieToFavorites}
+                      />
+                    );
+                  })}
                 </div>
+                <div className="page-info">
+                  <div className="page-info__details">
+                    Showing {movies.results.length + 20 * page} from {movies.total_results} data
+                  </div>
 
-                <Pagination
-                  handlePageClick={handlePageClick}
-                  totalPages={movies.total_pages}
-                  page={page}
-                />
-              </div>{" "}
-            </>
+                  <Pagination
+                    handlePageClick={handlePageClick}
+                    totalPages={movies.total_pages}
+                    page={page}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="txt--center">No Results </div>
+            )
           ) : (
             <div className="txt--center">
               <Loader />
