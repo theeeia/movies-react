@@ -29,15 +29,13 @@
         padding: 10px  20px;
         gap:20px;
         border-radius: 20px;
-        background-color: black;
-        justify-content: space-between;
+        background-color: black;     
     }
 
     &__input {
         width: 100%;
         background-color: black;
         border: none;
-
     }
 
     &__filter {
@@ -47,13 +45,10 @@
         gap: 20px;
     }
 
-    &__dropdown {
+    &__dropdown { 
+        margin-right: 0;
+        margin-left: auto;
         display: flex;
         align-items: center;
-        svg {
-            cursor: pointer;
-        }
-        
-
     }
 }
