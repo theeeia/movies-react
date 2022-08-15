@@ -111,13 +111,14 @@ const Search = () => {
       searchedPerson = actor.results.filter((actor: any) => {
         return actor.known_for_department == "Acting";
       })[0];
-    } else {
+    }
+    if (searchFilter == "director") {
       searchedPerson = actor.results.filter((actor: any) => {
         return actor.known_for_department == "Directing";
       })[0];
     }
 
-    if (searchedPerson != null) {
+    if (searchedPerson != undefined) {
       setPersonId(searchedPerson.id);
     } else {
       // If no such person, set it to empty
