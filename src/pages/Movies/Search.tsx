@@ -80,7 +80,7 @@ const Search = () => {
    Get query based on filter and search input
   ================*/
   const [searchQuery, setSearchQuery] = useState<string>(
-    `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page + 1}`,
+    `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`,
   );
 
   const debouncedSearch = useDebounce(searchInput, 1000) as string;
@@ -126,15 +126,18 @@ const Search = () => {
   }, [actor]);
 
   // set search query based on filter and search input
+  // reset page on every new search
   useEffect(() => {
     switch (true) {
       // Get default now_playing movie list
       case debouncedSearch == "":
+        setPage(0);
         setSearchQuery(`${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`);
         break;
 
       // Get movie list with input in the title
       case debouncedSearch != "" && searchFilter == "movie":
+        setPage(0);
         setSearchQuery(
           `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
         );
@@ -142,6 +145,7 @@ const Search = () => {
 
       // Get movie list with actor from input
       case debouncedSearch != "" && personId != "":
+        setPage(0);
         setSearchQuery(
           `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${personId}`,
         );
@@ -165,9 +169,9 @@ const Search = () => {
 
   // Get the movies from API at the selected page
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page, searchQuery, personId, searchFilter],
+    [`movies-search`, debouncedSearch, page + 1, searchQuery, personId, searchFilter],
     () => {
-      return handleFetch(searchQuery, "GET");
+      return handleFetch(`${searchQuery}&page=${page + 1}`, "GET");
     },
     {
       // Prevent getting movies if there is no actor or director with input
