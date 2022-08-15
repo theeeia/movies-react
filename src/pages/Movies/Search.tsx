@@ -175,6 +175,7 @@ const Search = () => {
     },
     {
       // Prevent getting movies if there is no actor or director with input
+      // da ne se prakjat voopshto povik do filmoj ako ne e najden akter ili direktor
       enabled: searchFilter == "movie" || personId != "",
     },
   );
@@ -258,7 +259,7 @@ const Search = () => {
         <div className="col-8">
           <h2>Movies</h2>
           <MovieSearchBar
-            title="Search"
+            title={"Search by " + searchFilter}
             handleSearch={(searchValue: string) => handleSearchInput(searchValue)}
             handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
