@@ -265,7 +265,7 @@ const Search = () => {
           />
 
           {statusMovies === "success" && statusGenres === "success" ? (
-            moviesList ? (
+            moviesList.length > 0 ? (
               <>
                 <div className="movie-list">
                   {moviesList.map((movie: MovieApiProps) => {
@@ -306,6 +306,8 @@ const Search = () => {
             ) : (
               <div className="txt--center">No Results </div>
             )
+          ) : personId == "" && searchFilter != "movie" && debouncedSearch != "" ? (
+            <div className="txt--center">No Results </div>
           ) : (
             <div className="txt--center">
               <Loader />
