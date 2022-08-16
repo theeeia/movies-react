@@ -98,13 +98,10 @@ const Search = () => {
 
    Get query based on filter and search input
   ================*/
-  // const [searchQuery, setSearchQuery] = useState<string>(
-  //   `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`,
-  // );
 
   const debouncedSearch = useDebounce(searchInput, 1000) as string;
 
-  // Get actors that match the input
+  // Get actors or directors that match the input
   const { data: people } = useQuery(
     ["people", debouncedSearch, searchFilter],
     () =>
@@ -114,7 +111,7 @@ const Search = () => {
       ),
     {
       // Get person if search filter and search input is okay
-      enabled: (searchFilter == "actor" || searchFilter == "director") && debouncedSearch != "",
+      enabled: (searchFilter === "actor" || searchFilter === "director") && debouncedSearch !== "",
     },
   );
 
@@ -127,23 +124,23 @@ const Search = () => {
 
     let peopleList = [] as string[];
 
-    if (searchFilter == "actor") {
+    if (searchFilter === "actor") {
       peopleList = people.results
         .filter((person: Record<string, any>) => {
-          return person.known_for_department == "Acting";
+          return person.known_for_department === "Acting";
         })
         .map((person: Record<string, any>) => person.id);
     }
-    if (searchFilter == "director") {
+    if (searchFilter === "director") {
       peopleList = people.results
         .filter((person: Record<string, any>) => {
-          return person.known_for_department == "Directing";
+          return person.known_for_department === "Directing";
         })
         .map((person: Record<string, any>) => person.id);
     }
 
     // Return string of matched ids
-    if (peopleList.length != 0) {
+    if (peopleList.length !== 0) {
       setPeopleId(peopleList.join(","));
     } else {
       // If no results, set it to empty
@@ -151,35 +148,7 @@ const Search = () => {
     }
   }, [people]);
 
-  // set search query based on filter and search input
-  // reset page on every new search
-  // useEffect(() => {
-  //   switch (true) {
-  //     // Get default now_playing movie list
-  //     case debouncedSearch == "":
-  //       setPage(0);
-  //       setSearchQuery(`${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`);
-  //       break;
-
-  //     // Get movie list with input in the title
-  //     case debouncedSearch != "" && searchFilter == "movie":
-  //       setPage(0);
-  //       setSearchQuery(
-  //         `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
-  //       );
-  //       break;
-
-  //     // Get movie list with actor from input
-  //     case debouncedSearch != "" && peopleId != "":
-  //       setPage(0);
-  //       setSearchQuery(
-  //         `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${peopleId}`,
-  //       );
-  //       break;
-  //   }
-  // }, [searchFilter, debouncedSearch, peopleId]);
-
-  // Get the movies from API at the selected page
+  // Get the movies from API at the selected page with selected filters
   const { status: statusMovies, data: movies } = useQuery(
     [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter, categoryFilterParameters],
     () => {
@@ -187,13 +156,13 @@ const Search = () => {
 
       if (debouncedSearch === "") {
         searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false${
-          categoryFilterParameters.length != 0 &&
+          categoryFilterParameters.length !== 0 &&
           "&with_genres=" + categoryFilterParameters.join(",")
         }`;
       } else {
-        if (searchFilter == "movie") {
+        if (searchFilter === "movie") {
           searchQuery = `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`;
-        } else if (peopleId != "") {
+        } else if (peopleId !== "") {
           searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${peopleId}`;
         }
       }
@@ -201,9 +170,8 @@ const Search = () => {
       return handleFetch(`${searchQuery}&page=${page + 1}`, "GET");
     },
     {
-      // Prevent getting movies if there is no actor or director with input
-      // da ne se prakjat voopshto povik do filmoj ako ne e najden akter ili direktor
-      enabled: searchFilter == "movie" || peopleId != "",
+      // Prevent sending a request if there is no actor or director found with that input
+      enabled: searchFilter === "movie" || peopleId != "",
     },
   );
 
@@ -234,10 +202,10 @@ const Search = () => {
       if (sortParameter === "title") moviesList = moviesList.reverse();
     }
 
-    // Filter by category if not input
+    // Filter by category if no input
     // If we get movies by input they will aready be filtered with query parameters
-    if (categoryFilterParameters.length != 0 && debouncedSearch != "") {
-      moviesList = moviesList.filter((movie: any) => {
+    if (categoryFilterParameters.length !== 0 && debouncedSearch !== "") {
+      moviesList = moviesList.filter((movie: MovieApiProps) => {
         return categoryFilterParameters.every((category: string) => {
           return movie.genre_ids.includes(Number(category));
         });
@@ -253,7 +221,7 @@ const Search = () => {
 
       <div className="row">
         <div className="col-4">
-          {statusGenres == "success" && (
+          {statusGenres === "success" && (
             <>
               <h2>Filter Options</h2>
               <MovieCategories
@@ -290,7 +258,7 @@ const Search = () => {
                             : undefined
                         }
                         title={movie.title}
-                        year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
+                        year={movie.release_date !== "" ? handleGetYear(movie.release_date) : ""}
                         language={movie.original_language}
                         genres={handleGetGenreNames(movie.genre_ids)}
                         plot={movie.overview}
@@ -316,7 +284,7 @@ const Search = () => {
             ) : (
               <div className="txt--center">No Results </div>
             )
-          ) : peopleId != "" && searchFilter != "movie" && debouncedSearch != "" ? (
+          ) : peopleId !== "" && searchFilter !== "movie" && debouncedSearch !== "" ? (
             <div className="txt--center">No Results </div>
           ) : (
             <div className="txt--center">
