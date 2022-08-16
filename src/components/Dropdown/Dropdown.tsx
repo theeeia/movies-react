@@ -34,9 +34,9 @@ const Dropdown = ({
     // Update the text to be displayed
     // if the dropdown is not supposed to be static
     // Dont show title if its empty
-
-    if (!isDisplayedTextStatic) setDisplayedText(item.text);
-
+    if (title !== "") {
+      if (!isDisplayedTextStatic) setDisplayedText(item.text);
+    }
     // Call the callback function passed as prop
     handleDropdownItem(item);
 
