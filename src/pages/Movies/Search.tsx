@@ -275,7 +275,7 @@ const Search = () => {
             ) : (
               <div className="txt--center">No Results </div>
             )
-          ) : peopleId !== "[]" && searchFilter !== "movie" && debouncedSearch !== "" ? (
+          ) : peopleId == "" && searchFilter !== "movie" && debouncedSearch !== "" ? (
             <div className="txt--center">No Results </div>
           ) : (
             <div className="txt--center">
