@@ -79,9 +79,9 @@ const Search = () => {
 
    Get query based on filter and search input
   ================*/
-  const [searchQuery, setSearchQuery] = useState<string>(
-    `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`,
-  );
+  // const [searchQuery, setSearchQuery] = useState<string>(
+  //   `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`,
+  // );
 
   const debouncedSearch = useDebounce(searchInput, 1000) as string;
 
@@ -99,10 +99,10 @@ const Search = () => {
     },
   );
 
-  // Actor id
+  // Actors or directors id
   const [peopleId, setPeopleId] = useState<string>("");
 
-  // Set in state the most popular actor id
+  // Set in state a list of actors or directors that match the name
   useEffect(() => {
     if (!people || !Object.entries(people).length) return;
 
@@ -123,7 +123,7 @@ const Search = () => {
         .map((person: Record<string, any>) => person.id);
     }
 
-    // return string of matched ids
+    // Return string of matched ids
     if (peopleList.length != 0) {
       setPeopleId(peopleList.join(","));
     } else {
@@ -134,50 +134,48 @@ const Search = () => {
 
   // set search query based on filter and search input
   // reset page on every new search
-  useEffect(() => {
-    switch (true) {
-      // Get default now_playing movie list
-      case debouncedSearch == "":
-        setPage(0);
-        setSearchQuery(`${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`);
-        break;
+  // useEffect(() => {
+  //   switch (true) {
+  //     // Get default now_playing movie list
+  //     case debouncedSearch == "":
+  //       setPage(0);
+  //       setSearchQuery(`${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`);
+  //       break;
 
-      // Get movie list with input in the title
-      case debouncedSearch != "" && searchFilter == "movie":
-        setPage(0);
-        setSearchQuery(
-          `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
-        );
-        break;
+  //     // Get movie list with input in the title
+  //     case debouncedSearch != "" && searchFilter == "movie":
+  //       setPage(0);
+  //       setSearchQuery(
+  //         `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
+  //       );
+  //       break;
 
-      // Get movie list with actor from input
-      case debouncedSearch != "" && peopleId != "":
-        setPage(0);
-        setSearchQuery(
-          `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${peopleId}`,
-        );
-        break;
-    }
-
-    // if (debouncedSearch === "") {
-    //   setSearchQuery(`${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`);
-    // } else {
-    //   if (searchFilter == "movie") {
-    //     setSearchQuery(
-    //       `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
-    //     );
-    //   } else if (personId) {
-    //     setSearchQuery(
-    //       `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${personId}`,
-    //     );
-    //   }
-    // }
-  }, [searchFilter, debouncedSearch, peopleId]);
+  //     // Get movie list with actor from input
+  //     case debouncedSearch != "" && peopleId != "":
+  //       setPage(0);
+  //       setSearchQuery(
+  //         `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${peopleId}`,
+  //       );
+  //       break;
+  //   }
+  // }, [searchFilter, debouncedSearch, peopleId]);
 
   // Get the movies from API at the selected page
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page + 1, searchQuery, peopleId, searchFilter],
+    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter],
     () => {
+      let searchQuery = `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`;
+
+      if (debouncedSearch === "") {
+        searchQuery = `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`;
+      } else {
+        if (searchFilter == "movie") {
+          searchQuery = `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`;
+        } else if (peopleId != "") {
+          searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${peopleId}`;
+        }
+      }
+
       return handleFetch(`${searchQuery}&page=${page + 1}`, "GET");
     },
     {
@@ -234,6 +232,8 @@ const Search = () => {
 
       if (sortParameter === "title") return moviesList.reverse();
     }
+
+    // Filter by category
     if (categoryFilterParameters.length != 0) {
       moviesList = moviesList.filter((movie: any) => {
         return categoryFilterParameters.every((category: string) => {
