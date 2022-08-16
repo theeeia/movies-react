@@ -59,6 +59,25 @@ const Search = () => {
     // Stores the new list to local storage
     localStorage.setItem("favoritesList", JSON.stringify(favoriteMoviesIdsList));
   };
+  /*================
+    SORT AND FILTER PARAMETERS
+
+  Get the parameters on input change 
+  ================*/
+
+  const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
+
+  const [categoryFilterParameters, setCategoryFilterParameters] = useState<string[]>([]);
+
+  // Store the parameter for sorting
+  const handleSortChange = (value: SortValueTypes) => {
+    setSortFilter(value);
+  };
+
+  // Store the parameter for filter by category
+  const handleCategoryFilterChange = (categoryList: string[]) => {
+    setCategoryFilterParameters(categoryList);
+  };
 
   /*================
    Pagination
@@ -162,12 +181,15 @@ const Search = () => {
 
   // Get the movies from API at the selected page
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter],
+    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter, categoryFilterParameters],
     () => {
-      let searchQuery = `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`;
+      let searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false`;
 
       if (debouncedSearch === "") {
-        searchQuery = `${API_ENDPOINT_BASE}/movie/now_playing?api_key=${API_KEY}&language=en-US`;
+        searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false${
+          categoryFilterParameters.length != 0 &&
+          "&with_genres=" + categoryFilterParameters.join(",")
+        }`;
       } else {
         if (searchFilter == "movie") {
           searchQuery = `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`;
@@ -200,41 +222,21 @@ const Search = () => {
     return genresList;
   };
 
-  /*================
-    SORT AND FILTER PARAMETERS
-
-  Get the parameters on input change 
-  ================*/
-
-  const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
-
-  const [categoryFilterParameters, setCategoryFilterParameters] = useState<string[]>([]);
-
-  // Store the parameter for sorting
-  const handleSortChange = (value: SortValueTypes) => {
-    setSortFilter(value);
-  };
-
-  // Store the parameter for filter by category
-  const handleCategoryFilterChange = (categoryList: string[]) => {
-    setCategoryFilterParameters(categoryList);
-  };
-
   const moviesList: Record<string, any> = useMemo(() => {
     if (!movies || !Object.entries(movies).length) return [];
     let moviesList = movies.results;
-
     // Sort movies if a parameter is selected
     if (sortParameter) {
       moviesList.sort((a: Record<string, any>, b: Record<string, any>) => {
         return b[sortParameter] > a[sortParameter] ? 1 : -1;
       });
 
-      if (sortParameter === "title") return moviesList.reverse();
+      if (sortParameter === "title") moviesList = moviesList.reverse();
     }
 
-    // Filter by category
-    if (categoryFilterParameters.length != 0) {
+    // Filter by category if not input
+    // If we get movies by input they will aready be filtered with query parameters
+    if (categoryFilterParameters.length != 0 && debouncedSearch != "") {
       moviesList = moviesList.filter((movie: any) => {
         return categoryFilterParameters.every((category: string) => {
           return movie.genre_ids.includes(Number(category));
