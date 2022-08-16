@@ -67,6 +67,7 @@ const Search = () => {
 
   const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
 
+  // NOTE: This related to filtering by category
   const [categoryFilterParameters, setCategoryFilterParameters] = useState<string[]>([]);
 
   // Store the parameter for sorting
@@ -74,6 +75,7 @@ const Search = () => {
     setSortFilter(value);
   };
 
+  // NOTE: This related to filtering by category
   // Store the parameter for filter by category
   const handleCategoryFilterChange = (categoryList: string[]) => {
     setCategoryFilterParameters(categoryList);
@@ -111,7 +113,7 @@ const Search = () => {
       ),
     {
       // Get person if search filter and search input is okay
-      enabled: (searchFilter === "actor" || searchFilter === "director") && debouncedSearch !== "",
+      enabled: debouncedSearch != "" && ["actor", "director"].includes(searchFilter),
     },
   );
 
@@ -124,54 +126,42 @@ const Search = () => {
 
     let peopleList = [] as string[];
 
-    if (searchFilter === "actor") {
-      peopleList = people.results
-        .filter((person: Record<string, any>) => {
-          return person.known_for_department === "Acting";
-        })
-        .map((person: Record<string, any>) => person.id);
-    }
-    if (searchFilter === "director") {
-      peopleList = people.results
-        .filter((person: Record<string, any>) => {
-          return person.known_for_department === "Directing";
-        })
-        .map((person: Record<string, any>) => person.id);
-    }
+    peopleList = people.results
+      .filter((person: Record<string, any>) => {
+        return person.known_for_department === (searchFilter === "actor" ? "Acting" : "Directing");
+      })
+      .map((person: Record<string, any>) => person.id);
 
     // Return string of matched ids
-    if (peopleList.length !== 0) {
-      setPeopleId(peopleList.join(","));
-    } else {
-      // If no results, set it to empty
-      setPeopleId("");
-    }
+    setPeopleId(peopleList.join(","));
   }, [people]);
 
   // Get the movies from API at the selected page with selected filters
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter, categoryFilterParameters],
+    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter],
     () => {
-      let searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false`;
+      let TYPE: string = "discover/";
+      let PARAMS: string = "";
 
-      if (debouncedSearch === "") {
-        searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false${
-          categoryFilterParameters.length !== 0 &&
-          "&with_genres=" + categoryFilterParameters.join(",")
-        }`;
-      } else {
-        if (searchFilter === "movie") {
-          searchQuery = `${API_ENDPOINT_BASE}/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`;
-        } else if (peopleId !== "") {
-          searchQuery = `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${peopleId}`;
-        }
+      // if there's a searched value and the filter is set to "title" representing the movie title
+      if (debouncedSearch && searchFilter === "movie") {
+        TYPE = "search/";
+        PARAMS = `&query=${debouncedSearch}`;
       }
 
-      return handleFetch(`${searchQuery}&page=${page + 1}`, "GET");
+      // if there's a searched value and the filter is either by 'actor' or 'director'
+      if (debouncedSearch && ["actor", "director"].includes(searchFilter) && peopleId) {
+        PARAMS = `&with_people=${peopleId}`;
+      }
+
+      // construct the final URL to be used in the API call
+      const URL: string = `${API_ENDPOINT_BASE}/${TYPE}movie?api_key=${API_KEY}${PARAMS}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false`;
+
+      return handleFetch(`${URL}&page=${page + 1}`, "GET");
     },
     {
       // Prevent sending a request if there is no actor or director found with that input
-      enabled: searchFilter === "movie" || peopleId != "",
+      enabled: ["movie"].includes(searchFilter) || peopleId != "",
     },
   );
 
@@ -202,6 +192,7 @@ const Search = () => {
       if (sortParameter === "title") moviesList = moviesList.reverse();
     }
 
+    // NOTE: This related to filtering by category
     // Filter by category if no input
     // If we get movies by input they will aready be filtered with query parameters
     if (categoryFilterParameters.length !== 0 && debouncedSearch !== "") {
@@ -284,7 +275,7 @@ const Search = () => {
             ) : (
               <div className="txt--center">No Results </div>
             )
-          ) : peopleId !== "" && searchFilter !== "movie" && debouncedSearch !== "" ? (
+          ) : peopleId !== "[]" && searchFilter !== "movie" && debouncedSearch !== "" ? (
             <div className="txt--center">No Results </div>
           ) : (
             <div className="txt--center">
