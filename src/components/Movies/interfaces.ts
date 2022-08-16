@@ -1,4 +1,5 @@
 import React from "react";
+import { DropdownItemProps } from "../Dropdown/interfaces";
 
 export interface MoviesHeaderProps {
   title: string;
@@ -45,4 +46,11 @@ export interface MovieListItemProps {
   votes: number;
   isInFavorites: boolean;
   handleAddToFavorites: (movieId: number) => void;
+}
+
+export interface MovieSearchInputProps {
+  icon: React.ReactNode;
+  modifierClass?: string;
+  handleInputChange: (value: string) => void;
+  handleDropdownItem: (value: DropdownItemProps) => void;
 }
