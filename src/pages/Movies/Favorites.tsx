@@ -71,6 +71,7 @@ const Favorites = () => {
 
   const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
 
+  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
   // Store the value of the search input
   const handleSearch = (value: string) => {
     setSearchInput(value);
@@ -79,6 +80,11 @@ const Favorites = () => {
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
     setSortFilter(value);
+  };
+
+  // Store the sorting order parameter
+  const handleSortOrderChange = (value: boolean) => {
+    setisOrderAsc(value);
   };
 
   // Debounce the input to update every second
@@ -99,16 +105,18 @@ const Favorites = () => {
     }
 
     // Sort movies if a parameter is selected
+
     if (sortParameter) {
       moviesList.sort((a: Record<string, any>, b: Record<string, any>) => {
         return b[sortParameter] > a[sortParameter] ? 1 : -1;
       });
+      if (sortParameter === "title") moviesList = moviesList.reverse();
 
-      if (sortParameter === "title") return moviesList.reverse();
+      if (!isOrderAsc) moviesList = moviesList.reverse();
     }
 
     return moviesList;
-  }, [debouncedSearch, sortParameter, favoriteMoviesResponses]);
+  }, [debouncedSearch, sortParameter, favoriteMoviesResponses, isOrderAsc]);
 
   // Set to true if any query is still loading
   const isLoading = favoriteMoviesResponses.some((query: Record<string, any>) => query.isLoading);
@@ -120,6 +128,7 @@ const Favorites = () => {
         title={"Favorites"}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
+        handleSortOrderChange={(value: boolean) => handleSortOrderChange(value)}
       />
 
       {favoriteMoviesIdsList.length != 0 ? (

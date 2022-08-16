@@ -11,11 +11,22 @@ import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 
 // Components
 import Dropdown from "../Dropdown/Dropdown";
+import { useState } from "react";
 
-const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderProps) => {
+const MoviesHeader = ({
+  title,
+  handleSearch,
+  handleSortChange,
+  handleSortOrderChange,
+}: MoviesHeaderProps) => {
   const handleDropdownItem = (item: DropdownItemProps) => {
     const sortValue = item.value as SortValueTypes;
     handleSortChange(sortValue);
+  };
+  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+  const handleSortOrderClick = () => {
+    setisOrderAsc(!isOrderAsc);
+    handleSortOrderChange(!isOrderAsc);
   };
 
   return (
@@ -34,12 +45,19 @@ const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderPro
           />
         </div>
         <div className="movies-header__filter">
+          <div
+            className={`search-bar__filter-icon ${
+              !isOrderAsc ? "search-bar__filter-icon--flipped" : ""
+            }`}
+            onClick={handleSortOrderClick}
+          >
+            <SortIcon />
+          </div>
           <Dropdown
             title="Sorting"
-            icon={<SortIcon />}
             items={MOVIES_DROPDOWN_SORT_ITEMS}
             handleDropdownItem={handleDropdownItem}
-            modifierClass={"dropdown--md-wide dropdown--ml-20"}
+            modifierClass={"dropdown--md-wide "}
           />
         </div>
       </div>

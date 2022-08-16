@@ -86,6 +86,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
 
+  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
   // Store the value of the search input
   const handleSearch = (value: string) => {
     setSearchInput(value);
@@ -94,6 +95,11 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
     setSortFilter(value);
+  };
+
+  // Store the sorting order parameter
+  const handleSortOrderChange = (value: boolean) => {
+    setisOrderAsc(value);
   };
 
   // Debounce the input to update every second
@@ -114,11 +120,12 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         return b[sortParameter] > a[sortParameter] ? 1 : -1;
       });
 
-      if (sortParameter === "title") return moviesList.reverse();
+      if (sortParameter === "title") moviesList = moviesList.reverse();
+      if (!isOrderAsc) moviesList = moviesList.reverse();
     }
 
     return moviesList;
-  }, [debouncedSearch, sortParameter, movies]);
+  }, [debouncedSearch, sortParameter, movies, isOrderAsc]);
 
   return (
     <>
@@ -126,6 +133,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       <MoviesHeader
         title={title}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
+        handleSortOrderChange={(value: boolean) => handleSortOrderChange(value)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 

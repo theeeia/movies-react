@@ -15,21 +15,30 @@ import Dropdown from "../Dropdown/Dropdown";
 // Icons
 
 import MovieSearchInput from "./MovieSearchInput";
+import { useState } from "react";
 
 const MovieSearchBar = ({
   title,
   handleSearch,
   handleSortChange,
   handleSearchFilter,
+  handleSortOrderChange,
 }: MoviesSearchBarProps) => {
   const handleSortDropdownItem = (item: DropdownItemProps) => {
     const sortValue = item.value as SortValueTypes;
     handleSortChange(sortValue);
   };
 
+  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+
   const handleFilterDropdownItem = (item: DropdownItemProps) => {
     const filterValue = item.value as string;
     handleSearchFilter(filterValue);
+  };
+
+  const handleSortOrderClick = () => {
+    setisOrderAsc(!isOrderAsc);
+    handleSortOrderChange(!isOrderAsc);
   };
 
   return (
@@ -45,9 +54,17 @@ const MovieSearchBar = ({
         />
 
         <div className="search-bar__filter">
+          <div
+            className={`search-bar__filter-icon ${
+              !isOrderAsc ? "search-bar__filter-icon--flipped" : ""
+            }`}
+            onClick={handleSortOrderClick}
+          >
+            <SortIcon />
+          </div>
+
           <Dropdown
             title="Sorting"
-            icon={<SortIcon />}
             items={MOVIES_DROPDOWN_SORT_ITEMS}
             handleDropdownItem={handleSortDropdownItem}
             modifierClass={"dropdown--md-wide dropdown--ml-20"}

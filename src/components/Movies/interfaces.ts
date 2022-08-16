@@ -5,6 +5,7 @@ export interface MoviesHeaderProps {
   title: string;
   handleSearch: (searchedValue: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
+  handleSortOrderChange: (value: boolean) => void;
 }
 
 export interface MoviesSearchBarProps {
@@ -12,6 +13,7 @@ export interface MoviesSearchBarProps {
   handleSearch: (searchedValue: string) => void;
   handleSearchFilter: (searchFilter: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
+  handleSortOrderChange: (value: boolean) => void;
 }
 
 export interface MovieCardProps {

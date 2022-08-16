@@ -70,9 +70,16 @@ const Search = () => {
   // NOTE: This related to filtering by category
   const [categoryFilterParameters, setCategoryFilterParameters] = useState<string[]>([]);
 
+  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
     setSortFilter(value);
+  };
+
+  // Store the sorting order parameter
+  const handleSortOrderChange = (value: boolean) => {
+    setisOrderAsc(value);
   };
 
   // NOTE: This related to filtering by category
@@ -190,6 +197,8 @@ const Search = () => {
       });
 
       if (sortParameter === "title") moviesList = moviesList.reverse();
+
+      if (!isOrderAsc) moviesList = moviesList.reverse();
     }
 
     // NOTE: This related to filtering by category
@@ -204,7 +213,7 @@ const Search = () => {
     }
 
     return moviesList;
-  }, [sortParameter, categoryFilterParameters, movies, peopleId]);
+  }, [sortParameter, categoryFilterParameters, movies, peopleId, isOrderAsc]);
 
   return (
     <>
@@ -229,6 +238,7 @@ const Search = () => {
           <MovieSearchBar
             title={"Search by " + searchFilter}
             handleSearch={(searchValue: string) => handleSearchInput(searchValue)}
+            handleSortOrderChange={(value: boolean) => handleSortOrderChange(value)}
             handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
           />
