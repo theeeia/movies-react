@@ -86,8 +86,8 @@ const Search = () => {
   const debouncedSearch = useDebounce(searchInput, 1000) as string;
 
   // Get actors that match the input
-  const { data: actor } = useQuery(
-    ["actor", debouncedSearch, searchFilter],
+  const { data: people } = useQuery(
+    ["people", debouncedSearch, searchFilter],
     () =>
       handleFetch(
         `${API_ENDPOINT_BASE}/search/person?api_key=${API_KEY}&language=en-US&query=${debouncedSearch}`,
@@ -100,31 +100,37 @@ const Search = () => {
   );
 
   // Actor id
-  const [personId, setPersonId] = useState<string>("");
+  const [peopleId, setPeopleId] = useState<string>("");
 
   // Set in state the most popular actor id
   useEffect(() => {
-    if (!actor || !Object.entries(actor).length) return;
+    if (!people || !Object.entries(people).length) return;
 
-    let searchedPerson = {} as Record<string, any>;
+    let peopleList = [] as string[];
+
     if (searchFilter == "actor") {
-      searchedPerson = actor.results.filter((actor: any) => {
-        return actor.known_for_department == "Acting";
-      })[0];
+      peopleList = people.results
+        .filter((person: Record<string, any>) => {
+          return person.known_for_department == "Acting";
+        })
+        .map((person: Record<string, any>) => person.id);
     }
     if (searchFilter == "director") {
-      searchedPerson = actor.results.filter((actor: any) => {
-        return actor.known_for_department == "Directing";
-      })[0];
+      peopleList = people.results
+        .filter((person: Record<string, any>) => {
+          return person.known_for_department == "Directing";
+        })
+        .map((person: Record<string, any>) => person.id);
     }
 
-    if (searchedPerson != undefined) {
-      setPersonId(searchedPerson.id);
+    // return string of matched ids
+    if (peopleList.length != 0) {
+      setPeopleId(peopleList.join(","));
     } else {
-      // If no such person, set it to empty
-      setPersonId("");
+      // If no results, set it to empty
+      setPeopleId("");
     }
-  }, [actor]);
+  }, [people]);
 
   // set search query based on filter and search input
   // reset page on every new search
@@ -145,10 +151,10 @@ const Search = () => {
         break;
 
       // Get movie list with actor from input
-      case debouncedSearch != "" && personId != "":
+      case debouncedSearch != "" && peopleId != "":
         setPage(0);
         setSearchQuery(
-          `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${personId}`,
+          `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&with_people=${peopleId}`,
         );
         break;
     }
@@ -166,18 +172,18 @@ const Search = () => {
     //     );
     //   }
     // }
-  }, [searchFilter, debouncedSearch, personId]);
+  }, [searchFilter, debouncedSearch, peopleId]);
 
   // Get the movies from API at the selected page
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page + 1, searchQuery, personId, searchFilter],
+    [`movies-search`, debouncedSearch, page + 1, searchQuery, peopleId, searchFilter],
     () => {
       return handleFetch(`${searchQuery}&page=${page + 1}`, "GET");
     },
     {
       // Prevent getting movies if there is no actor or director with input
       // da ne se prakjat voopshto povik do filmoj ako ne e najden akter ili direktor
-      enabled: searchFilter == "movie" || personId != "",
+      enabled: searchFilter == "movie" || peopleId != "",
     },
   );
 
@@ -237,7 +243,7 @@ const Search = () => {
     }
 
     return moviesList;
-  }, [sortParameter, categoryFilterParameters, movies, personId]);
+  }, [sortParameter, categoryFilterParameters, movies, peopleId]);
 
   return (
     <>
@@ -308,7 +314,7 @@ const Search = () => {
             ) : (
               <div className="txt--center">No Results </div>
             )
-          ) : personId == "" && searchFilter != "movie" && debouncedSearch != "" ? (
+          ) : peopleId != "" && searchFilter != "movie" && debouncedSearch != "" ? (
             <div className="txt--center">No Results </div>
           ) : (
             <div className="txt--center">
