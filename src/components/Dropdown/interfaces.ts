@@ -6,21 +6,13 @@ export interface DropdownItemProps {
 }
 
 export interface DropdownProps {
-  title: string;
+  title?: string;
   items: DropdownItemProps[];
   handleDropdownItem: (item: DropdownItemProps) => void;
   icon?: React.ReactNode;
   downIcon?: React.ReactNode;
   isDisplayedTextStatic?: boolean;
   isLoading?: boolean;
-  disabled?: boolean;
-  modifierClass?: string;
-}
-
-export interface SearchDropdownProps {
-  items: DropdownItemProps[];
-  handleDropdownItem: (item: DropdownItemProps) => void;
-  icon: React.ReactNode;
   disabled?: boolean;
   modifierClass?: string;
 }
