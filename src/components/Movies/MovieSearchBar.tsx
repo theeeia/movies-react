@@ -1,10 +1,8 @@
-import { forwardRef, useState } from "react";
-import DatePicker from "react-datepicker";
+import { useState } from "react";
 
 // Icons
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
-import { ReactComponent as DatepickerIcon } from "../../assets/images/datepicker.svg";
 
 // Interfaces
 import { MoviesSearchBarProps, SortOrderTypes, SortValueTypes } from "./interfaces";
@@ -16,6 +14,7 @@ import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 // Components
 import Dropdown from "../Dropdown/Dropdown";
 import MovieSearchInput from "./MovieSearchInput";
+import Datepicker from "../Datepicker/Datepicker";
 
 const MovieSearchBar = ({
   title,
@@ -55,15 +54,6 @@ const MovieSearchBar = ({
     handleSearch(value);
   };
 
-  // Store picked date range in state
-
-  const handleDateRange = (dates: any) => {
-    handleDateRangeChange(dates);
-  };
-
-  const ExampleCustomInput = forwardRef<any, any>(({ onClick }, ref) => (
-    <DatepickerIcon className={"datepicker"} onClick={onClick} ref={ref} />
-  ));
   return (
     <div className="search-bar">
       <h4 className="search-bar__title">{title}</h4>
@@ -78,21 +68,12 @@ const MovieSearchBar = ({
         />
 
         <div>
-          <DatePicker
+          <Datepicker
             startDate={dateRange.startDate}
             endDate={dateRange.endDate}
-            selected={dateRange.startDate}
-            onChange={handleDateRange}
-            selectsRange
-            peekNextMonth
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-            calendarStartDay={1}
-            customInput={<ExampleCustomInput />}
+            handleDateRange={handleDateRangeChange}
           />
         </div>
-
         <div className="search-bar__filter">
           <div
             className={`search-bar__filter-icon ${

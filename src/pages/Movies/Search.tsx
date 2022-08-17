@@ -103,6 +103,7 @@ const Search = () => {
 
   // Set the picked start and end date
   const handleDateRangeChange = (dateRange: Date[]) => {
+    console.log(dateRange);
     const [start, end] = dateRange;
     setDateRange({
       startDate: start,
@@ -188,7 +189,7 @@ const Search = () => {
       }
 
       // If there is a date selected and the filter is not "movie"
-      if (dateRange.startDate != null && dateRange.endDate != null && searchFilter != "movie") {
+      if (dateRange.startDate != null && dateRange.endDate != null) {
         // Format the dates
         const startDate = format(dateRange.startDate, "yyyy-MM-dd");
         const endDate = format(dateRange.endDate, "yyyy-MM-dd");
