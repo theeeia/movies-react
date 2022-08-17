@@ -133,7 +133,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       <MoviesHeader
         title={title}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
-        handleSortOrderChange={(value: SortOrderTypes) => handleSortOrderChange(value)}
+        handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 

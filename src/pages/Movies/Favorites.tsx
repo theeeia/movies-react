@@ -128,7 +128,7 @@ const Favorites = () => {
         title={"Favorites"}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
-        handleSortOrderChange={(value: SortOrderTypes) => handleSortOrderChange(value)}
+        handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
       />
 
       {favoriteMoviesIdsList.length != 0 ? (

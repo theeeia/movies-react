@@ -238,7 +238,7 @@ const Search = () => {
           <MovieSearchBar
             title={"Search by " + searchFilter}
             handleSearch={(searchValue: string) => handleSearchInput(searchValue)}
-            handleSortOrderChange={(value: SortOrderTypes) => handleSortOrderChange(value)}
+            handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
             handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
           />
