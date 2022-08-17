@@ -7,7 +7,7 @@ import MovieListItem from "../../components/Movies/MovieListItem";
 import MovieCategories from "../../components/Movies/MovieCategories";
 import MovieSearchBar from "../../components/Movies/MovieSearchBar";
 import Pagination from "../../components/Pagination/Pagination";
-import { SortValueTypes } from "../../components/Movies/interfaces";
+import { SortOrderTypes, SortValueTypes } from "../../components/Movies/interfaces";
 
 // Config
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
@@ -70,7 +70,7 @@ const Search = () => {
   // NOTE: This related to filtering by category
   const [categoryFilterParameters, setCategoryFilterParameters] = useState<string[]>([]);
 
-  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+  const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
 
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
@@ -78,8 +78,8 @@ const Search = () => {
   };
 
   // Store the sorting order parameter
-  const handleSortOrderChange = (value: boolean) => {
-    setisOrderAsc(value);
+  const handleSortOrderChange = (value: SortOrderTypes) => {
+    setSortOrder(value);
   };
 
   // NOTE: This related to filtering by category
@@ -198,7 +198,7 @@ const Search = () => {
 
       if (sortParameter === "title") moviesList = moviesList.reverse();
 
-      if (!isOrderAsc) moviesList = moviesList.reverse();
+      if (sortOrder == "desc") moviesList = moviesList.reverse();
     }
 
     // NOTE: This related to filtering by category
@@ -213,7 +213,7 @@ const Search = () => {
     }
 
     return moviesList;
-  }, [sortParameter, categoryFilterParameters, movies, peopleId, isOrderAsc]);
+  }, [sortParameter, categoryFilterParameters, movies, peopleId, sortOrder]);
 
   return (
     <>
@@ -238,7 +238,7 @@ const Search = () => {
           <MovieSearchBar
             title={"Search by " + searchFilter}
             handleSearch={(searchValue: string) => handleSearchInput(searchValue)}
-            handleSortOrderChange={(value: boolean) => handleSortOrderChange(value)}
+            handleSortOrderChange={(value: SortOrderTypes) => handleSortOrderChange(value)}
             handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
           />

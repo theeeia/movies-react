@@ -4,7 +4,7 @@ export interface MoviesHeaderProps {
   title: string;
   handleSearch: (searchedValue: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
-  handleSortOrderChange: (value: boolean) => void;
+  handleSortOrderChange: (sortOrder: SortOrderTypes) => void;
 }
 
 export interface MoviesSearchBarProps {
@@ -12,7 +12,7 @@ export interface MoviesSearchBarProps {
   handleSearch: (searchedValue: string) => void;
   handleSearchFilter: (searchFilter: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
-  handleSortOrderChange: (value: boolean) => void;
+  handleSortOrderChange: (sortOrder: SortOrderTypes) => void;
 }
 
 export interface MovieCardProps {
@@ -29,6 +29,8 @@ export interface MovieCardProps {
 }
 
 export type SortValueTypes = "title" | "release_date" | "vote_average";
+
+export type SortOrderTypes = "asc" | "desc";
 
 export interface MovieGenresProps {
   genres: Record<string, any>;

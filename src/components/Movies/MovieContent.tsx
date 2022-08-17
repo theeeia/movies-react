@@ -22,7 +22,7 @@ import handleGetYear from "../../utils/handleGetYear";
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
 
 // Interfaces
-import { SortValueTypes } from "./interfaces";
+import { SortOrderTypes, SortValueTypes } from "./interfaces";
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
@@ -86,7 +86,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
 
-  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+  const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
   // Store the value of the search input
   const handleSearch = (value: string) => {
     setSearchInput(value);
@@ -98,8 +98,8 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   };
 
   // Store the sorting order parameter
-  const handleSortOrderChange = (value: boolean) => {
-    setisOrderAsc(value);
+  const handleSortOrderChange = (value: SortOrderTypes) => {
+    setSortOrder(value);
   };
 
   // Debounce the input to update every second
@@ -121,11 +121,11 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       });
 
       if (sortParameter === "title") moviesList = moviesList.reverse();
-      if (!isOrderAsc) moviesList = moviesList.reverse();
+      if (sortOrder == "desc") moviesList = moviesList.reverse();
     }
 
     return moviesList;
-  }, [debouncedSearch, sortParameter, movies, isOrderAsc]);
+  }, [debouncedSearch, sortParameter, movies, sortOrder]);
 
   return (
     <>
@@ -133,7 +133,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       <MoviesHeader
         title={title}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
-        handleSortOrderChange={(value: boolean) => handleSortOrderChange(value)}
+        handleSortOrderChange={(value: SortOrderTypes) => handleSortOrderChange(value)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 

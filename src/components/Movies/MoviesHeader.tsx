@@ -3,7 +3,7 @@ import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
 
 // Interfaces
-import { MoviesHeaderProps, SortValueTypes } from "./interfaces";
+import { MoviesHeaderProps, SortOrderTypes, SortValueTypes } from "./interfaces";
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 // Statics
@@ -23,10 +23,15 @@ const MoviesHeader = ({
     const sortValue = item.value as SortValueTypes;
     handleSortChange(sortValue);
   };
-  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+  const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
   const handleSortOrderClick = () => {
-    setisOrderAsc(!isOrderAsc);
-    handleSortOrderChange(!isOrderAsc);
+    if (sortOrder == "asc") {
+      setSortOrder("desc");
+      handleSortOrderChange("desc");
+    } else {
+      setSortOrder("asc");
+      handleSortOrderChange("asc");
+    }
   };
 
   return (
@@ -47,7 +52,7 @@ const MoviesHeader = ({
         <div className="movies-header__filter">
           <div
             className={`search-bar__filter-icon ${
-              !isOrderAsc ? "search-bar__filter-icon--flipped" : ""
+              sortOrder == "desc" ? "search-bar__filter-icon--flipped" : ""
             }`}
             onClick={handleSortOrderClick}
           >

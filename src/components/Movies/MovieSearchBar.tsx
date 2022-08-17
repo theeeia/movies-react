@@ -3,7 +3,7 @@ import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
 
 // Interfaces
-import { MoviesSearchBarProps, SortValueTypes } from "./interfaces";
+import { MoviesSearchBarProps, SortOrderTypes, SortValueTypes } from "./interfaces";
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 // Statics
@@ -29,7 +29,7 @@ const MovieSearchBar = ({
     handleSortChange(sortValue);
   };
 
-  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+  const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
 
   const handleFilterDropdownItem = (item: DropdownItemProps) => {
     const filterValue = item.value as string;
@@ -37,8 +37,13 @@ const MovieSearchBar = ({
   };
 
   const handleSortOrderClick = () => {
-    setisOrderAsc(!isOrderAsc);
-    handleSortOrderChange(!isOrderAsc);
+    if (sortOrder == "asc") {
+      setSortOrder("desc");
+      handleSortOrderChange("desc");
+    } else {
+      setSortOrder("asc");
+      handleSortOrderChange("asc");
+    }
   };
 
   return (
@@ -56,7 +61,7 @@ const MovieSearchBar = ({
         <div className="search-bar__filter">
           <div
             className={`search-bar__filter-icon ${
-              !isOrderAsc ? "search-bar__filter-icon--flipped" : ""
+              sortOrder == "desc" ? "search-bar__filter-icon--flipped" : ""
             }`}
             onClick={handleSortOrderClick}
           >

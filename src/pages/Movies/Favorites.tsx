@@ -7,7 +7,7 @@ import MovieCard from "../../components/Movies/MovieCard";
 import MoviesHeader from "../../components/Movies/MoviesHeader";
 
 // Interfaces
-import { SortValueTypes } from "../../components/Movies/interfaces";
+import { SortOrderTypes, SortValueTypes } from "../../components/Movies/interfaces";
 import { MovieDetailsApiProps } from "./interfaces";
 
 // Config
@@ -71,7 +71,7 @@ const Favorites = () => {
 
   const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
 
-  const [isOrderAsc, setisOrderAsc] = useState<boolean>(true);
+  const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
   // Store the value of the search input
   const handleSearch = (value: string) => {
     setSearchInput(value);
@@ -83,8 +83,8 @@ const Favorites = () => {
   };
 
   // Store the sorting order parameter
-  const handleSortOrderChange = (value: boolean) => {
-    setisOrderAsc(value);
+  const handleSortOrderChange = (value: SortOrderTypes) => {
+    setSortOrder(value);
   };
 
   // Debounce the input to update every second
@@ -112,11 +112,11 @@ const Favorites = () => {
       });
       if (sortParameter === "title") moviesList = moviesList.reverse();
 
-      if (!isOrderAsc) moviesList = moviesList.reverse();
+      if (sortOrder == "desc") moviesList = moviesList.reverse();
     }
 
     return moviesList;
-  }, [debouncedSearch, sortParameter, favoriteMoviesResponses, isOrderAsc]);
+  }, [debouncedSearch, sortParameter, favoriteMoviesResponses, sortOrder]);
 
   // Set to true if any query is still loading
   const isLoading = favoriteMoviesResponses.some((query: Record<string, any>) => query.isLoading);
@@ -128,7 +128,7 @@ const Favorites = () => {
         title={"Favorites"}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
-        handleSortOrderChange={(value: boolean) => handleSortOrderChange(value)}
+        handleSortOrderChange={(value: SortOrderTypes) => handleSortOrderChange(value)}
       />
 
       {favoriteMoviesIdsList.length != 0 ? (
