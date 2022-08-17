@@ -13,6 +13,7 @@ import { MovieSearchInputProps } from "./interfaces";
 const MovieSearchInput = ({
   icon,
   modifierClass = "",
+  inputValue,
   handleInputChange,
   handleDropdownItem,
 }: MovieSearchInputProps) => {
@@ -26,6 +27,7 @@ const MovieSearchInput = ({
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             handleInputChange(event.currentTarget.value)
           }
+          value={inputValue}
         />
       </span>
 

@@ -14,9 +14,13 @@ import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 // Components
 import Dropdown from "../Dropdown/Dropdown";
 import MovieSearchInput from "./MovieSearchInput";
+import Datepicker from "../Datepicker/Datepicker";
 
 const MovieSearchBar = ({
   title,
+  inputValue,
+  dateRange,
+  handleDateRangeChange,
   handleSearch,
   handleSortChange,
   handleSearchFilter,
@@ -46,6 +50,10 @@ const MovieSearchBar = ({
     }
   };
 
+  const handleInputChange = (value: string) => {
+    handleSearch(value);
+  };
+
   return (
     <div className="search-bar">
       <h4 className="search-bar__title">{title}</h4>
@@ -54,10 +62,18 @@ const MovieSearchBar = ({
         <MovieSearchInput
           icon={<SearchIcon />}
           modifierClass=""
-          handleInputChange={handleSearch}
+          handleInputChange={handleInputChange}
           handleDropdownItem={handleFilterDropdownItem}
+          inputValue={inputValue}
         />
 
+        <div className="search-bar__datepicker">
+          <Datepicker
+            startDate={dateRange.startDate}
+            endDate={dateRange.endDate}
+            handleDateRange={handleDateRangeChange}
+          />
+        </div>
         <div className="search-bar__filter">
           <div
             className={`search-bar__filter-icon ${

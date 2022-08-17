@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
+import { format } from "date-fns";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -38,6 +39,13 @@ const Search = () => {
   // Store the value of the search input
 
   const handleSearchInput = (value: string) => {
+    // Reset date range if we input something
+    if (value != "") {
+      setDateRange({
+        startDate: null,
+        endDate: null,
+      });
+    }
     setSearchInput(value);
   };
 
@@ -72,6 +80,11 @@ const Search = () => {
 
   const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
 
+  const [dateRange, setDateRange] = useState<Record<string, Date | null>>({
+    startDate: null,
+    endDate: null,
+  });
+
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
     setSortFilter(value);
@@ -88,6 +101,19 @@ const Search = () => {
     setCategoryFilterParameters(categoryList);
   };
 
+  // Set the picked start and end date
+  const handleDateRangeChange = (dateRange: Date[]) => {
+    const [start, end] = dateRange;
+    setDateRange({
+      startDate: start,
+      endDate: end,
+    });
+
+    // Reset search input if we select dates when searching movies
+    if (searchFilter == "movie") {
+      setSearchInput("");
+    }
+  };
   /*================
    Pagination
 
@@ -145,7 +171,7 @@ const Search = () => {
 
   // Get the movies from API at the selected page with selected filters
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter],
+    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter, dateRange],
     () => {
       let TYPE: string = "discover/";
       let PARAMS: string = "";
@@ -158,7 +184,22 @@ const Search = () => {
 
       // if there's a searched value and the filter is either by 'actor' or 'director'
       if (debouncedSearch && ["actor", "director"].includes(searchFilter) && peopleId) {
-        PARAMS = `&with_people=${peopleId}`;
+        PARAMS = PARAMS + `&with_people=${peopleId}`;
+      }
+
+      // If there is a date selected and the filter is not "movie"
+      if (dateRange.startDate != null && dateRange.endDate != null) {
+        // Format the dates
+        const startDate = format(dateRange.startDate, "yyyy-MM-dd");
+        const endDate = format(dateRange.endDate, "yyyy-MM-dd");
+
+        TYPE = "discover/";
+        PARAMS =
+          PARAMS +
+          "&primary_release_date.gte=" +
+          startDate +
+          "&primary_release_date.lte=" +
+          endDate;
       }
 
       // construct the final URL to be used in the API call
@@ -237,6 +278,9 @@ const Search = () => {
           <h2>Movies</h2>
           <MovieSearchBar
             title={"Search by " + searchFilter}
+            inputValue={searchInput}
+            dateRange={dateRange}
+            handleDateRangeChange={(dateRange: Date[]) => handleDateRangeChange(dateRange)}
             handleSearch={(searchValue: string) => handleSearchInput(searchValue)}
             handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
             handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
