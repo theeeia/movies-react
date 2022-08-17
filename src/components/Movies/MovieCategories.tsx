@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+// Components
 import Checkbox from "../Checkbox/Checkbox";
 
 const MovieCategories = ({

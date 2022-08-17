@@ -18,11 +18,9 @@ import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
 import handleGetYear from "../../utils/handleGetYear";
 
-// Pages
-import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
-
 // Interfaces
 import { SortOrderTypes, SortValueTypes } from "./interfaces";
+import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";

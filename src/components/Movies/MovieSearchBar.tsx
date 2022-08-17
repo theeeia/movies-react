@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // Icons
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
@@ -11,11 +13,7 @@ import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 
 // Components
 import Dropdown from "../Dropdown/Dropdown";
-
-// Icons
-
 import MovieSearchInput from "./MovieSearchInput";
-import { useState } from "react";
 
 const MovieSearchBar = ({
   title,
@@ -28,14 +26,16 @@ const MovieSearchBar = ({
     const sortValue = item.value as SortValueTypes;
     handleSortChange(sortValue);
   };
-
+  // Store the value of the sort order in state
   const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
 
+  // Pass the value of the selected dropdown item to the function
   const handleFilterDropdownItem = (item: DropdownItemProps) => {
     const filterValue = item.value as string;
     handleSearchFilter(filterValue);
   };
 
+  // Toggle between ascending and descending order on icon click
   const handleSortOrderClick = () => {
     if (sortOrder == "asc") {
       setSortOrder("desc");

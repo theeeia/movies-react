@@ -7,7 +7,6 @@ import MovieListItem from "../../components/Movies/MovieListItem";
 import MovieCategories from "../../components/Movies/MovieCategories";
 import MovieSearchBar from "../../components/Movies/MovieSearchBar";
 import Pagination from "../../components/Pagination/Pagination";
-import { SortOrderTypes, SortValueTypes } from "../../components/Movies/interfaces";
 
 // Config
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
@@ -18,6 +17,7 @@ import handleGetYear from "../../utils/handleGetYear";
 
 // Interfaces
 import { MovieApiProps } from "./interfaces";
+import { SortOrderTypes, SortValueTypes } from "../../components/Movies/interfaces";
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";

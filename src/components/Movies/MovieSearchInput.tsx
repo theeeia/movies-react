@@ -1,7 +1,13 @@
+// Statics
 import { MOVIES_SEARCH_FILTER_ITEMS } from "../../pages/Movies/statics";
+
+// Components
 import Dropdown from "../Dropdown/Dropdown";
 
+// Icons
 import { ReactComponent as DropdownArrow } from "../../assets/images/dropdown-arrow.svg";
+
+// Interfaces
 import { MovieSearchInputProps } from "./interfaces";
 
 const MovieSearchInput = ({

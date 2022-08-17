@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // Icons
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
@@ -11,7 +13,6 @@ import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 
 // Components
 import Dropdown from "../Dropdown/Dropdown";
-import { useState } from "react";
 
 const MoviesHeader = ({
   title,
