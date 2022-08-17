@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
+import DatePicker from "react-datepicker";
 
 // Icons
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
+import { ReactComponent as DatepickerIcon } from "../../assets/images/datepicker.svg";
 
 // Interfaces
 import { MoviesSearchBarProps, SortOrderTypes, SortValueTypes } from "./interfaces";
@@ -17,6 +19,9 @@ import MovieSearchInput from "./MovieSearchInput";
 
 const MovieSearchBar = ({
   title,
+  inputValue,
+  dateRange,
+  handleDateRangeChange,
   handleSearch,
   handleSortChange,
   handleSearchFilter,
@@ -46,6 +51,22 @@ const MovieSearchBar = ({
     }
   };
 
+  const handleInputChange = (value: any) => {
+    console.log(value);
+    handleSearch(value);
+  };
+
+  // Store picked date range in state
+
+  const handleDateRange = (dates: any) => {
+    handleDateRangeChange(dates);
+    // Reset search input if we select dates
+    handleSearch("");
+  };
+
+  const ExampleCustomInput = forwardRef<any, any>(({ onClick }, ref) => (
+    <DatepickerIcon className={"datepicker"} onClick={onClick} ref={ref} />
+  ));
   return (
     <div className="search-bar">
       <h4 className="search-bar__title">{title}</h4>
@@ -54,9 +75,26 @@ const MovieSearchBar = ({
         <MovieSearchInput
           icon={<SearchIcon />}
           modifierClass=""
-          handleInputChange={handleSearch}
+          handleInputChange={handleInputChange}
           handleDropdownItem={handleFilterDropdownItem}
+          inputValue={inputValue}
         />
+
+        <div>
+          <DatePicker
+            startDate={dateRange[0]}
+            endDate={dateRange[1]}
+            selected={dateRange[0]}
+            onChange={handleDateRange}
+            selectsRange
+            peekNextMonth
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            calendarStartDay={1}
+            customInput={<ExampleCustomInput />}
+          />
+        </div>
 
         <div className="search-bar__filter">
           <div
