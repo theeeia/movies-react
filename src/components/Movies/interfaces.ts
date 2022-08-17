@@ -1,4 +1,3 @@
-import React from "react";
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 export interface MoviesHeaderProps {
@@ -52,7 +51,7 @@ export interface MovieListItemProps {
 
 export interface MovieSearchInputProps {
   icon: React.ReactNode;
-  modifierClass?: string;
   handleInputChange: (value: string) => void;
   handleDropdownItem: (value: DropdownItemProps) => void;
+  modifierClass?: string;
 }
