@@ -7,7 +7,7 @@ import { ReactComponent as DatepickerIcon } from "../../assets/images/datepicker
 import { DatepickerProps } from "./interfaces";
 
 const Datepicker = ({ startDate, endDate, handleDateRange }: DatepickerProps) => {
-  const DatepickerInput = forwardRef<any, Record<string, any>>(({ onClick }, ref) => (
+  const DatepickerInput = forwardRef<SVGSVGElement, Record<string, any>>(({ onClick }, ref) => (
     <DatepickerIcon onClick={onClick} ref={ref} />
   ));
   return (

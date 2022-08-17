@@ -103,7 +103,6 @@ const Search = () => {
 
   // Set the picked start and end date
   const handleDateRangeChange = (dateRange: Date[]) => {
-    console.log(dateRange);
     const [start, end] = dateRange;
     setDateRange({
       startDate: start,

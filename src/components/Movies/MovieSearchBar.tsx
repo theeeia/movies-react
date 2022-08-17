@@ -50,7 +50,7 @@ const MovieSearchBar = ({
     }
   };
 
-  const handleInputChange = (value: any) => {
+  const handleInputChange = (value: string) => {
     handleSearch(value);
   };
 
@@ -67,7 +67,7 @@ const MovieSearchBar = ({
           inputValue={inputValue}
         />
 
-        <div>
+        <div className="search-bar__datepicker">
           <Datepicker
             startDate={dateRange.startDate}
             endDate={dateRange.endDate}
