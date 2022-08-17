@@ -1,9 +1,18 @@
-import React from "react";
+import { DropdownItemProps } from "../Dropdown/interfaces";
 
 export interface MoviesHeaderProps {
   title: string;
   handleSearch: (searchedValue: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
+  handleSortOrderChange: (sortOrder: SortOrderTypes) => void;
+}
+
+export interface MoviesSearchBarProps {
+  title: string;
+  handleSearch: (searchedValue: string) => void;
+  handleSearchFilter: (searchFilter: string) => void;
+  handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
+  handleSortOrderChange: (sortOrder: SortOrderTypes) => void;
 }
 
 export interface MovieCardProps {
@@ -20,6 +29,8 @@ export interface MovieCardProps {
 }
 
 export type SortValueTypes = "title" | "release_date" | "vote_average";
+
+export type SortOrderTypes = "asc" | "desc";
 
 export interface MovieGenresProps {
   genres: Record<string, any>;
@@ -38,4 +49,11 @@ export interface MovieListItemProps {
   votes: number;
   isInFavorites: boolean;
   handleAddToFavorites: (movieId: number) => void;
+}
+
+export interface MovieSearchInputProps {
+  icon: React.ReactNode;
+  handleInputChange: (value: string) => void;
+  handleDropdownItem: (value: DropdownItemProps) => void;
+  modifierClass?: string;
 }

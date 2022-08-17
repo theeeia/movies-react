@@ -72,7 +72,6 @@ const MovieDetails = () => {
     },
   );
 
-  console.log(movie?.genres);
   const [recommendedMoviesIdList, setRecommendedMoviesIdList] = useState<number[]>([]);
 
   // Get a list of ids for the first 5 recommendations that dont include the original movie

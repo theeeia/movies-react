@@ -1,7 +1,15 @@
 import { useState } from "react";
+
+// Components
 import Checkbox from "../Checkbox/Checkbox";
 
-const MovieCategories = ({ genres }: { genres: Record<string, any> }) => {
+const MovieCategories = ({
+  genres,
+  handleCategoryCheck,
+}: {
+  genres: Record<string, any>;
+  handleCategoryCheck: (list: string[]) => void;
+}) => {
   const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
 
   // Add genre to list if its checked or remove if unchecked and update state
@@ -11,7 +19,8 @@ const MovieCategories = ({ genres }: { genres: Record<string, any> }) => {
       ? checkedList.filter((genreId: string) => genreId != genre)
       : [...checkedList, genre];
     setCheckedCategories(checkedList);
-    console.log(checkedList);
+
+    handleCategoryCheck(checkedList);
   };
 
   return (
