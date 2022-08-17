@@ -24,6 +24,7 @@ import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
 // Hooks
 import useDebounce from "../../hooks/useDebounce";
+import { format } from "date-fns";
 
 const Search = () => {
   // Read list from local storage
@@ -38,6 +39,10 @@ const Search = () => {
   // Store the value of the search input
 
   const handleSearchInput = (value: string) => {
+    // Reset date range if we input something
+    if (value != "") {
+      setDateRange([]);
+    }
     setSearchInput(value);
   };
 
@@ -72,6 +77,8 @@ const Search = () => {
 
   const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
 
+  const [dateRange, setDateRange] = useState<Date[]>([]);
+
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
     setSortFilter(value);
@@ -88,6 +95,10 @@ const Search = () => {
     setCategoryFilterParameters(categoryList);
   };
 
+  const handleDateRangeChange = (dateRange: Date[]) => {
+    setDateRange(dateRange);
+  };
+  console.log(dateRange);
   /*================
    Pagination
 
@@ -145,7 +156,7 @@ const Search = () => {
 
   // Get the movies from API at the selected page with selected filters
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter],
+    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter, dateRange],
     () => {
       let TYPE: string = "discover/";
       let PARAMS: string = "";
@@ -159,6 +170,21 @@ const Search = () => {
       // if there's a searched value and the filter is either by 'actor' or 'director'
       if (debouncedSearch && ["actor", "director"].includes(searchFilter) && peopleId) {
         PARAMS = `&with_people=${peopleId}`;
+      }
+
+      // If there is a date selected and input is cleared
+
+      if (dateRange.length != 0 && debouncedSearch == "") {
+        const startDate = format(dateRange[0], "yyyy-MM-dd");
+        const endDate = format(dateRange[1], "yyyy-MM-dd");
+
+        TYPE = "discover/";
+        PARAMS =
+          PARAMS +
+          "&primary_release_date.gte=" +
+          startDate +
+          "&primary_release_date.lte=" +
+          endDate;
       }
 
       // construct the final URL to be used in the API call
@@ -237,6 +263,9 @@ const Search = () => {
           <h2>Movies</h2>
           <MovieSearchBar
             title={"Search by " + searchFilter}
+            inputValue={searchInput}
+            dateRange={dateRange}
+            handleDateRangeChange={(dateRange: Date[]) => handleDateRangeChange(dateRange)}
             handleSearch={(searchValue: string) => handleSearchInput(searchValue)}
             handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
             handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
