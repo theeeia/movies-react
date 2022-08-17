@@ -9,6 +9,9 @@ export interface MoviesHeaderProps {
 
 export interface MoviesSearchBarProps {
   title: string;
+  inputValue: string;
+  dateRange: Date[];
+  handleDateRangeChange: (dates: Date[]) => void;
   handleSearch: (searchedValue: string) => void;
   handleSearchFilter: (searchFilter: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
@@ -54,6 +57,7 @@ export interface MovieListItemProps {
 export interface MovieSearchInputProps {
   icon: React.ReactNode;
   handleInputChange: (value: string) => void;
+  inputValue: string;
   handleDropdownItem: (value: DropdownItemProps) => void;
   modifierClass?: string;
 }

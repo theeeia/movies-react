@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ToastContainer } from "react-toastify";
 import "./scss/application.scss";
 import "react-toastify/dist/ReactToastify.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 // Context
 import { AuthContext } from "./context/AuthContext";
