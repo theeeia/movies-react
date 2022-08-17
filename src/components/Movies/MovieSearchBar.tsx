@@ -52,7 +52,6 @@ const MovieSearchBar = ({
   };
 
   const handleInputChange = (value: any) => {
-    console.log(value);
     handleSearch(value);
   };
 
@@ -60,8 +59,6 @@ const MovieSearchBar = ({
 
   const handleDateRange = (dates: any) => {
     handleDateRangeChange(dates);
-    // Reset search input if we select dates
-    handleSearch("");
   };
 
   const ExampleCustomInput = forwardRef<any, any>(({ onClick }, ref) => (
@@ -82,9 +79,9 @@ const MovieSearchBar = ({
 
         <div>
           <DatePicker
-            startDate={dateRange[0]}
-            endDate={dateRange[1]}
-            selected={dateRange[0]}
+            startDate={dateRange.startDate}
+            endDate={dateRange.endDate}
+            selected={dateRange.startDate}
             onChange={handleDateRange}
             selectsRange
             peekNextMonth

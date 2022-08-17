@@ -10,7 +10,7 @@ export interface MoviesHeaderProps {
 export interface MoviesSearchBarProps {
   title: string;
   inputValue: string;
-  dateRange: Date[];
+  dateRange: Record<string, Date | null>;
   handleDateRangeChange: (dates: Date[]) => void;
   handleSearch: (searchedValue: string) => void;
   handleSearchFilter: (searchFilter: string) => void;

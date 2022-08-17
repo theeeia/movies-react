@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
+import { format } from "date-fns";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -24,7 +25,6 @@ import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
 // Hooks
 import useDebounce from "../../hooks/useDebounce";
-import { format } from "date-fns";
 
 const Search = () => {
   // Read list from local storage
@@ -41,7 +41,10 @@ const Search = () => {
   const handleSearchInput = (value: string) => {
     // Reset date range if we input something
     if (value != "") {
-      setDateRange([]);
+      setDateRange({
+        startDate: null,
+        endDate: null,
+      });
     }
     setSearchInput(value);
   };
@@ -77,7 +80,10 @@ const Search = () => {
 
   const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
 
-  const [dateRange, setDateRange] = useState<Date[]>([]);
+  const [dateRange, setDateRange] = useState<Record<string, Date | null>>({
+    startDate: null,
+    endDate: null,
+  });
 
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
@@ -95,10 +101,19 @@ const Search = () => {
     setCategoryFilterParameters(categoryList);
   };
 
+  // Set the picked start and end date
   const handleDateRangeChange = (dateRange: Date[]) => {
-    setDateRange(dateRange);
+    const [start, end] = dateRange;
+    setDateRange({
+      startDate: start,
+      endDate: end,
+    });
+
+    // Reset search input if we select dates when searching movies
+    if (searchFilter == "movie") {
+      setSearchInput("");
+    }
   };
-  console.log(dateRange);
   /*================
    Pagination
 
@@ -169,14 +184,14 @@ const Search = () => {
 
       // if there's a searched value and the filter is either by 'actor' or 'director'
       if (debouncedSearch && ["actor", "director"].includes(searchFilter) && peopleId) {
-        PARAMS = `&with_people=${peopleId}`;
+        PARAMS = PARAMS + `&with_people=${peopleId}`;
       }
 
-      // If there is a date selected and input is cleared
-
-      if (dateRange.length != 0 && debouncedSearch == "") {
-        const startDate = format(dateRange[0], "yyyy-MM-dd");
-        const endDate = format(dateRange[1], "yyyy-MM-dd");
+      // If there is a date selected and the filter is not "movie"
+      if (dateRange.startDate != null && dateRange.endDate != null && searchFilter != "movie") {
+        // Format the dates
+        const startDate = format(dateRange.startDate, "yyyy-MM-dd");
+        const endDate = format(dateRange.endDate, "yyyy-MM-dd");
 
         TYPE = "discover/";
         PARAMS =
