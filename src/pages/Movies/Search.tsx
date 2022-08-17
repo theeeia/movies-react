@@ -45,6 +45,7 @@ const Search = () => {
         startDate: null,
         endDate: null,
       });
+      setCategoryFilterParameters([]);
     }
     setSearchInput(value);
   };
@@ -95,9 +96,12 @@ const Search = () => {
     setSortOrder(value);
   };
 
-  // NOTE: This related to filtering by category
   // Store the parameter for filter by category
   const handleCategoryFilterChange = (categoryList: string[]) => {
+    // Reset search input if we select categories when searching movies
+    if (searchFilter == "movie") {
+      setSearchInput("");
+    }
     setCategoryFilterParameters(categoryList);
   };
 
@@ -171,7 +175,15 @@ const Search = () => {
 
   // Get the movies from API at the selected page with selected filters
   const { status: statusMovies, data: movies } = useQuery(
-    [`movies-search`, debouncedSearch, page + 1, peopleId, searchFilter, dateRange],
+    [
+      `movies-search`,
+      debouncedSearch,
+      page + 1,
+      peopleId,
+      searchFilter,
+      dateRange,
+      categoryFilterParameters,
+    ],
     () => {
       let TYPE: string = "discover/";
       let PARAMS: string = "";
@@ -200,6 +212,10 @@ const Search = () => {
           startDate +
           "&primary_release_date.lte=" +
           endDate;
+      }
+
+      if (categoryFilterParameters.length != 0) {
+        PARAMS = PARAMS + "&with_genres=" + categoryFilterParameters.join(",");
       }
 
       // construct the final URL to be used in the API call
@@ -242,17 +258,6 @@ const Search = () => {
       if (sortOrder == "desc") moviesList = moviesList.reverse();
     }
 
-    // NOTE: This related to filtering by category
-    // Filter by category if no input
-    // If we get movies by input they will aready be filtered with query parameters
-    if (categoryFilterParameters.length !== 0 && debouncedSearch !== "") {
-      moviesList = moviesList.filter((movie: MovieApiProps) => {
-        return categoryFilterParameters.every((category: string) => {
-          return movie.genre_ids.includes(Number(category));
-        });
-      });
-    }
-
     return moviesList;
   }, [sortParameter, categoryFilterParameters, movies, peopleId, sortOrder]);
 
@@ -266,6 +271,7 @@ const Search = () => {
             <>
               <h2>Filter Options</h2>
               <MovieCategories
+                checkedGenres={categoryFilterParameters}
                 genres={genres.genres}
                 handleCategoryCheck={(categoryList: string[]) =>
                   handleCategoryFilterChange(categoryList)
