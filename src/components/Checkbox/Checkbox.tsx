@@ -1,13 +1,10 @@
 import { CheckboxProps } from "./interfaces";
 
-const Checkbox = ({ id, label, name, type, checked, onChange }: CheckboxProps) => {
+const Checkbox = ({ onChange, label, ...props }: CheckboxProps) => {
   return (
     <div className="checkbox">
       <input
-        value={id}
-        type={type}
-        name={name}
-        checked={checked}
+        {...props}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           onChange(event.currentTarget.value)
         }

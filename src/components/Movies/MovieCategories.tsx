@@ -37,7 +37,7 @@ const MovieCategories = ({
           return (
             <div className="col-6" key={genre.id}>
               <Checkbox
-                id={genre.id}
+                value={genre.id}
                 label={genre.name}
                 name={genre.name}
                 checked={checkedCategories.some((category: string) => category == genre.id)}

@@ -1,5 +1,5 @@
 export interface CheckboxProps {
-  id: number;
+  value: number;
   label: string;
   name: string;
   type: string;
