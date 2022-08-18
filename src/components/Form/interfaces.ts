@@ -12,9 +12,9 @@ export interface FormInputProps {
   name: string;
   type: string;
   placeholder: string;
+  required: boolean;
   icon?: React.ReactNode;
   handleIconClick?: () => void;
-  required: boolean;
 }
 
 export interface FormToggleButtonProps {
@@ -25,7 +25,7 @@ export interface FormToggleButtonProps {
 export interface FormButtonProps {
   label: string | React.ReactNode;
   modifierClass: string;
-  type?: "button" | "submit" | "reset" | undefined;
   isDisabled: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
   handleOnClick?: () => void;
 }

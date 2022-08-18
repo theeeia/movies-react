@@ -14,3 +14,18 @@ export const MOVIES_DROPDOWN_SORT_ITEMS: DropdownItemProps[] = [
     value: "vote_average",
   },
 ];
+
+export const MOVIES_SEARCH_FILTER_ITEMS: DropdownItemProps[] = [
+  {
+    text: "Title",
+    value: "movie",
+  },
+  {
+    text: "Director",
+    value: "director",
+  },
+  {
+    text: "Actor",
+    value: "actor",
+  },
+];

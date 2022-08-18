@@ -102,7 +102,7 @@ const MovieDetails = () => {
     const valueInCurrency = handleFormatAsCurrency(movie.revenue, "USD");
     setRevenue(valueInCurrency);
   }, [movie]);
-  console.log(movie);
+
   // State for show more button
   const [isShowMore, setIsShowMore] = useState(false);
 

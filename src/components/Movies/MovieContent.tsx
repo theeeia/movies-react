@@ -19,8 +19,8 @@ import handleListFilter from "../../utils/handleListFilter";
 import handleGetYear from "../../utils/handleGetYear";
 
 // Interfaces
+import { SortOrderTypes, SortValueTypes } from "./interfaces";
 import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
-import { SortValueTypes } from "./interfaces";
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
@@ -84,6 +84,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   const [sortParameter, setSortFilter] = useState<SortValueTypes | null>(null);
 
+  const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
   // Store the value of the search input
   const handleSearch = (value: string) => {
     setSearchInput(value);
@@ -92,6 +93,11 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   // Store the parameter for sorting
   const handleSortChange = (value: SortValueTypes) => {
     setSortFilter(value);
+  };
+
+  // Store the sorting order parameter
+  const handleSortOrderChange = (value: SortOrderTypes) => {
+    setSortOrder(value);
   };
 
   // Debounce the input to update every second
@@ -112,11 +118,12 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         return b[sortParameter] > a[sortParameter] ? 1 : -1;
       });
 
-      if (sortParameter === "title") return moviesList.reverse();
+      if (sortParameter === "title") moviesList = moviesList.reverse();
+      if (sortOrder == "desc") moviesList = moviesList.reverse();
     }
 
     return moviesList;
-  }, [debouncedSearch, sortParameter, movies]);
+  }, [debouncedSearch, sortParameter, movies, sortOrder]);
 
   return (
     <>
@@ -124,6 +131,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       <MoviesHeader
         title={title}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
+        handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 
@@ -145,7 +153,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                       : undefined
                   }
                   title={movie.title}
-                  year={handleGetYear(movie.release_date)}
+                  year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
                   language={movie.original_language}
                   genre={genre?.name}
                   votes={movie.vote_average}

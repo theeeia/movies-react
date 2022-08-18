@@ -6,9 +6,9 @@ export interface DropdownItemProps {
 }
 
 export interface DropdownProps {
-  title: string;
   items: DropdownItemProps[];
   handleDropdownItem: (item: DropdownItemProps) => void;
+  title?: string;
   icon?: React.ReactNode;
   downIcon?: React.ReactNode;
   isDisplayedTextStatic?: boolean;
