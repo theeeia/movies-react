@@ -82,7 +82,7 @@ const MovieDetails = () => {
     const recommendedMoviesIds: number[] = [];
     recommendedMovies.results
       .filter((movie: MovieDetailsApiProps) => movie.id != Number(id))
-      .slice(0, 5)
+      .slice(0, 6)
       .map((movie: MovieDetailsApiProps) => recommendedMoviesIds.push(movie.id));
 
     setRecommendedMoviesIdList(recommendedMoviesIds);
@@ -126,7 +126,9 @@ const MovieDetails = () => {
 
               <div className="movie-details__info">
                 <h2 className="movie-details__title">{movie.title}</h2>
-                <div className="movie-details__year">({handleGetYear(movie.release_date)})</div>
+                <div className="movie-details__year">
+                  {movie.release_date != "" ? "(" + handleGetYear(movie.release_date) + ")" : ""}
+                </div>
                 <div className="movie-details__rating">
                   <MovieRatingStars votes={movie.vote_average} />
                 </div>
@@ -134,13 +136,27 @@ const MovieDetails = () => {
               <div className="movie-details__info">
                 <div className="movie-details__label mr--30">{movie.runtime}min</div>
                 <div className="movie-details__label mr--30">
-                  {movie.status == "Released" ? (
-                    <>Published on {format(parseISO(movie.release_date), "PPP")}</>
+                  {movie.release_date != "" ? (
+                    movie.status == "Released" ? (
+                      <>Published on {format(parseISO(movie.release_date), "PPP")}</>
+                    ) : (
+                      <>Will publish on {format(parseISO(movie.release_date), "PPP")}</>
+                    )
                   ) : (
-                    <>Will publish on {format(parseISO(movie.release_date), "PPP")}</>
+                    "No date available"
                   )}
                 </div>
-                <div className="movie-details__label">Status: {movie.status}</div>
+                <div className="movie-details__label mr--30">Status: {movie.status}</div>
+                {movie.imdb_id && (
+                  <a
+                    href={"https://www.imdb.com/title/" + movie.imdb_id}
+                    target="_blank"
+                    rel="noopener"
+                    className="movie-details__btn"
+                  >
+                    imdb
+                  </a>
+                )}
 
                 <div className="movie-details__label movie-details__revenue">
                   Revenue {movie.revenue == 0 ? "-" : revenue}

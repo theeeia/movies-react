@@ -1,9 +1,11 @@
+import { useState } from "react";
+
 // Icons
 import { ReactComponent as SearchIcon } from "../../assets/images/search.svg";
 import { ReactComponent as SortIcon } from "../../assets/images/filter.svg";
 
 // Interfaces
-import { MoviesHeaderProps, SortValueTypes } from "./interfaces";
+import { MoviesHeaderProps, SortOrderTypes, SortValueTypes } from "./interfaces";
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 // Statics
@@ -12,10 +14,25 @@ import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 // Components
 import Dropdown from "../Dropdown/Dropdown";
 
-const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderProps) => {
+const MoviesHeader = ({
+  title,
+  handleSearch,
+  handleSortChange,
+  handleSortOrderChange,
+}: MoviesHeaderProps) => {
   const handleDropdownItem = (item: DropdownItemProps) => {
     const sortValue = item.value as SortValueTypes;
     handleSortChange(sortValue);
+  };
+  const [sortOrder, setSortOrder] = useState<SortOrderTypes>("asc");
+  const handleSortOrderClick = () => {
+    if (sortOrder == "asc") {
+      setSortOrder("desc");
+      handleSortOrderChange("desc");
+    } else {
+      setSortOrder("asc");
+      handleSortOrderChange("asc");
+    }
   };
 
   return (
@@ -34,12 +51,19 @@ const MoviesHeader = ({ title, handleSearch, handleSortChange }: MoviesHeaderPro
           />
         </div>
         <div className="movies-header__filter">
+          <div
+            className={`search-bar__filter-icon ${
+              sortOrder == "desc" ? "search-bar__filter-icon--flipped" : ""
+            }`}
+            onClick={handleSortOrderClick}
+          >
+            <SortIcon />
+          </div>
           <Dropdown
             title="Sorting"
-            icon={<SortIcon />}
             items={MOVIES_DROPDOWN_SORT_ITEMS}
             handleDropdownItem={handleDropdownItem}
-            modifierClass={"dropdown--md-wide dropdown--ml-20"}
+            modifierClass={"dropdown--md-wide "}
           />
         </div>
       </div>

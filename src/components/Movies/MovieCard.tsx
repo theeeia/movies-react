@@ -28,6 +28,7 @@ const MovieCard = ({
     handleAddToFavorites(movieId);
   };
 
+  // Navigate to details page of clicked movie
   const navigate = useNavigate();
 
   const handleMovieDetails = () => {

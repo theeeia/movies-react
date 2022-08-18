@@ -9,7 +9,6 @@ const Card = ({
   modifierClass = "",
   onCardClick = undefined,
 }: CardProps) => {
-  console.log(imagePath);
   return (
     <div className={`card ${modifierClass}`} key={id}>
       <div onClick={onCardClick} className="card__content">

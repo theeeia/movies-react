@@ -1,5 +1,6 @@
 .card {
     padding-bottom: 20px;
+    flex-grow:0;
 
     &--clickable &__content   { cursor: pointer; }
 
