@@ -92,7 +92,7 @@ const NavigationBar = () => {
             Favorites
           </NavLink>
           <NavLink
-            to={"/"}
+            to={"/movies/statistics"}
             className={({ isActive }) =>
               isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
             }
