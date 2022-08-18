@@ -13,6 +13,8 @@ const MovieChart = ({
   chartTitle: string;
   chartType: string;
 }) => {
+  console.log(chartData);
+  console.log(chartNames);
   const chartRef = useRef<HighchartsReact.RefObject>(null);
   console.log(chartType);
   const chartOptions: Highcharts.Options = {
@@ -32,14 +34,16 @@ const MovieChart = ({
         textAlign: "left",
       },
     },
+
     xAxis: {
-      categories: chartNames,
+      categories: chartData.map((data: any) => data.name),
       gridLineWidth: 0,
       tickColor: "white",
     },
+
     yAxis: {
       min: 0,
-      tickAmount: 5,
+      tickAmount: 7,
       title: {
         text: "",
       },
@@ -52,12 +56,15 @@ const MovieChart = ({
     },
     series: [
       {
-        name: "Movies",
-        type: chartType == "bar" ? "bar" : "column",
-        data: chartData,
+        name: "Usage",
+        type: "column",
         colorByPoint: true,
+        // data: Object.values(obj)
+        // or:
+        data: chartData.map((data: any) => data.y),
       },
     ],
+    legend: { enabled: false },
   };
   return (
     <div>

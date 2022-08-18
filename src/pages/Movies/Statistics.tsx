@@ -10,7 +10,7 @@ const Statistics = () => {
   const { handleFetch } = handleFetchCall();
   const { status: statusPopularMovies, data: popularMovies } = useQuery(["popularMovies"], () =>
     handleFetch(
-      `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&primary_release_date.gte=1900`,
+      `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc`,
       "GET",
     ),
   );
@@ -19,7 +19,7 @@ const Statistics = () => {
     ["mostRevenueMovies"],
     () =>
       handleFetch(
-        `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=revenue.desc&primary_release_date.gte=1900`,
+        `${API_ENDPOINT_BASE}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=revenue.desc`,
         "GET",
       ),
   );
@@ -38,7 +38,7 @@ const Statistics = () => {
     let popularDataList = [] as string[];
     let popularMovieNames = [] as number[];
     popularDataList = popularMovies.results.slice(0, 10).map((movie: any) => {
-      return { name: movie.title, y: movie.popularity, drilldown: movie.title };
+      return { data: [movie.revenue, movie.revenue], name: movie.title, type: "bar" };
     });
     popularMovieNames = popularMovies.results.slice(0, 10).map((movie: any) => {
       return movie.title;
@@ -57,7 +57,7 @@ const Statistics = () => {
     let revenueMoviesNames = [] as string[];
     let mostRevenueList = [] as number[];
     mostRevenueList = mostRevenueMovies.results.slice(0, 10).map((movie: any) => {
-      return { name: movie.title, y: movie.popularity, drilldown: movie.title };
+      return { y: movie.popularity, name: movie.title };
     });
     revenueMoviesNames = mostRevenueMovies.results.slice(0, 10).map((movie: any) => {
       return movie.title;
