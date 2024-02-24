@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 // Components
 import Loader from "../Loader/Loader";
@@ -25,26 +25,52 @@ import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Mov
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
 
+//Firebase
+import db from "../../firebase";
+import { setDoc, doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
+
+//Context
+import { AuthContext } from "../../context/AuthContext";
+
 const MovieContent = ({ title, apiKey }: MovieContentProps) => {
+  const { user } = useContext(AuthContext);
   const { handleFetch } = handleFetchCall();
 
-  // Read list from local storage
-  let favoriteMoviesIdsList = localStorage.getItem("favoritesList")
-    ? JSON.parse(localStorage.getItem("favoritesList") || "")
-    : [];
+  const [favoritesIds, setFavoritesIds] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      const userRef = doc(db, "users", user);
+      const docData = await getDoc(userRef);
+
+      if (docData.exists()) {
+        setFavoritesIds(Object.keys(docData.data()) ?? []);
+      } else {
+        console.log("Error fetching from firebase");
+      }
+    };
+
+    fetchFavorites();
+  }, []);
 
   /*================
   HANDLE FAVORITE BUTTON 
 
   Adds or removes the movie from list of favorites
   ================*/
-  const handleAddMovieToFavorites = (movieId: number) => {
-    favoriteMoviesIdsList = favoriteMoviesIdsList.includes(movieId)
-      ? favoriteMoviesIdsList.filter((id: number) => id != movieId)
-      : [...favoriteMoviesIdsList, movieId];
 
-    // Stores the new list to local storage
-    localStorage.setItem("favoritesList", JSON.stringify(favoriteMoviesIdsList));
+  const handleAddMovieToFavorites = async (movieId: number) => {
+    const userRef = doc(db, "users", user);
+
+    favoritesIds?.includes(movieId.toString())
+      ? await updateDoc(userRef, { [movieId]: deleteField() })
+      : await setDoc(userRef, { [movieId]: true }, { merge: true });
+
+    const docData = await getDoc(userRef);
+
+    if (docData.exists()) {
+      setFavoritesIds(Object.keys(docData.data()));
+    }
   };
 
   /*================
@@ -73,7 +99,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       "GET",
     ),
   );
-
   /*================
     SORT AND FILTER PARAMETERS
 
@@ -127,7 +152,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   return (
     <>
-      <div className="breadcrumbs">Home</div>
       <MoviesHeader
         title={title}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
@@ -135,7 +159,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 
-      {statusGenres === "success" && statusMovies === "success" ? (
+      {statusGenres === "success" && statusMovies === "success" && favoritesIds !== null ? (
         <>
           <div className="row">
             {moviesList.map((movie: MovieApiProps) => {
@@ -157,7 +181,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
                   language={movie.original_language}
                   genre={genre?.name}
                   votes={movie.vote_average}
-                  isInFavorites={favoriteMoviesIdsList.includes(movie.id)}
+                  isInFavorites={favoritesIds?.includes(movie.id.toString()) ?? false}
                   handleAddToFavorites={handleAddMovieToFavorites}
                 />
               );

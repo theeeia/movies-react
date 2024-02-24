@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/firestore": "^4.4.2",
     "@tanstack/react-query": "^4.0.10",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -13,6 +14,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "date-fns": "^2.29.1",
+    "firebase": "^10.8.0",
     "formik": "^2.2.9",
     "highcharts": "^10.2.0",
     "highcharts-react-official": "^3.1.0",
@@ -55,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@types/firebase": "^3.2.1",
     "@types/react-datepicker": "^4.4.2",
     "@types/react-query": "^1.2.9",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
