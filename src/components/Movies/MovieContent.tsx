@@ -159,7 +159,8 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 
-      {statusGenres === "success" && statusMovies === "success" && favoritesIds !== null ? (
+      {statusGenres === "success" && statusMovies === "success"// && favoritesIds !== null ? (
+        ?(
         <>
           <div className="row">
             {moviesList.map((movie: MovieApiProps) => {
