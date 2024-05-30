@@ -13,4 +13,10 @@
     background-color: #080D33;
     color: rgba(255, 255, 255, 0.6);
     font-size: 14px;
+
+    @media (max-width:$screen-sm) {
+        text-align: center;
+        padding: 5px 15px;
+        font-size: 11px;
+    }
 }

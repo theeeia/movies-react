@@ -36,7 +36,7 @@ const MovieCard = ({
   };
 
   return (
-    <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb--70">
+    <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb--70 movie-card__wrapper">
       <div className="movie-card" onClick={() => handleMovieDetails()}>
         <div className="movie-card__image-box">
           {genre && <div className="movie-card__genre">{genre}</div>}
@@ -55,9 +55,8 @@ const MovieCard = ({
         </div>
 
         <div
-          className={`movie-card__favorite ${
-            isFavorite ? "movie-card--favorite" : "movie-card--not-favorite"
-          }  `}
+          className={`movie-card__favorite ${isFavorite ? "movie-card--favorite" : "movie-card--not-favorite"
+            }  `}
           onClick={event => handleFavorite(event)}
         >
           {favoriteIcon}
