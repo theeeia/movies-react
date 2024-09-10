@@ -6,19 +6,30 @@
     justify-content: space-between;
     gap: 50px;
 
+    @media (max-width:$screen-md) {
+        padding: 15px 0;
+        gap: 25px;
+    }
 
     &__image img {
         width: 150px;
-        height: 215px; 
-        border-radius: 20px;    
+        height: 215px;
+        border-radius: 20px;
     }
 
-    &__image { flex: 1; }
+    &__image {
+        flex: 1;
+    }
 
     &__row {
         display: flex;
-        gap: 15px;  
-        align-items: center; 
+        width: 100%;
+        gap: 15px;
+        align-items: center;
+
+        @media (max-width:$screen-xs) {
+            flex-wrap: wrap;
+        }
     }
 
     &__details {
@@ -28,9 +39,15 @@
         gap: 15px;
     }
 
-    &__icon {   
+    &__title {
         display: flex;
-        align-items: center; 
+        align-items: center;
+        gap: 20px
+    }
+
+    &__icon {
+        display: flex;
+        align-items: center;
         padding: 5px 10px;
         border-radius: 10px;
         border: 1px solid #212121;
@@ -39,6 +56,11 @@
             width: 20px;
             height: 18px;
         }
+
+        @media (max-width:$screen-xs) {
+            justify-content: end;
+        }
+
     }
 
 
@@ -57,14 +79,15 @@
 
     &__plot {
         position: relative;
-        width: 525px;
+        max-width: 525px;
+        width: 100%;
         font-size: 14px;
         color: rgba(255, 255, 255, 0.8);
-        overflow: hidden; 
+        overflow: hidden;
     }
 
     &__genre {
-        width:100%;
+        width: 100%;
         display: flex;
         align-items: baseline;
         flex-wrap: wrap;
@@ -77,32 +100,40 @@
         padding: 5px 20px;
         margin-right: 10px;
         border-radius: 10px;
-        color:#1328E3;
+        color: #1328E3;
         border: 1px solid #000F93;
         font-weight: 300;
         font-size: 14px;
-        text-transform: uppercase; 
+        text-transform: uppercase;
         margin-bottom: 5px;
+
+        @media (max-width:$screen-md) {
+            padding: 3px 10px;
+            font-size: 12px;
+        }
     }
 
     &__rating {
         display: flex;
         gap: 5px;
         flex: 1;
+        justify-content: end;
+
+        @media (max-width:$screen-xs) {
+            flex-basis: 100%;
+        }
     }
-    
-    
+
+
     &--favorite {
         path {
             fill: #FF055F;
         }
     }
+
     &--not-favorite {
         path {
             fill: #FFFFFF;
         }
     }
-
-
-
 }

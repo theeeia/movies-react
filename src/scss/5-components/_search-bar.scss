@@ -9,30 +9,57 @@
     color: white;
     border-radius: 15px;
     background-color: #151515;
-    
-    
-    &__title { flex: 1; }
+
+    @media (max-width:$screen-xs) {
+        padding: 0 10px;
+        margin-bottom: 25px;
+    }
+
+    @media (max-width:$screen-lg) {
+        padding: 0 20px;
+    }
+
+    &__title {
+        flex: 1;
+
+        @media (max-width:$screen-xl) {
+            font-size: 14px;
+            margin-right: 10px;
+        }
+    }
 
     &__search {
         display: flex;
         align-items: center;
-        justify-content: right;        
+        justify-content: right;
+
+        @media (max-width:$screen-md) {
+            width: 100%;
+        }
     }
 
     &__filter {
         display: flex;
         align-items: center;
         padding-left: 30px;
-    }   
+
+        @media (max-width:$screen-xs) {
+            padding: 0
+        }
+    }
 
     &__filter-icon {
         display: flex;
         align-items: center;
         cursor: pointer;
 
-        &--flipped svg { transform: rotateX(180deg); }
-    }   
+        &--flipped svg {
+            transform: rotateX(180deg);
+        }
+    }
 
-    &__datepicker svg { cursor: pointer; }
-   
+    &__datepicker svg {
+        cursor: pointer;
+    }
+
 }

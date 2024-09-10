@@ -5,35 +5,45 @@
   margin: auto;
   font-size: 16px;
 
-  &__label { 
+  &__label {
     font-weight: 300;
-    color: white;  
+    color: white;
     font-size: 16px;
     margin-bottom: 15px;
   }
 
   &__error {
     position: absolute;
-    bottom:   -15px;
+    bottom: -15px;
     color: red;
     font-size: 15px;
     text-align: left;
   }
 
   &__input {
-      position: relative;
-      height: 70px;
-      margin-bottom: 30px;
-      margin-top: 15px;
-      border-radius: 20px;
-      font-weight: 300;
-      padding-left: 30px;
-      background-color: #131313;
-      color: white;
-      border: 1px solid #CBCBCB;
-      font-size: 16px;
+    position: relative;
+    height: 70px;
+    margin-bottom: 30px;
+    margin-top: 15px;
+    border-radius: 20px;
+    font-weight: 300;
+    padding-left: 30px;
+    background-color: #131313;
+    color: white;
+    border: 1px solid #CBCBCB;
+    font-size: 16px;
 
-      &--error{ border: solid 1px red; }
+    &--error {
+      border: solid 1px red;
+    }
+
+    &--icon {
+      padding-right: 70px
+    }
+
+    @media (max-width:$screen-md) {
+      height: 50px
+    }
   }
 
   &__icon {
@@ -46,8 +56,8 @@
     text-align: center;
     color: white;
     margin-bottom: 55px;
-    padding-top:40px;
-    
+    padding-top: 40px;
+
     p {
       font-size: 16px;
       padding-top: 10px;
@@ -55,21 +65,26 @@
     }
   }
 
-  &__input, &_label {
+  &__input,
+  &_label {
     width: 100%;
     max-width: 700px;
   }
 
-  &__field { position: relative; }
+  &__field {
+    position: relative;
+  }
 
   &__checkbox {
-      display: flex;
-      align-content: center;
+    display: flex;
+    align-content: center;
   }
-  &__checkbox-label { 
-    font-weight: 500; 
-    font-size: 16px;   
+
+  &__checkbox-label {
+    font-weight: 500;
+    font-size: 16px;
   }
+
   &__checkbox-input {
     height: 25px;
     width: 25px;
@@ -78,5 +93,5 @@
     margin-right: 15px;
     filter: invert(100%) hue-rotate(18deg) brightness(1.7);
   }
-  
+
 }

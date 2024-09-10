@@ -1,6 +1,12 @@
 .movie-list {
     padding: 30px 40px;
     background-color: #151515;
-    border-radius: 20px ;
+    border-radius: 20px;
     color: white;
+
+    &__search {
+        @media (max-width:$screen-xs) {
+            padding: 15px 20px;
+        }
+    }
 }

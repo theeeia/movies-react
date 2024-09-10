@@ -35,14 +35,18 @@ const MovieListItem = ({
       </div>
       <div className="movie-list-item__details">
         <div className="movie-list-item__row">
-          <h5>{title}</h5>
-          <div
-            className={`movie-list-item__icon ${
-              isFavorite ? "movie-list-item--favorite" : "movie-list-item--not-favorite"
-            }  `}
-            onClick={event => handleFavorite(event)}
-          >
-            {favoriteIcon}
+          <div className="movie-list-item__title">
+            <h5>{title}</h5>
+            <div
+              className={`movie-list-item__icon ${isFavorite ? "movie-list-item--favorite" : "movie-list-item--not-favorite"
+                }  `}
+              onClick={event => handleFavorite(event)}
+            >
+              {favoriteIcon}
+            </div>
+          </div>
+          <div className="movie-list-item__rating">
+            <MovieRatingStars votes={votes} />
           </div>
         </div>
         <div className="movie-list-item__row">
@@ -53,9 +57,6 @@ const MovieListItem = ({
         <div className="movie-list-item__genre">
           <MovieGenres genres={genres} modifierClass={"movie-list-item__genre-item"} />
         </div>
-      </div>
-      <div className="movie-list-item__rating">
-        <MovieRatingStars votes={votes} />
       </div>
     </div>
   );

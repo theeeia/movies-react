@@ -89,9 +89,51 @@ body {
     }
 
     &__title {
+        margin-bottom: 70px;
+
         @media (max-width:$screen-md) {
             text-align: center;
+            font-size: 25px;
             margin-bottom: 40px;
         }
+    }
+}
+
+.search-category {
+    &--mobile {
+        display: none;
+    }
+
+    &__button {
+        background-color: #131313;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-radius: 20px;
+        border-color: transparent;
+        color: white;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+
+        svg path {
+            fill: white
+        }
+    }
+
+    @media (max-width:$screen-md) {
+        &--desktop {
+            display: none;
+        }
+
+        &--mobile {
+            display: block;
+        }
+    }
+}
+
+@media (max-width:$screen-md) {
+
+    .hide-mobile {
+        display: none;
     }
 }

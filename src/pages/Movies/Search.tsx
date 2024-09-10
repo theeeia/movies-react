@@ -22,6 +22,8 @@ import { SortOrderTypes, SortValueTypes } from "../../components/Movies/interfac
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
+import { ReactComponent as ArrowDown } from "../../assets/images/arrow-more.svg";
+import { ReactComponent as ArrowUp } from "../../assets/images/arrow-less.svg";
 
 // Hooks
 import useDebounce from "../../hooks/useDebounce";
@@ -268,6 +270,12 @@ const Search = () => {
     });
     return genresList;
   };
+  const [showCategories, setShowCategories] = useState(false)
+
+  // Shows only on mobile and toggle the category filters
+  const handleMobileCategoryButton = () => {
+    setShowCategories(prev => !prev)
+  }
 
   const moviesList: Record<string, any> = useMemo(() => {
     if (!movies || !Object.entries(movies).length) return [];
@@ -289,7 +297,7 @@ const Search = () => {
   return (
     <>
       <div className="row mt--30">
-        <div className="col-4">
+        <div className="col-lg-4 col-sm-12 search-category--desktop">
           {statusGenres === "success" && (
             <>
               <h2>Filter Options</h2>
@@ -303,8 +311,24 @@ const Search = () => {
             </>
           )}
         </div>
-        <div className="col-8">
-          <h2>Movies</h2>
+        <div className="col-lg-4 col-sm-12 search-category--mobile">
+          <button onClick={
+            handleMobileCategoryButton
+          } className="search-category__button"> Filter by category {!showCategories ? <ArrowDown /> : <ArrowUp />} </button>
+          {showCategories &&
+            statusGenres === "success" && (
+              <MovieCategories
+                checkedGenres={categoryFilterParameters}
+                genres={genres.genres}
+                handleCategoryCheck={(categoryList: string[]) =>
+                  handleCategoryFilterChange(categoryList)
+                }
+              />
+            )
+          }
+        </div>
+        <div className="col-lg-8 col-sm-12">
+          <h2 className="hide-mobile">Movies</h2>
           <MovieSearchBar
             title={"Search by " + searchFilter}
             inputValue={searchInput}
@@ -316,10 +340,10 @@ const Search = () => {
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
           />
 
-          {statusMovies === "success" && statusGenres === "success" ? (
+          {statusMovies === "success" && statusGenres === "success" && favoritesIds !== null ? (
             moviesList.length > 0 ? (
               <>
-                <div className="movie-list">
+                <div className="movie-list movie-list__search">
                   {moviesList.map((movie: MovieApiProps) => {
                     return (
                       <MovieListItem

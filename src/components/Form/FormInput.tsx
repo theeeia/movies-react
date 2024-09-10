@@ -26,7 +26,7 @@ const FormInput = ({
           {...field}
           type={type}
           placeholder={placeholder}
-          className={`form__input  ${meta.touched && meta.error ? "form__input--error" : ""}`}
+          className={`form__input  ${meta.touched && meta.error ? "form__input--error" : ""}  ${icon ? "form__input--icon" : ""}`}
         />
 
         {icon ? (

@@ -13,7 +13,6 @@
         align-items: baseline;
         flex-wrap: wrap;
 
-
         &--titles {
             @media (max-width:$screen-md) {
                 flex-wrap: wrap;
@@ -108,7 +107,4 @@
     &__flip-icon svg {
         transform: rotateX(180deg);
     }
-
-
-
 }

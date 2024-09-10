@@ -50,7 +50,7 @@ const MovieRecommendations = ({
 
   return (
     <div>
-      <h1 className="mb--70 movie-recommendations__title">Recommended For You</h1>
+      <h1 className="movie-recommendations__title">Recommended For You</h1>
 
       {recommendedMoviesIdList.length != 0 ? (
         isMovierecommendationDetailsLoading ? (

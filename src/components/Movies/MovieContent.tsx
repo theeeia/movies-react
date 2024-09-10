@@ -53,6 +53,9 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     fetchFavorites();
   }, []);
 
+  console.log(favoritesIds, "favs ")
+  console.log(favoritesIds?.includes((365177).toString()))
+
   /*================
   HANDLE FAVORITE BUTTON 
 
@@ -159,55 +162,55 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
       />
 
-      {statusGenres === "success" && statusMovies === "success"// && favoritesIds !== null ? (
-        ?(
-        <>
-          <div className="row">
-            {moviesList.map((movie: MovieApiProps) => {
-              const genre = genres.genres.filter(
-                (genre: GenreApiProps) => genre.id === movie.genre_ids[0],
-              )[0];
-              return (
-                <MovieCard
-                  favoriteIcon={<HeartIcon />}
-                  movieId={movie.id}
-                  key={movie.id}
-                  poster={
-                    movie.poster_path
-                      ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
-                      : undefined
-                  }
-                  title={movie.title}
-                  year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
-                  language={movie.original_language}
-                  genre={genre?.name}
-                  votes={movie.vote_average}
-                  isInFavorites={favoritesIds?.includes(movie.id.toString()) ?? false}
-                  handleAddToFavorites={handleAddMovieToFavorites}
-                />
-              );
-            })}
-          </div>
-
-          {!searchInput ? (
-            <div className="page-info">
-              <div className="page-info__details">
-                Showing {movies.results.length + 20 * page} from {movies.total_results} data
-              </div>
-
-              <Pagination
-                handlePageClick={handlePageClick}
-                totalPages={movies.total_pages}
-                page={page}
-              />
+      {statusGenres === "success" && statusMovies === "success" && favoritesIds !== null
+        ? (
+          <>
+            <div className="row">
+              {moviesList.map((movie: MovieApiProps) => {
+                const genre = genres.genres.filter(
+                  (genre: GenreApiProps) => genre.id === movie.genre_ids[0],
+                )[0];
+                return (
+                  <MovieCard
+                    favoriteIcon={<HeartIcon />}
+                    movieId={movie.id}
+                    key={movie.id}
+                    poster={
+                      movie.poster_path
+                        ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                        : undefined
+                    }
+                    title={movie.title}
+                    year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
+                    language={movie.original_language}
+                    genre={genre?.name}
+                    votes={movie.vote_average}
+                    isInFavorites={favoritesIds?.includes(movie.id.toString()) ?? false}
+                    handleAddToFavorites={handleAddMovieToFavorites}
+                  />
+                );
+              })}
             </div>
-          ) : (
-            <div className="txt--center txt--white">No Results </div>
-          )}
-        </>
-      ) : (
-        <Loader />
-      )}
+
+            {!searchInput ? (
+              <div className="page-info">
+                <div className="page-info__details">
+                  Showing {movies.results.length + 20 * page} from {movies.total_results} data
+                </div>
+
+                <Pagination
+                  handlePageClick={handlePageClick}
+                  totalPages={movies.total_pages}
+                  page={page}
+                />
+              </div>
+            ) : (
+              <div className="txt--center txt--white">No Results </div>
+            )}
+          </>
+        ) : (
+          <Loader />
+        )}
     </>
   );
 };

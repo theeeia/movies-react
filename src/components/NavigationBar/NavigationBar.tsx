@@ -52,8 +52,22 @@ const NavigationBar = () => {
     }
   };
 
+  const getPathname = () => {
+    const titles: { [key: string]: string } = {
+      "now-playing": "Now Playing",
+      "upcoming": "Upcoming",
+      "top-rated": "Top Rated",
+      "favorites": "Favorites",
+      "statistics": "Statistics",
+      "search": 'Search'
+    }
+    const path = window.location.pathname.split('/').at(-1) || ""
+
+    return titles[path]
+  }
+
   const [showMenu, setShowMenu] = useState(false);
-  const [activeLink, setActiveLink] = useState("Now Playing"); // Default active link
+  const [activeLink, setActiveLink] = useState(getPathname() || "Now Playing"); // Default active link
 
   const handleNavLinkClick = (link: string) => {
     setActiveLink(link);
