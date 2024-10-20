@@ -60,7 +60,6 @@ const NavigationBar = () => {
       "upcoming": "Upcoming",
       "top-rated": "Top Rated",
       "favorites": "Favorites",
-      "statistics": "Statistics",
       "search": 'Search'
     }
     const path = window.location.pathname.split('/').at(-1) || ""
@@ -114,14 +113,6 @@ const NavigationBar = () => {
             }
           >
             Favorites
-          </NavLink>
-          <NavLink
-            to={"/movies/statistics"}
-            className={({ isActive }) =>
-              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
-            }
-          >
-            Statistics
           </NavLink>
           <NavLink
             to={"/movies/search"}
@@ -187,15 +178,6 @@ const NavigationBar = () => {
             }
           >
             Favorites
-          </NavLink>
-          <NavLink
-            to={"/movies/statistics"}
-            onClick={() => handleNavLinkClick("Statistics")}
-            className={({ isActive }) =>
-              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
-            }
-          >
-            Statistics
           </NavLink>
           <NavLink
             to={"/movies/search"}
