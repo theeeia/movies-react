@@ -14,6 +14,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
 import handleLogoutUser from "../../utils/handleLogoutUser";
+import { toast } from "react-toastify";
 
 // Statics
 import { NAVIGATION_DROPDOWN_ITEMS } from "./statics";
@@ -30,6 +31,7 @@ const NavigationBar = () => {
     setLoadingLogout(true);
     try {
       await handleLogoutUser();
+      toast.success("Logged out");
     } finally {
       setLoadingLogout(false);
     }

@@ -53,9 +53,6 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     fetchFavorites();
   }, []);
 
-  console.log(favoritesIds, "favs ")
-  console.log(favoritesIds?.includes((365177).toString()))
-
   /*================
   HANDLE FAVORITE BUTTON 
 

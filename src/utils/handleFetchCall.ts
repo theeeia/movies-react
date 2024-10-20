@@ -5,8 +5,8 @@ import { AuthContext } from "../context/AuthContext";
 
 // Utilities
 import { handleSaveUserInLocalStorage } from "./handleSaveUserInLocalStorage";
-import handleLogoutUser from "./handleLogoutUser";
 import { toast } from "react-toastify";
+import handleLogoutUser from "./handleLogoutUser";
 
 const handleFetchCall = () => {
   /*================
@@ -45,7 +45,8 @@ const handleFetchCall = () => {
         );
       }
     } catch (error: any) {
-      toast.error(error.message);
+
+      throw Error(error);
     }
   };
 
