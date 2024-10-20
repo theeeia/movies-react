@@ -56,7 +56,7 @@ const MovieSearchBar = ({
 
   return (
     <div className="search-bar">
-      <h4 className="search-bar__title">{title}</h4>
+      <h4 className="search-bar__title hide-mobile">{title}</h4>
 
       <div className="search-bar__search">
         <MovieSearchInput
@@ -76,9 +76,8 @@ const MovieSearchBar = ({
         </div>
         <div className="search-bar__filter">
           <div
-            className={`search-bar__filter-icon ${
-              sortOrder == "desc" ? "search-bar__filter-icon--flipped" : ""
-            }`}
+            className={`search-bar__filter-icon ${sortOrder == "desc" ? "search-bar__filter-icon--flipped" : ""
+              }`}
             onClick={handleSortOrderClick}
           >
             <SortIcon />
@@ -92,7 +91,7 @@ const MovieSearchBar = ({
           />
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default MovieSearchBar;

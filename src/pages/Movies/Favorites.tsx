@@ -1,5 +1,9 @@
 import { useQueries } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+
+// Firebase
+import db from "../../firebase";
+import { doc, updateDoc, deleteField, getDoc } from "firebase/firestore";
 
 // Components
 import Loader from "../../components/Loader/Loader";
@@ -16,6 +20,9 @@ import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 // Hooks
 import useDebounce from "../../hooks/useDebounce";
 
+// Context
+import { AuthContext } from "../../context/AuthContext";
+
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
 import handleListFilter from "../../utils/handleListFilter";
@@ -25,27 +32,42 @@ import handleGetYear from "../../utils/handleGetYear";
 import { ReactComponent as TrashIcon } from "../../assets/images/trash.svg";
 
 const Favorites = () => {
-  // Read list from local storage
-  const [favoriteMoviesIdsList, setFavoriteMoviesIdsList] = useState(() =>
-    localStorage.getItem("favoritesList")
-      ? JSON.parse(localStorage.getItem("favoritesList") || "")
-      : [],
-  );
+  const { user } = useContext(AuthContext);
+
+  const [favoritesIds, setFavoritesIds] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      const userRef = doc(db, "users", user);
+      const docData = await getDoc(userRef);
+
+      if (docData.exists()) {
+        setFavoritesIds(Object.keys(docData.data()) ?? []);
+      } else {
+        console.log("Error fetching from firebase");
+      }
+    };
+
+    fetchFavorites();
+  }, []);
 
   const { handleFetch } = handleFetchCall();
 
   // Fetch movie details for every movie in the list
   const favoriteMoviesResponses = useQueries({
-    queries: favoriteMoviesIdsList.map((movieId: number) => {
-      return {
-        queryKey: ["favorite-movies", movieId],
-        queryFn: () =>
-          handleFetch(
-            `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
-            "GET",
-          ),
-      };
-    }),
+    queries: favoritesIds
+      ? favoritesIds.map((movieId: string) => {
+          return {
+            queryKey: ["favorite-movies", movieId],
+            queryFn: () =>
+              handleFetch(
+                `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
+                "GET",
+              ),
+            enabled: favoritesIds != null,
+          };
+        })
+      : [],
   });
 
   /*================
@@ -53,12 +75,14 @@ const Favorites = () => {
 
   Removes the movie from list of favorites
   ================*/
-  const handleRemoveMovieFromFavorites = (movieId: number) => {
-    const newFavoriteMoviesIdsList = favoriteMoviesIdsList.filter((id: number) => id != movieId);
-    // Save new list in local storage
-    localStorage.setItem("favoritesList", JSON.stringify(newFavoriteMoviesIdsList));
-    // Save new list in state
-    setFavoriteMoviesIdsList(newFavoriteMoviesIdsList);
+  const handleRemoveMovieFromFavorites = async (movieId: number) => {
+    const userRef = doc(db, "users", user);
+    await updateDoc(userRef, { [movieId]: deleteField() });
+
+    const docData = await getDoc(userRef);
+    if (docData.exists()) {
+      setFavoritesIds(Object.keys(docData.data()));
+    }
   };
 
   /*================
@@ -122,8 +146,7 @@ const Favorites = () => {
   const isLoading = favoriteMoviesResponses.some((query: Record<string, any>) => query.isLoading);
 
   return (
-    <div>
-      <div className="breadcrumbs">Home</div>
+    <div className="mt--20">
       <MoviesHeader
         title={"Favorites"}
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
@@ -131,7 +154,7 @@ const Favorites = () => {
         handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
       />
 
-      {favoriteMoviesIdsList.length != 0 ? (
+      {favoritesIds?.length != 0 ? (
         isLoading ? (
           <Loader />
         ) : (

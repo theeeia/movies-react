@@ -111,7 +111,7 @@ const MovieDetails = () => {
       {movie && statusMovie === "success" ? (
         <>
           <div className="row pt--50 mb--100">
-            <div className="col-8">
+            <div className="col-lg-8 col-md-8 col-sm-12">
               {movie.backdrop_path ? (
                 <img
                   className="movie-details__img"
@@ -133,7 +133,7 @@ const MovieDetails = () => {
                   <MovieRatingStars votes={movie.vote_average} />
                 </div>
               </div>
-              <div className="movie-details__info">
+              <div className="movie-details__info movie-details__info--titles">
                 <div className="movie-details__label mr--30">{movie.runtime}min</div>
                 <div className="movie-details__label mr--30">
                   {movie.release_date != "" ? (
@@ -189,7 +189,7 @@ const MovieDetails = () => {
                 </button>
               ) : null}
             </div>
-            <div className="col-4">
+            <div className="col-lg-4 col-md-4 col-sm-12">
               <MovieCast movieId={movie.id} />
             </div>
           </div>

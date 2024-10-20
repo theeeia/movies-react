@@ -31,11 +31,11 @@ const MovieCategories = ({
 
   return (
     <div className="movie-categories">
-      <div className="movie-categories__title">By Category</div>
+      <div className="movie-categories__title hide-mobile">By Category</div>
       <div className="row movie-categories__list">
         {genres.map((genre: Record<string, any>) => {
           return (
-            <div className="col-6" key={genre.id}>
+            <div className="col-lg-6 col-md-3" key={genre.id}>
               <Checkbox
                 value={genre.id}
                 label={genre.name}

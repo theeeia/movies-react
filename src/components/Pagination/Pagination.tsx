@@ -6,8 +6,8 @@ const Pagination = ({ handlePageClick, totalPages, page }: PaginationProps) => {
   return (
     <ReactPaginate
       breakLabel="..."
-      nextLabel="Next >> "
-      previousLabel="<< Previous"
+      nextLabel=">>"
+      previousLabel="<<"
       onPageChange={handlePageClick}
       pageRangeDisplayed={3}
       marginPagesDisplayed={2}

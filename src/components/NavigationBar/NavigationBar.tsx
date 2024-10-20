@@ -14,6 +14,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
 import handleLogoutUser from "../../utils/handleLogoutUser";
+import { toast } from "react-toastify";
 
 // Statics
 import { NAVIGATION_DROPDOWN_ITEMS } from "./statics";
@@ -30,6 +31,7 @@ const NavigationBar = () => {
     setLoadingLogout(true);
     try {
       await handleLogoutUser();
+      toast.success("Logged out");
     } finally {
       setLoadingLogout(false);
     }
@@ -50,6 +52,27 @@ const NavigationBar = () => {
     } else {
       navigate(value);
     }
+  };
+
+  const getPathname = () => {
+    const titles: { [key: string]: string } = {
+      "now-playing": "Now Playing",
+      "upcoming": "Upcoming",
+      "top-rated": "Top Rated",
+      "favorites": "Favorites",
+      "search": 'Search'
+    }
+    const path = window.location.pathname.split('/').at(-1) || ""
+
+    return titles[path]
+  }
+
+  const [showMenu, setShowMenu] = useState(false);
+  const [activeLink, setActiveLink] = useState(getPathname() || "Now Playing"); // Default active link
+
+  const handleNavLinkClick = (link: string) => {
+    setActiveLink(link);
+    setShowMenu(false);
   };
 
   return (
@@ -92,14 +115,6 @@ const NavigationBar = () => {
             Favorites
           </NavLink>
           <NavLink
-            to={"/"}
-            className={({ isActive }) =>
-              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
-            }
-          >
-            Statistics
-          </NavLink>
-          <NavLink
             to={"/movies/search"}
             className={({ isActive }) =>
               isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
@@ -107,6 +122,10 @@ const NavigationBar = () => {
           >
             Search
           </NavLink>
+        </div>
+        <div className="navigation__mobile" onClick={() => setShowMenu(!showMenu)}>
+          {activeLink}
+          <span className="dropdown__arrow"></span>
         </div>
 
         <div className="navigation__dropdown">
@@ -118,10 +137,59 @@ const NavigationBar = () => {
             isDisplayedTextStatic={true}
             items={NAVIGATION_DROPDOWN_ITEMS}
             handleDropdownItem={handleChange}
-            modifierClass={"dropdown--border dropdown--lg-wide dropdown--line"}
+            modifierClass={"dropdown--border dropdown--lg-wide dropdown--line dropdown--hide-title"}
           />
         </div>
       </div>
+      {showMenu &&
+        <div className="navigation__links--mobile">
+          <NavLink
+            to={"/movies/now-playing"}
+            onClick={() => handleNavLinkClick("Now Playing")}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
+            Now Playing
+          </NavLink>
+          <NavLink
+            to={"/movies/upcoming"}
+            onClick={() => handleNavLinkClick("Upcoming")}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
+            Upcoming
+          </NavLink>
+          <NavLink
+            to={"/movies/top-rated"}
+            onClick={() => handleNavLinkClick("Top Rated")}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
+            Top Rated
+          </NavLink>
+          <NavLink
+            to={"/movies/favorites"}
+            onClick={() => handleNavLinkClick("Favorites")}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
+            Favorites
+          </NavLink>
+          <NavLink
+            to={"/movies/search"}
+            onClick={() => handleNavLinkClick("Search")}
+            className={({ isActive }) =>
+              isActive ? "navigation__link" : "navigation__link navigation__link--unselected"
+            }
+          >
+            Search
+          </NavLink>
+        </div>
+      }
     </div>
   );
 };

@@ -1,10 +1,17 @@
 .navigation {
 
     background-color: #131313;
-    padding: 35px 0 ;
+    padding: 35px 0;
     height: 130px;
-    
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    @media (max-width:$screen-md) {
+        height: 100px;
+    }
+
     &__content {
         display: flex;
         flex-direction: row;
@@ -16,27 +23,81 @@
         display: flex;
         flex: 1;
         justify-content: left;
+
+        @media (max-width:$screen-xs) {
+            width: 60px;
+        }
     }
 
     &__links {
         display: flex;
-        flex:  2;
+        flex: 3 2;
+        margin-right: 10px;
         flex-direction: row;
-        gap:10px;
+        gap: 10px;
         justify-content: space-between;
+
+        @media (max-width:$screen-md) {
+            display: none;
+        }
+
+        &--mobile {
+            display: none;
+
+            @media (max-width:$screen-md) {
+                z-index: 100;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #131313;
+                width: 60%;
+                padding: 20px;
+                gap: 10px;
+                position: relative;
+                border-bottom-right-radius: 10%;
+                border-bottom-left-radius: 10%;
+            }
+        }
     }
 
     &__link {
         font-size: 16px;
         color: white;
-        
-        &--unselected {  color: rgba(255, 255, 255, 0.6); }
+
+        @media (max-width:$screen-md) {
+            &:hover {
+                font-size: larger;
+            }
+        }
+
+        &--unselected {
+            color: rgba(255, 255, 255, 0.6);
+        }
     }
-     
+
     &__dropdown {
         flex: 1.2;
         width: 100%;
-    }
-   
-}
 
+        @media (max-width:$screen-md) {
+            flex: 1;
+            width: unset;
+        }
+    }
+
+    &__mobile {
+        display: none;
+
+        @media (max-width:$screen-md) {
+            display: block;
+            color: white;
+            font-size: 20px;
+            align-items: center;
+            margin: 10px 30px;
+        }
+
+        @media (max-width:$screen-xs) {
+            margin: 10px 10px;
+        }
+    }
+}

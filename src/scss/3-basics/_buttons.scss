@@ -1,4 +1,3 @@
-
 /*----------------------------------------------------------------------------*/
 /*#BUTTON STYLE*/
 /*----------------------------------------------------------------------------*/
@@ -17,25 +16,35 @@
     margin-bottom: 30px;
     margin-top: 15px;
     border-radius: 20px;
-    
-    &--submit{ background: #000F93; }
-    &--back{ background: rgb(43, 43, 56); }
+
+    &--submit {
+      background: #000F93;
+    }
+
+    &--back {
+      background: rgb(43, 43, 56);
+    }
+
+    @media (max-width:$screen-md) {
+      height: 45px;
+    }
+
   }
 
   &--disabled {
-      background: #000f9323;
-      cursor: not-allowed;
+    background: #000f9323;
+    cursor: not-allowed;
   }
 
   //button size
-  &--xl { }
+  &--xl {}
 
-  &--lg { }
+  &--lg {}
 
-  &--md { }
+  &--md {}
 
-  &--sm { }
+  &--sm {}
 
-  &--xs { }
+  &--xs {}
 
 }

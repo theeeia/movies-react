@@ -47,7 +47,9 @@ const AccountPrivileges = () => {
         "Sorry, you're not an admin and you do not have access privileges to this page. You will be redirected in 5 seconds"
       ) : (
         <>
-          Congratulations, you're an admin in the Miru movies web application.
+          <div>
+            Congratulations, you're an admin in the Miru movies web application.
+          </div>
           <Link to="/home" className="button link-button">
             Back
           </Link>

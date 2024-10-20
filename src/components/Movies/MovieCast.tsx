@@ -30,7 +30,7 @@ const MovieCast = ({ movieId }: { movieId: string }) => {
 
   return (
     <div>
-      <h3 className="pb--20">Cast</h3>
+      <h3 className="pb--20 movie-cast__title">Cast</h3>
       <div className="movie-cast">
         {statusActors == "success" && Object.entries(actors).length ? (
           <div className="row">
@@ -46,7 +46,7 @@ const MovieCast = ({ movieId }: { movieId: string }) => {
                   }
                   title={actor.name}
                   subtitle={"as " + actor.character}
-                  modifierClass={"col-6 card--img-sm "}
+                  modifierClass={"col-6 col-md-6 col-sm-4 card--img-sm "}
                 />
               );
             })}

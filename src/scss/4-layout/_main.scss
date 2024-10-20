@@ -2,12 +2,18 @@
 /*#MAIN/GLOBAL STYLE*/
 /*----------------------------------------------------------------------------*/
 
-body { background-color: $bg-color; }
+body {
+    background-color: $bg-color;
+}
 
-.minimal-page-height { min-height: calc(100vh - 215px); }
+.minimal-page-height {
+    min-height: calc(100vh - 215px);
+}
+
 .content-center {
     margin: 0 auto;
 }
+
 .logo {
     display: block;
     margin: 60px auto 100px auto;
@@ -22,32 +28,40 @@ body { background-color: $bg-color; }
         color: #3E4954;
         font-size: 16px;
     }
+
+    @media (max-width:$screen-md) {
+        flex-direction: column;
+    }
 }
 
 .account-privilege {
     height: 70vh;
     color: white;
     font-size: 30px;
-    text-align: center;  
+    text-align: center;
 }
 
 .button {
     width: 300px;
     height: 50px;
     background-color: navy;
-    color: white; 
+    color: white;
     margin: 30px;
 }
 
-.link-button { padding: 5px 30px; }
+.link-button {
+    padding: 5px 30px;
+}
 
 .movie-list {
     margin-bottom: 50px;
-    & > div:first-child {
+
+    &>div:first-child {
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
     }
-    & >div:last-child {
+
+    &>div:last-child {
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
         border: none;
@@ -55,4 +69,71 @@ body { background-color: $bg-color; }
 
 }
 
-.react-datepicker__month-container { padding: 0; }
+.react-datepicker__month-container {
+    padding: 0;
+}
+
+.statistics__header {
+    margin: 50px 0;
+    width: 100%;
+    padding: 25px 40px;
+    background-color: #151515;
+    border-radius: 15px;
+
+}
+
+.movie-recommendations {
+    @media (max-width:$screen-md) {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__title {
+        margin-bottom: 70px;
+
+        @media (max-width:$screen-md) {
+            text-align: center;
+            font-size: 25px;
+            margin-bottom: 40px;
+        }
+    }
+}
+
+.search-category {
+    &--mobile {
+        display: none;
+    }
+
+    &__button {
+        background-color: #131313;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-radius: 20px;
+        border-color: transparent;
+        color: white;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+
+        svg path {
+            fill: white
+        }
+    }
+
+    @media (max-width:$screen-md) {
+        &--desktop {
+            display: none;
+        }
+
+        &--mobile {
+            display: block;
+        }
+    }
+}
+
+@media (max-width:$screen-md) {
+
+    .hide-mobile {
+        display: none;
+    }
+}

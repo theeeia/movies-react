@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 
 // Components
@@ -22,15 +22,37 @@ import { SortOrderTypes, SortValueTypes } from "../../components/Movies/interfac
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";
+import { ReactComponent as ArrowDown } from "../../assets/images/arrow-more.svg";
+import { ReactComponent as ArrowUp } from "../../assets/images/arrow-less.svg";
 
 // Hooks
 import useDebounce from "../../hooks/useDebounce";
 
+// Context
+import { AuthContext } from "../../context/AuthContext";
+import { deleteField, doc, getDoc, setDoc, updateDoc } from "@firebase/firestore";
+
+// Firebase
+import db from "../../firebase";
+
 const Search = () => {
-  // Read list from local storage
-  let favoriteMoviesIdsList = localStorage.getItem("favoritesList")
-    ? JSON.parse(localStorage.getItem("favoritesList") || "")
-    : [];
+  const { user } = useContext(AuthContext);
+  const [favoritesIds, setFavoritesIds] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      const userRef = doc(db, "users", user);
+      const docData = await getDoc(userRef);
+
+      if (docData.exists()) {
+        setFavoritesIds(Object.keys(docData.data()) ?? []);
+      } else {
+        console.log("Error fetching from firebase");
+      }
+    };
+
+    fetchFavorites();
+  }, []);
   const { handleFetch } = handleFetchCall();
 
   const [searchInput, setSearchInput] = useState<string>("");
@@ -60,13 +82,18 @@ const Search = () => {
 
   Adds or removes the movie from list of favorites
   ================*/
-  const handleAddMovieToFavorites = (movieId: number) => {
-    favoriteMoviesIdsList = favoriteMoviesIdsList.includes(movieId)
-      ? favoriteMoviesIdsList.filter((id: number) => id != movieId)
-      : [...favoriteMoviesIdsList, movieId];
+  const handleAddMovieToFavorites = async (movieId: number) => {
+    const userRef = doc(db, "users", user);
 
-    // Stores the new list to local storage
-    localStorage.setItem("favoritesList", JSON.stringify(favoriteMoviesIdsList));
+    favoritesIds?.includes(movieId.toString())
+      ? await updateDoc(userRef, { [movieId]: deleteField() })
+      : await setDoc(userRef, { [movieId]: true }, { merge: true });
+
+    const docData = await getDoc(userRef);
+
+    if (docData.exists()) {
+      setFavoritesIds(Object.keys(docData.data()));
+    }
   };
   /*================
     SORT AND FILTER PARAMETERS
@@ -243,6 +270,12 @@ const Search = () => {
     });
     return genresList;
   };
+  const [showCategories, setShowCategories] = useState(false)
+
+  // Shows only on mobile and toggle the category filters
+  const handleMobileCategoryButton = () => {
+    setShowCategories(prev => !prev)
+  }
 
   const moviesList: Record<string, any> = useMemo(() => {
     if (!movies || !Object.entries(movies).length) return [];
@@ -263,10 +296,8 @@ const Search = () => {
 
   return (
     <>
-      <div className="breadcrumbs">Home</div>
-
-      <div className="row">
-        <div className="col-4">
+      <div className="row mt--30">
+        <div className="col-lg-4 col-sm-12 search-category--desktop">
           {statusGenres === "success" && (
             <>
               <h2>Filter Options</h2>
@@ -280,8 +311,24 @@ const Search = () => {
             </>
           )}
         </div>
-        <div className="col-8">
-          <h2>Movies</h2>
+        <div className="col-lg-4 col-sm-12 search-category--mobile">
+          <button onClick={
+            handleMobileCategoryButton
+          } className="search-category__button"> Filter by category {!showCategories ? <ArrowDown /> : <ArrowUp />} </button>
+          {showCategories &&
+            statusGenres === "success" && (
+              <MovieCategories
+                checkedGenres={categoryFilterParameters}
+                genres={genres.genres}
+                handleCategoryCheck={(categoryList: string[]) =>
+                  handleCategoryFilterChange(categoryList)
+                }
+              />
+            )
+          }
+        </div>
+        <div className="col-lg-8 col-sm-12">
+          <h2 className="hide-mobile">Movies</h2>
           <MovieSearchBar
             title={"Search by " + searchFilter}
             inputValue={searchInput}
@@ -293,10 +340,10 @@ const Search = () => {
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
           />
 
-          {statusMovies === "success" && statusGenres === "success" ? (
+          {statusMovies === "success" && statusGenres === "success" && favoritesIds !== null ? (
             moviesList.length > 0 ? (
               <>
-                <div className="movie-list">
+                <div className="movie-list movie-list__search">
                   {moviesList.map((movie: MovieApiProps) => {
                     return (
                       <MovieListItem
@@ -314,7 +361,7 @@ const Search = () => {
                         genres={handleGetGenreNames(movie.genre_ids)}
                         plot={movie.overview}
                         votes={movie.vote_average}
-                        isInFavorites={favoriteMoviesIdsList.includes(movie.id)}
+                        isInFavorites={favoritesIds?.includes(movie.id.toString()) ?? false}
                         handleAddToFavorites={handleAddMovieToFavorites}
                       />
                     );

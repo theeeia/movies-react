@@ -60,7 +60,7 @@ const Dropdown = ({
         ) : (
           <>
             {icon && icon}
-            <span> {displayText}</span>
+            <span className="dropdown__title"> {displayText}</span>
             {downIcon && downIcon}
           </>
         )}

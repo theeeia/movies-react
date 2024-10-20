@@ -50,13 +50,13 @@ const MovieRecommendations = ({
 
   return (
     <div>
-      <h1 className="mb--70">Recommended For You</h1>
+      <h1 className="movie-recommendations__title">Recommended For You</h1>
 
       {recommendedMoviesIdList.length != 0 ? (
         isMovierecommendationDetailsLoading ? (
           <Loader />
         ) : (
-          <div className="row mb--50">
+          <div className="row mb--50 movie-recommendations">
             {recommendedMoviesResponses
               .map((movie: Record<string, any>) => movie.data)
               .map((movie: MovieDetailsApiProps) => {
