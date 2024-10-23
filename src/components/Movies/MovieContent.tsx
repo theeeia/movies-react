@@ -46,7 +46,8 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
       if (docData.exists()) {
         setFavoritesIds(Object.keys(docData.data()) ?? []);
       } else {
-        console.log("Error fetching from firebase");
+        setFavoritesIds([])
+
       }
     };
 

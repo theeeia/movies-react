@@ -44,7 +44,7 @@ const Favorites = () => {
       if (docData.exists()) {
         setFavoritesIds(Object.keys(docData.data()) ?? []);
       } else {
-        console.log("Error fetching from firebase");
+        setFavoritesIds([])
       }
     };
 
@@ -57,16 +57,16 @@ const Favorites = () => {
   const favoriteMoviesResponses = useQueries({
     queries: favoritesIds
       ? favoritesIds.map((movieId: string) => {
-          return {
-            queryKey: ["favorite-movies", movieId],
-            queryFn: () =>
-              handleFetch(
-                `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
-                "GET",
-              ),
-            enabled: favoritesIds != null,
-          };
-        })
+        return {
+          queryKey: ["favorite-movies", movieId],
+          queryFn: () =>
+            handleFetch(
+              `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
+              "GET",
+            ),
+          enabled: favoritesIds != null,
+        };
+      })
       : [],
   });
 

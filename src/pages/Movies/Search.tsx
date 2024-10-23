@@ -47,7 +47,7 @@ const Search = () => {
       if (docData.exists()) {
         setFavoritesIds(Object.keys(docData.data()) ?? []);
       } else {
-        console.log("Error fetching from firebase");
+        setFavoritesIds([])
       }
     };
 
