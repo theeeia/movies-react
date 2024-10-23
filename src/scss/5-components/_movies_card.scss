@@ -1,0 +1,108 @@
+.movie-card {
+    position: relative;
+    display: flex;
+    height: 100%;
+    max-width: 390px;
+    padding: 10px 20px 60px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #2D2D2D;
+    color: white;
+    cursor: pointer;
+
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__image-box {
+        position: relative;
+        max-width: 320px;
+        height: 480px;
+        margin: 20px 0;
+        border-radius: 20px;
+    }
+
+    &__image {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    &__genre {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 120px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background-color: #000F93;
+        color: white;
+        font-size: 14px;
+        font-weight: 300;
+        text-align: center;
+    }
+
+    &__details {
+        width: 100%;
+        text-align: center;
+    }
+
+    &__title {
+        font-size: 20px;
+        font-weight: 600;
+        padding-bottom: 10px;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 15px;
+        color: rgba(255, 255, 255, 0.5);
+        padding-bottom: 5px;
+
+        p {
+            font-size: 16px;
+            font-weight: 300;
+        }
+    }
+
+    &__favorite {
+        position: absolute;
+        bottom: -25px;
+        width: 70px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    &__rating {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    &--favorite {
+        path {
+            fill: #FF055F;
+        }
+    }
+
+    &--not-favorite {
+        path {
+            fill: #2D2D2D;
+        }
+    }
+}

@@ -1,0 +1,130 @@
+/*----------------------------------------------------------------------------*/
+/*#MIXINS*/
+/*----------------------------------------------------------------------------*/
+
+@mixin round-box($size) {
+  width: $size;
+  height: $size;
+  border-radius: $size / 2;
+}
+
+@mixin flex($val: null) {
+  display: flex;
+  @if $val {
+    @if $val == 'center' {
+      align-items: center;
+      justify-content: center;
+    } @else if $val == 'center-x' {
+      justify-content: center;
+    } @else if $val == 'center-y' {
+      align-items: center;
+    }
+
+  }
+}
+
+@mixin absolute($val: null) {
+  position: absolute;
+  @if $val {
+    @if $val == 'center' {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    } @else if $val == 'center-x' {
+      left: 50%;
+      transform: translateX(-50%);
+    } @else if $val == 'center-y' {
+      top: 50%;
+      transform: translateY(-50%);
+    } @else if $val == 'full' {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+  }
+}
+
+@mixin font($val) {
+
+  @if $val == "os" {
+    font-family: $font-os;
+  }
+
+  @if $val == "lato" {
+    font-family: $font-lato;
+  }
+}
+
+@mixin fontawesome($val: null) {
+  font-family: "Font Awesome 5 Pro";
+
+  @if ($val == 400) {
+    font-weight: 400;
+  }
+  @if ($val == 600) {
+    font-weight: 600;
+  }
+  @else {
+    font-weight: 700;
+  }
+}
+
+@mixin shadow($val) {
+  @if $val == "1" {
+    box-shadow: 0 3px 30px 0 rgba(#4a4a4a, 0.1);
+  }
+  @if $val == "2" {
+    box-shadow: 0 3px 6px 0 rgba(#4a4a4a, 0.3);
+  }
+  @if $val == "3" {
+    box-shadow: 0 3px 30px 0 rgba(#4a4a4a, 0.3);
+  }
+}
+
+@mixin background-gradient($start-color, $end-color, $orientation) {
+  background: $start-color;
+
+  @if $orientation == 'vertical' {
+    background: -webkit-linear-gradient(top, $start-color, $end-color);
+    background: linear-gradient(to bottom, $start-color, $end-color);
+  } @else if $orientation == 'horizontal' {
+    background: -webkit-linear-gradient(left, $start-color, $end-color);
+    background: linear-gradient(to right, $start-color, $end-color);
+  } @else {
+    background: -webkit-radial-gradient(center, ellipse cover, $start-color, $end-color);
+    background: radial-gradient(ellipse at center, $start-color, $end-color);
+  }
+}
+
+@mixin screen($point) {
+
+  @if $point == xxxl {
+    @media (max-width: $screen-xxxl) { @content ; }
+  }
+  @if $point == xxl {
+    @media (max-width: $screen-xxl) { @content ; }
+  }
+  @else if $point == xl {
+    @media (max-width: $screen-xl) { @content ; }
+  }
+  @else if $point == lg {
+    @media (max-width: $screen-lg) { @content ; }
+  }
+  @else if $point == md {
+    @media (max-width: $screen-md) { @content ; }
+  }
+  @else if $point == sm {
+    @media (max-width: $screen-sm)  { @content ; }
+  }
+  @else if $point == xs {
+    @media (max-width: $screen-xs)  { @content ; }
+  }
+  @else if $point == xxs {
+    @media (max-width: $screen-xxs)  { @content ; }
+  }
+  @else if $point == xxxs {
+    @media (max-width: $screen-xxxs)  { @content ; }
+  }
+}

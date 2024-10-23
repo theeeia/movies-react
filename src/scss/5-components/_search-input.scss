@@ -1,0 +1,32 @@
+.search-input {
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+    padding: 10px 20px;
+    gap: 20px;
+    border-radius: 20px;
+    background-color: black;
+
+    @media (max-width:$screen-md) {
+        max-width: 700px;
+    }
+
+    @media (max-width:$screen-xs) {
+        padding: 10px 5px;
+        gap: 5px;
+    }
+
+    &__input {
+        width: 100%;
+        background-color: black;
+        border: none;
+    }
+
+    &__dropdown {
+        margin-right: 0;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+    }
+}

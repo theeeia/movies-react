@@ -1,0 +1,13 @@
+@function rem($size) {
+    @return $size / 16px * 1rem;
+}
+
+// Add percentage of white to a color
+@function tint($color, $percent){
+    @return mix(white, $color, $percent);
+}
+
+  // Add percentage of black to a color
+@function shade($color, $percent){
+    @return mix(black, $color, $percent);
+}

@@ -1,0 +1,129 @@
+// Variables
+@import "2-helpers/variables";
+
+// Reset CSS
+@import '1-tools/reset';
+
+// Bootstrap Grid
+@import '1-tools/grid';
+
+//Font Awesome Icons
+//@import '1-tools/fontawesome/fontawesome';
+//@import '1-tools/fontawesome/regular';
+//@import '1-tools/fontawesome/light';
+//@import '1-tools/fontawesome/solid';
+//@import '1-tools/fontawesome/brands';
+
+//Fonts
+@import '1-tools/fonts';
+
+// Functions
+@import '2-helpers/functions';
+
+// Mixins
+@import '2-helpers/mixins';
+
+// Helpers CSS
+@import '2-helpers/utilities';
+
+// Typography Style
+@import '3-basics/typography';
+
+// Button Style
+@import '3-basics/buttons';
+
+// Input Style
+@import '3-basics/input';
+
+// Images Style
+@import '3-basics/images';
+
+// Dropdown Style
+@import '3-basics/dropdowns';
+
+// Lines Style
+@import '3-basics/lines';
+
+// Backgrounds Style
+@import '3-basics/backgrounds';
+
+// Backgrounds Style
+@import '3-basics/lists';
+
+// Header Style
+@import '4-layout/header';
+
+// Main Style
+@import '4-layout/main';
+
+// Footer Style
+@import '4-layout/footer';
+
+// Social icons Style
+@import '5-components/social_icons';
+
+// Panels Style
+@import '5-components/panels';
+
+// Box Style
+@import '5-components/box';
+
+// Effects Style
+@import '5-components/effects';
+
+// Messages Style
+@import '5-components/messages';
+
+// Login component style
+@import '5-components/form';
+
+// Loader component style
+@import '5-components/loader';
+
+// Toggle button component style
+@import '5-components/toggle_button';
+
+// Navigation bar component style
+@import '5-components/navigation_bar';
+
+// Movies header component style
+@import '5-components/movies_header';
+
+// Movies card component style
+@import '5-components/movies_card';
+
+// Pagination component style
+@import '5-components/pagination';
+
+// Card component style
+@import '5-components/card';
+
+// Movie cast component style
+@import '5-components/movie-cast';
+
+// Dropdown component style
+@import '5-components/dropdown';
+
+// Movie details component style
+@import '5-components/movie-details';
+
+// Movie list item component style
+@import '5-components/movie-list-item';
+
+// Movie categories component style
+@import '5-components/movie-categories';
+
+// Checkbox component style
+@import '5-components/checkbox';
+
+// Movie list component style
+@import '5-components/movie-list';
+
+// Search bar component style
+@import '5-components/search-bar';
+
+// Movie search input component style
+@import '5-components/search-input';
+
+// Responsive Style
+@import '6-responsive/responsive';

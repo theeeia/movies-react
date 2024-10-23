@@ -1,0 +1,17 @@
+.movie-cast {
+        width: 100%;
+        background-color: #131313;
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+
+        @media (max-width:$screen-md) {
+                padding: 15px 10px;
+        }
+
+        &__title {
+                @media (max-width:$screen-sm) {
+                        text-align: center;
+                }
+        }
+}
