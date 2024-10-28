@@ -1,7 +1,7 @@
+const basename = '/movies-react';
 
 async function handleLogoutUser() {
   const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
-
 
   await fetch("https://movies.codeart.mk/api/auth/logout", {
     headers: {
@@ -18,9 +18,8 @@ async function handleLogoutUser() {
   localStorage.removeItem("expireTime");
 
   setTimeout(() => {
-    window.location.reload();
+    window.location.href = `${basename}/login`;
   }, 1000);
-
 
 }
 
