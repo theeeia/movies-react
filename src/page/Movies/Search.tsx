@@ -157,6 +157,10 @@ const Search = () => {
   // Set selected page in state
   const handlePageClick = ({ selected }: { selected: number }) => {
     setPage(selected);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
   /*================

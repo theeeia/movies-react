@@ -86,6 +86,10 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   // Set selected page in state
   const handlePageClick = ({ selected }: { selected: number }) => {
     setPage(selected);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
   // Get the genres ids and names from API
