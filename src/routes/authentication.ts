@@ -1,6 +1,6 @@
 // Pages & Interface
-import Login from "../page/authentication/Login";
-import Register from "../page/authentication/Register";
+import Login from "../pages/authentication/Login";
+import Register from "../pages/authentication/Register";
 import { RoutesProps } from "./interfaces";
 
 export const AUTHENTICATION_ROUTES: RoutesProps[] = [

@@ -3,7 +3,7 @@ import Footer from "../components/Footer/Footer";
 import NavigationBar from "../components/NavigationBar/NavigationBar";
 
 // Pages
-import AuthenticatedApp from "../page/AuthenticatedApp";
+import AuthenticatedApp from "../pages/AuthenticatedApp";
 
 const AuthenticatedAppLayout = () => {
   return (

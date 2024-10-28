@@ -1,5 +1,5 @@
 // Statics
-import { MOVIES_SEARCH_FILTER_ITEMS } from "../../page/Movies/statics";
+import { MOVIES_SEARCH_FILTER_ITEMS } from "../../pages/Movies/statics";
 
 // Components
 import Dropdown from "../Dropdown/Dropdown";

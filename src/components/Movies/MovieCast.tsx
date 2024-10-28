@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 
 // Interface
-import { ActorApiProps } from "../../page/Movies/interfaces";
+import { ActorApiProps } from "../../pages/Movies/interfaces";
 
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";

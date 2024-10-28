@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "./context/AuthContext";
 
 // Pages
-import UnauthenticatedApp from "./page/UnauthenticatedApp";
+import UnauthenticatedApp from "./pages/UnauthenticatedApp";
 
 // Layouts
 import AuthenticatedAppLayout from "./layout/AuthenticatedAppLayout";

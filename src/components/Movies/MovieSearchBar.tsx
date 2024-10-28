@@ -9,7 +9,7 @@ import { MoviesSearchBarProps, SortOrderTypes, SortValueTypes } from "./interfac
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 // Statics
-import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../page/Movies/statics";
+import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
 
 // Components
 import Dropdown from "../Dropdown/Dropdown";
