@@ -50,6 +50,10 @@
     }
   }
 
+  .hidden {
+    display: none;
+  }
+
   &__input {
     width: 100%;
     background-color: black;

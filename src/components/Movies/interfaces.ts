@@ -5,6 +5,7 @@ export interface MoviesHeaderProps {
   handleSearch: (searchedValue: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
   handleSortOrderChange: (sortOrder: SortOrderTypes) => void;
+  sortParameter: SortValueTypes | null
 }
 
 export interface MoviesSearchBarProps {

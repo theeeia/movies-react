@@ -162,6 +162,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
         handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
+        sortParameter={sortParameter}
       />
 
       {statusGenres === "success" && statusMovies === "success" && favoritesIds !== null

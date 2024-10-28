@@ -19,6 +19,7 @@ const MoviesHeader = ({
   handleSearch,
   handleSortChange,
   handleSortOrderChange,
+  sortParameter
 }: MoviesHeaderProps) => {
   const handleDropdownItem = (item: DropdownItemProps) => {
     const sortValue = item.value as SortValueTypes;
@@ -56,7 +57,7 @@ const MoviesHeader = ({
               }`}
             onClick={handleSortOrderClick}
           >
-            <SortIcon />
+            <SortIcon className={`${(sortParameter) ? "" : "hidden"}`} />
           </div>
           <Dropdown
             title="Sorting"

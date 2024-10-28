@@ -152,6 +152,7 @@ const Favorites = () => {
         handleSearch={(searchValue: string) => handleSearch(searchValue)}
         handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
         handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
+        sortParameter={sortParameter}
       />
 
       {favoritesIds?.length != 0 ? (

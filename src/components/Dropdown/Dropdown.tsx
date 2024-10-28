@@ -23,7 +23,6 @@ const Dropdown = ({
 
   const handleDropdownMenu = () => {
     if (disabled) return;
-
     setIsMenuOpen(!isMenuOpen);
   };
 
