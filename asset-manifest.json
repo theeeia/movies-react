@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/movies-react/static/css/main.9ade8a3b.css",
-    "main.js": "/movies-react/static/js/main.ba39caed.js",
+    "main.js": "/movies-react/static/js/main.d756489f.js",
     "static/media/poppins-v20-latin-regular.svg": "/movies-react/static/media/poppins-v20-latin-regular.085814c346735baf43f4.svg",
     "static/media/poppins-v20-latin-500.svg": "/movies-react/static/media/poppins-v20-latin-500.0674aeab989e140ad8ae.svg",
     "static/media/poppins-v20-latin-300.svg": "/movies-react/static/media/poppins-v20-latin-300.f920339b18d9e804c731.svg",
@@ -46,10 +46,10 @@
     "static/media/check.svg": "/movies-react/static/media/check.120cd8dac0338e318fd5.svg",
     "static/media/dropdown-arrow.svg": "/movies-react/static/media/dropdown-arrow.086fe90460bbf3a77ab3ba27ab3d50a0.svg",
     "main.9ade8a3b.css.map": "/movies-react/static/css/main.9ade8a3b.css.map",
-    "main.ba39caed.js.map": "/movies-react/static/js/main.ba39caed.js.map"
+    "main.d756489f.js.map": "/movies-react/static/js/main.d756489f.js.map"
   },
   "entrypoints": [
     "static/css/main.9ade8a3b.css",
-    "static/js/main.ba39caed.js"
+    "static/js/main.d756489f.js"
   ]
 }
