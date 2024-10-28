@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "homepage": "http://www.theeia-movies.com/",
+  "homepage": "https://theeeia.github.io/movies-react/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

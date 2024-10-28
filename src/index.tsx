@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
 });
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/movies-react">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <App />
