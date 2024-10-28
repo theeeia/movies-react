@@ -71,7 +71,7 @@ const Login = () => {
         values.email,
         res.expires_in,
       );
-      toast.success("Logged in successfully");
+
     } catch (error: any) {
       toast.error(error.message);
       throw Error(error);

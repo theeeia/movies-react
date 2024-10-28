@@ -18,7 +18,7 @@ async function handleLogoutUser() {
   localStorage.removeItem("expireTime");
 
   setTimeout(() => {
-    window.location.href = `${basename}/login`;
+    window.location.href = `${basename}`;
   }, 1000);
 
 }
