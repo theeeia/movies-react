@@ -9,7 +9,7 @@ import { MoviesHeaderProps, SortOrderTypes, SortValueTypes } from "./interfaces"
 import { DropdownItemProps } from "../Dropdown/interfaces";
 
 // Statics
-import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../pages/Movies/statics";
+import { MOVIES_DROPDOWN_SORT_ITEMS } from "../../page/Movies/statics";
 
 // Components
 import Dropdown from "../Dropdown/Dropdown";
@@ -52,9 +52,8 @@ const MoviesHeader = ({
         </div>
         <div className="movies-header__filter">
           <div
-            className={`search-bar__filter-icon ${
-              sortOrder == "desc" ? "search-bar__filter-icon--flipped" : ""
-            }`}
+            className={`search-bar__filter-icon ${sortOrder == "desc" ? "search-bar__filter-icon--flipped" : ""
+              }`}
             onClick={handleSortOrderClick}
           >
             <SortIcon />

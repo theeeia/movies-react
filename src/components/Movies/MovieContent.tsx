@@ -20,7 +20,7 @@ import handleGetYear from "../../utils/handleGetYear";
 
 // Interfaces
 import { SortOrderTypes, SortValueTypes } from "./interfaces";
-import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../pages/Movies/interfaces";
+import { GenreApiProps, MovieApiProps, MovieContentProps } from "../../page/Movies/interfaces";
 
 // Icons
 import { ReactComponent as HeartIcon } from "../../assets/images/heart.svg";

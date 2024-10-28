@@ -1,6 +1,6 @@
 // Pages & Interface
-import Account from "../pages/Account/Account";
-import AccountPrivileges from "../pages/Account/AccountPrivileges";
+import Account from "../page/Account/Account";
+import AccountPrivileges from "../page/Account/AccountPrivileges";
 import { RoutesProps } from "./interfaces";
 
 export const ACCOUNT_ROUTE: RoutesProps[] = [

@@ -1,9 +1,9 @@
-import Favorites from "../pages/Movies/Favorites";
-import MovieDetails from "../pages/Movies/MovieDetails";
-import NowPlaying from "../pages/Movies/NowPlaying";
-import Search from "../pages/Movies/Search";
-import TopRated from "../pages/Movies/TopRated";
-import Upcoming from "../pages/Movies/Upcoming";
+import Favorites from "../page/Movies/Favorites";
+import MovieDetails from "../page/Movies/MovieDetails";
+import NowPlaying from "../page/Movies/NowPlaying";
+import Search from "../page/Movies/Search";
+import TopRated from "../page/Movies/TopRated";
+import Upcoming from "../page/Movies/Upcoming";
 import { RoutesProps } from "./interfaces";
 
 export const MOVIE_ROUTES: RoutesProps[] = [

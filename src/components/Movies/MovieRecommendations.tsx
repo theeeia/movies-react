@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { API_ENDPOINT_BASE, API_KEY } from "../../config/config";
 
 // Interfaces
-import { MovieDetailsApiProps } from "../../pages/Movies/interfaces";
+import { MovieDetailsApiProps } from "../../page/Movies/interfaces";
 
 // Utilities
 import handleFetchCall from "../../utils/handleFetchCall";
