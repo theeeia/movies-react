@@ -201,7 +201,7 @@ const Search = () => {
       .map((person: Record<string, any>) => person.id);
 
     // Return string of matched ids
-    setPeopleId(peopleList.join(","));
+    setPeopleId(peopleList.join("|"));
   }, [people]);
 
   // Get the movies from API at the selected page with selected filters
