@@ -342,6 +342,7 @@ const Search = () => {
             handleSortOrderChange={(sortOrder: SortOrderTypes) => handleSortOrderChange(sortOrder)}
             handleSortChange={(sortValue: SortValueTypes) => handleSortChange(sortValue)}
             handleSearchFilter={(searchFitler: string) => handleSearchFilter(searchFitler)}
+            sortParameter={sortParameter}
           />
 
           {statusMovies === "success" && statusGenres === "success" && favoritesIds !== null ? (

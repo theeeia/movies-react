@@ -17,6 +17,7 @@ export interface MoviesSearchBarProps {
   handleSearchFilter: (searchFilter: string) => void;
   handleSortChange: (sortValue: "title" | "release_date" | "vote_average") => void;
   handleSortOrderChange: (sortOrder: SortOrderTypes) => void;
+  sortParameter: SortValueTypes | null
 }
 
 export interface MovieCardProps {

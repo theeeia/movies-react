@@ -56,10 +56,41 @@
         &--flipped svg {
             transform: rotateX(180deg);
         }
+
+        .hidden {
+            display: none;
+        }
     }
 
     &__datepicker svg {
         cursor: pointer;
     }
+}
 
+.react-datepicker-wrapper {
+    padding: 0;
+    border-radius: 20px;
+    margin-left: 10px;
+
+    .react-datepicker__close-icon::after {
+        background-color: black;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 18px;
+    }
+
+    .react-datepicker__input-container {
+        padding: 0;
+        border-radius: 20px;
+        background-color: black;
+    }
+
+    .datepickerInput {
+        color: white;
+        background-color: black;
+        width: 120px;
+        padding: 20px 0px;
+        border: none;
+        border-radius: 20px;
+        text-align: center;
+    }
 }
