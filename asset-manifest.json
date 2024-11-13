@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/movies-react/static/css/main.c3e008a7.css",
-    "main.js": "/movies-react/static/js/main.ce29c983.js",
+    "main.css": "/movies-react/static/css/main.2c2d6dc8.css",
+    "main.js": "/movies-react/static/js/main.b5b0b0cb.js",
     "static/media/poppins-v20-latin-regular.svg": "/movies-react/static/media/poppins-v20-latin-regular.085814c346735baf43f4.svg",
     "static/media/poppins-v20-latin-500.svg": "/movies-react/static/media/poppins-v20-latin-500.0674aeab989e140ad8ae.svg",
     "static/media/poppins-v20-latin-300.svg": "/movies-react/static/media/poppins-v20-latin-300.f920339b18d9e804c731.svg",
@@ -29,7 +29,6 @@
     "static/media/poppins-v20-latin-700.woff2": "/movies-react/static/media/poppins-v20-latin-700.d86662fe776dae29ea78.woff2",
     "static/media/poppins-v20-latin-500.woff2": "/movies-react/static/media/poppins-v20-latin-500.08491d3f7fe7ae88ef44.woff2",
     "static/media/logo.svg": "/movies-react/static/media/logo.ee3b88d2c0fd70a542f9787fd15bbeaf.svg",
-    "static/media/datepicker.svg": "/movies-react/static/media/datepicker.f591c2e0297452fd62b583fac191fbb0.svg",
     "static/media/user.svg": "/movies-react/static/media/user.57c40a391dade2f35fa3112eae20ebe3.svg",
     "static/media/filter.svg": "/movies-react/static/media/filter.940994a23b3d04e60b77f4373f5f01c0.svg",
     "static/media/settings.svg": "/movies-react/static/media/settings.3019fa0f8af3578f39a3649897e719bd.svg",
@@ -45,11 +44,11 @@
     "static/media/arrow-more.svg": "/movies-react/static/media/arrow-more.ee4d8529b96871fbdb5f7f9c6d7f7769.svg",
     "static/media/check.svg": "/movies-react/static/media/check.120cd8dac0338e318fd5.svg",
     "static/media/dropdown-arrow.svg": "/movies-react/static/media/dropdown-arrow.086fe90460bbf3a77ab3ba27ab3d50a0.svg",
-    "main.c3e008a7.css.map": "/movies-react/static/css/main.c3e008a7.css.map",
-    "main.ce29c983.js.map": "/movies-react/static/js/main.ce29c983.js.map"
+    "main.2c2d6dc8.css.map": "/movies-react/static/css/main.2c2d6dc8.css.map",
+    "main.b5b0b0cb.js.map": "/movies-react/static/js/main.b5b0b0cb.js.map"
   },
   "entrypoints": [
-    "static/css/main.c3e008a7.css",
-    "static/js/main.ce29c983.js"
+    "static/css/main.2c2d6dc8.css",
+    "static/js/main.b5b0b0cb.js"
   ]
 }
