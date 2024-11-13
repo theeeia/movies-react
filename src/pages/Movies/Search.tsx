@@ -300,19 +300,16 @@ const Search = () => {
 
   return (
     <>
-      <div className="row mt--30">
+      <div className="row mt--50">
         <div className="col-lg-4 col-sm-12 search-category--desktop">
           {statusGenres === "success" && (
-            <>
-              <h2>Filter Options</h2>
-              <MovieCategories
-                checkedGenres={categoryFilterParameters}
-                genres={genres.genres}
-                handleCategoryCheck={(categoryList: string[]) =>
-                  handleCategoryFilterChange(categoryList)
-                }
-              />
-            </>
+            <MovieCategories
+              checkedGenres={categoryFilterParameters}
+              genres={genres.genres}
+              handleCategoryCheck={(categoryList: string[]) =>
+                handleCategoryFilterChange(categoryList)
+              }
+            />
           )}
         </div>
         <div className="col-lg-4 col-sm-12 search-category--mobile">
@@ -332,7 +329,7 @@ const Search = () => {
           }
         </div>
         <div className="col-lg-8 col-sm-12">
-          <h2 className="hide-mobile">Movies</h2>
+
           <MovieSearchBar
             title={"Search by " + searchFilter}
             inputValue={searchInput}
