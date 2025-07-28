@@ -41,13 +41,14 @@ const Search = () => {
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      const userRef = doc(db, "users", user);
+      if (!user) return;
+      const userRef = doc(db, "users", user?.uid);
       const docData = await getDoc(userRef);
 
       if (docData.exists()) {
         setFavoritesIds(Object.keys(docData.data()) ?? []);
       } else {
-        setFavoritesIds([])
+        setFavoritesIds([]);
       }
     };
 
@@ -83,7 +84,8 @@ const Search = () => {
   Adds or removes the movie from list of favorites
   ================*/
   const handleAddMovieToFavorites = async (movieId: number) => {
-    const userRef = doc(db, "users", user);
+    if (!user) return;
+    const userRef = doc(db, "users", user?.uid);
 
     favoritesIds?.includes(movieId.toString())
       ? await updateDoc(userRef, { [movieId]: deleteField() })
@@ -159,7 +161,7 @@ const Search = () => {
     setPage(selected);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -274,12 +276,12 @@ const Search = () => {
     });
     return genresList;
   };
-  const [showCategories, setShowCategories] = useState(false)
+  const [showCategories, setShowCategories] = useState(false);
 
   // Shows only on mobile and toggle the category filters
   const handleMobileCategoryButton = () => {
-    setShowCategories(prev => !prev)
-  }
+    setShowCategories(prev => !prev);
+  };
 
   const moviesList: Record<string, any> = useMemo(() => {
     if (!movies || !Object.entries(movies).length) return [];
@@ -313,23 +315,21 @@ const Search = () => {
           )}
         </div>
         <div className="col-lg-4 col-sm-12 search-category--mobile">
-          <button onClick={
-            handleMobileCategoryButton
-          } className="search-category__button"> Filter by category {!showCategories ? <ArrowDown /> : <ArrowUp />} </button>
-          {showCategories &&
-            statusGenres === "success" && (
-              <MovieCategories
-                checkedGenres={categoryFilterParameters}
-                genres={genres.genres}
-                handleCategoryCheck={(categoryList: string[]) =>
-                  handleCategoryFilterChange(categoryList)
-                }
-              />
-            )
-          }
+          <button onClick={handleMobileCategoryButton} className="search-category__button">
+            {" "}
+            Filter by category {!showCategories ? <ArrowDown /> : <ArrowUp />}{" "}
+          </button>
+          {showCategories && statusGenres === "success" && (
+            <MovieCategories
+              checkedGenres={categoryFilterParameters}
+              genres={genres.genres}
+              handleCategoryCheck={(categoryList: string[]) =>
+                handleCategoryFilterChange(categoryList)
+              }
+            />
+          )}
         </div>
         <div className="col-lg-8 col-sm-12">
-
           <MovieSearchBar
             title={"Search by " + searchFilter}
             inputValue={searchInput}

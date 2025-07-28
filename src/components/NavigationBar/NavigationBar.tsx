@@ -57,15 +57,15 @@ const NavigationBar = () => {
   const getPathname = () => {
     const titles: { [key: string]: string } = {
       "now-playing": "Now Playing",
-      "upcoming": "Upcoming",
+      upcoming: "Upcoming",
       "top-rated": "Top Rated",
-      "favorites": "Favorites",
-      "search": 'Search'
-    }
-    const path = window.location.pathname.split('/').at(-1) || ""
+      favorites: "Favorites",
+      search: "Search",
+    };
+    const path = window.location.pathname.split("/").at(-1) || "";
 
-    return titles[path]
-  }
+    return titles[path];
+  };
 
   const [showMenu, setShowMenu] = useState(false);
   const [activeLink, setActiveLink] = useState(getPathname() || "Now Playing"); // Default active link
@@ -130,7 +130,7 @@ const NavigationBar = () => {
 
         <div className="navigation__dropdown">
           <Dropdown
-            title={user}
+            title={user?.email ?? ""}
             isLoading={loadingLogout}
             icon={<UserIcon />}
             downIcon={<DropdownArrow />}
@@ -141,7 +141,7 @@ const NavigationBar = () => {
           />
         </div>
       </div>
-      {showMenu &&
+      {showMenu && (
         <div className="navigation__links--mobile">
           <NavLink
             to={"/movies/now-playing"}
@@ -189,7 +189,7 @@ const NavigationBar = () => {
             Search
           </NavLink>
         </div>
-      }
+      )}
     </div>
   );
 };

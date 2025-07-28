@@ -38,13 +38,14 @@ const Favorites = () => {
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      const userRef = doc(db, "users", user);
+      if (!user) return;
+      const userRef = doc(db, "users", user?.uid);
       const docData = await getDoc(userRef);
 
       if (docData.exists()) {
         setFavoritesIds(Object.keys(docData.data()) ?? []);
       } else {
-        setFavoritesIds([])
+        setFavoritesIds([]);
       }
     };
 
@@ -57,16 +58,16 @@ const Favorites = () => {
   const favoriteMoviesResponses = useQueries({
     queries: favoritesIds
       ? favoritesIds.map((movieId: string) => {
-        return {
-          queryKey: ["favorite-movies", movieId],
-          queryFn: () =>
-            handleFetch(
-              `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
-              "GET",
-            ),
-          enabled: favoritesIds != null,
-        };
-      })
+          return {
+            queryKey: ["favorite-movies", movieId],
+            queryFn: () =>
+              handleFetch(
+                `${API_ENDPOINT_BASE}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
+                "GET",
+              ),
+            enabled: favoritesIds != null,
+          };
+        })
       : [],
   });
 
@@ -76,7 +77,8 @@ const Favorites = () => {
   Removes the movie from list of favorites
   ================*/
   const handleRemoveMovieFromFavorites = async (movieId: number) => {
-    const userRef = doc(db, "users", user);
+    if (!user) return;
+    const userRef = doc(db, "users", user?.uid);
     await updateDoc(userRef, { [movieId]: deleteField() });
 
     const docData = await getDoc(userRef);

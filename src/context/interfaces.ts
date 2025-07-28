@@ -1,4 +1,7 @@
+import { User } from "firebase/auth";
+
 export interface AuthenticationContext {
-  user: string;
-  setUser: (arg: string | null) => void;
+  user: User | null;
+  loading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }

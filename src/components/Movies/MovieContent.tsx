@@ -40,14 +40,14 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      const userRef = doc(db, "users", user);
+      if (!user) return;
+      const userRef = doc(db, "users", user?.uid);
       const docData = await getDoc(userRef);
 
       if (docData.exists()) {
         setFavoritesIds(Object.keys(docData.data()) ?? []);
       } else {
-        setFavoritesIds([])
-
+        setFavoritesIds([]);
       }
     };
 
@@ -61,7 +61,8 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
   ================*/
 
   const handleAddMovieToFavorites = async (movieId: number) => {
-    const userRef = doc(db, "users", user);
+    if (!user) return;
+    const userRef = doc(db, "users", user?.uid);
 
     favoritesIds?.includes(movieId.toString())
       ? await updateDoc(userRef, { [movieId]: deleteField() })
@@ -88,7 +89,7 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
     setPage(selected);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -165,55 +166,54 @@ const MovieContent = ({ title, apiKey }: MovieContentProps) => {
         sortParameter={sortParameter}
       />
 
-      {statusGenres === "success" && statusMovies === "success" && favoritesIds !== null
-        ? (
-          <>
-            <div className="row">
-              {moviesList.map((movie: MovieApiProps) => {
-                const genre = genres.genres.filter(
-                  (genre: GenreApiProps) => genre.id === movie.genre_ids[0],
-                )[0];
-                return (
-                  <MovieCard
-                    favoriteIcon={<HeartIcon />}
-                    movieId={movie.id}
-                    key={movie.id}
-                    poster={
-                      movie.poster_path
-                        ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
-                        : undefined
-                    }
-                    title={movie.title}
-                    year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
-                    language={movie.original_language}
-                    genre={genre?.name}
-                    votes={movie.vote_average}
-                    isInFavorites={favoritesIds?.includes(movie.id.toString()) ?? false}
-                    handleAddToFavorites={handleAddMovieToFavorites}
-                  />
-                );
-              })}
-            </div>
-
-            {!searchInput ? (
-              <div className="page-info">
-                <div className="page-info__details">
-                  Showing {movies.results.length + 20 * page} from {movies.total_results} data
-                </div>
-
-                <Pagination
-                  handlePageClick={handlePageClick}
-                  totalPages={movies.total_pages}
-                  page={page}
+      {statusGenres === "success" && statusMovies === "success" && favoritesIds !== null ? (
+        <>
+          <div className="row">
+            {moviesList.map((movie: MovieApiProps) => {
+              const genre = genres.genres.filter(
+                (genre: GenreApiProps) => genre.id === movie.genre_ids[0],
+              )[0];
+              return (
+                <MovieCard
+                  favoriteIcon={<HeartIcon />}
+                  movieId={movie.id}
+                  key={movie.id}
+                  poster={
+                    movie.poster_path
+                      ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                      : undefined
+                  }
+                  title={movie.title}
+                  year={movie.release_date != "" ? handleGetYear(movie.release_date) : ""}
+                  language={movie.original_language}
+                  genre={genre?.name}
+                  votes={movie.vote_average}
+                  isInFavorites={favoritesIds?.includes(movie.id.toString()) ?? false}
+                  handleAddToFavorites={handleAddMovieToFavorites}
                 />
+              );
+            })}
+          </div>
+
+          {!searchInput ? (
+            <div className="page-info">
+              <div className="page-info__details">
+                Showing {movies.results.length + 20 * page} from {movies.total_results} data
               </div>
-            ) : (
-              <div className="txt--center txt--white">No Results </div>
-            )}
-          </>
-        ) : (
-          <Loader />
-        )}
+
+              <Pagination
+                handlePageClick={handlePageClick}
+                totalPages={movies.total_pages}
+                page={page}
+              />
+            </div>
+          ) : (
+            <div className="txt--center txt--white">No Results </div>
+          )}
+        </>
+      ) : (
+        <Loader />
+      )}
     </>
   );
 };

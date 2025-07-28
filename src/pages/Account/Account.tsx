@@ -1,11 +1,10 @@
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 
 // Components
 import FormButton from "../../components/Form/FormButton";
 import FormInput from "../../components/Form/FormInput";
 import Loader from "../../components/Loader/Loader";
-import FormToggleButton from "../../components/Form/FormToggleButton";
 
 // Interfaces
 import { EditAccountValues } from "./interfaces";
@@ -14,32 +13,25 @@ import { EditAccountValues } from "./interfaces";
 import { ACCOUNT_EDIT_SCHEMA } from "../../schemas/AccountSchema";
 
 // Utilities
-import handleFetchCall from "../../utils/handleFetchCall";
+
 import handleLogoutUser from "../../utils/handleLogoutUser";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+import { updateEmail, updatePassword, updateProfile } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const Account = () => {
   const [editDetailsFormValues, setEditDetailsFormValues] = useState<EditAccountValues>({
     first_name: "",
     last_name: "",
     email: "",
-    role: "user",
     password: "",
     confirmPassword: "",
   });
-
-  const { handleFetch } = handleFetchCall();
-
-  // Fetch the user data from api
-  const { status, data } = useQuery(["user"], () =>
-    handleFetch("https://movies.codeart.mk/api/users/me", "GET"),
-  );
 
   /*================
     FILL INPUT FIELDS
@@ -47,21 +39,21 @@ const Account = () => {
   Send a fetch request to get the user details and fill the input fields
   ================*/
   useEffect(() => {
-    if (!data || !Object.entries(data).length) return;
+    const user = auth.currentUser;
+    if (!user) return;
 
-    // Load the data from the request when it arrives and fill out the form
+    const [first_name = "", last_name = ""] = user.displayName?.split(" ") || [];
+    console.log(first_name, last_name, user.displayName);
+
     const initialData = {
       ...editDetailsFormValues,
-      email: data?.email || "",
-      first_name: data?.first_name || "",
-      last_name: data?.last_name || "",
-      role: data?.role.name || "user",
+      email: user.email || "",
+      first_name,
+      last_name,
     };
 
     setEditDetailsFormValues(initialData);
-
-    setToggleUserRole(initialData.role);
-  }, [data]);
+  }, []);
 
   /*================
     EDIT
@@ -69,49 +61,37 @@ const Account = () => {
   Send a request to edit the user with the provided input and log out if successful 
   ================*/
 
-  const { mutateAsync } = useMutation(
-    (editedData: EditAccountValues) => {
-      return handleFetch("https://movies.codeart.mk/api/users/me", "PUT", editedData);
-    },
-    {
-      onError: (error: any) => {
-        toast.error(error);
-      },
-      onSuccess: async () => {
-        toast.success("Edited successfully, you will be redirected");
-        setTimeout(() => {
-          handleLogoutUser();
-        }, 2000);
-      },
-    },
-  );
-
   const navigate = useNavigate();
 
   const handleEditUser = async (values: EditAccountValues) => {
-    const { first_name, password, last_name, email, role } = values;
-    //send a request to edit the data with the form inputs
-    await mutateAsync({
-      first_name,
-      last_name,
-      email,
-      role,
-      ...(password && { password: password }),
-    });
-  };
+    const user = auth.currentUser;
+    if (!user) {
+      toast.error("You must be logged in to update your account.");
+      return;
+    }
 
-  /*================
-  ROLE TOGGLE BUTTON 
+    try {
+      const { email, password, first_name, last_name } = values;
 
-  Toggles between admin and user role
-  ================*/
-  const [toggleUserRole, setToggleUserRole] = useState<"user" | "admin">("user");
+      if (email !== user.email) {
+        await updateEmail(user, email);
+      }
 
-  const handleToggleRole = () => {
-    if (toggleUserRole === "admin") {
-      setToggleUserRole("user");
-    } else {
-      setToggleUserRole("admin");
+      if (password) {
+        await updatePassword(user, password);
+      }
+
+      if (first_name || last_name) {
+        const displayName = `${first_name} ${last_name}`.trim();
+        await updateProfile(user, { displayName });
+      }
+
+      toast.success("Account updated successfully. You'll be redirected.");
+      setTimeout(() => {
+        handleLogoutUser();
+      }, 1000);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update account.");
     }
   };
 
@@ -158,7 +138,7 @@ const Account = () => {
           validationSchema={ACCOUNT_EDIT_SCHEMA}
           onSubmit={handleEditUser}
         >
-          {({ isSubmitting, setFieldValue }) => (
+          {({ isSubmitting }) => (
             <Form className="form">
               <FormInput
                 label="First Name"
@@ -201,28 +181,7 @@ const Account = () => {
                 handleIconClick={handleConfirmPasswordIconClick}
                 required
               />
-              <div className="form__label">Role</div>
 
-              <Field
-                component={FormToggleButton}
-                name="role"
-                label="User"
-                checked={toggleUserRole === "user" ? true : false}
-                onChange={() => {
-                  handleToggleRole();
-                  setFieldValue("role", toggleUserRole === "user" ? "admin" : "user");
-                }}
-              />
-              <Field
-                component={FormToggleButton}
-                name="role"
-                label="Admin"
-                checked={toggleUserRole === "admin" ? true : false}
-                onChange={() => {
-                  handleToggleRole();
-                  setFieldValue("role", toggleUserRole === "admin" ? "user" : "admin");
-                }}
-              />
               <FormButton
                 label={isSubmitting ? <Loader /> : "Edit"}
                 isDisabled={isSubmitting}

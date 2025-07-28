@@ -10,11 +10,6 @@ export const NAVIGATION_DROPDOWN_ITEMS: DropdownItemProps[] = [
     value: "/account/edit",
   },
   {
-    text: "Privileges",
-    icon: <SettingsIcon />,
-    value: "/account/privileges",
-  },
-  {
     text: "Log out",
     icon: <LogoutIcon />,
     value: "logout",

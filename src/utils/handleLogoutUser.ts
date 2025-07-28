@@ -1,26 +1,22 @@
-const basename = '/movies-react';
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+
+const basename = "/movies-react";
 
 async function handleLogoutUser() {
-  const access_token = JSON.parse(localStorage.getItem("accessToken") || "");
+  try {
+    await signOut(auth);
 
-  await fetch("https://movies.codeart.mk/api/auth/logout", {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${access_token}`,
-    },
-    method: "POST",
-  });
+    localStorage.removeItem("user");
+    localStorage.removeItem("favorites");
+    localStorage.removeItem("expireTime");
 
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
-  localStorage.removeItem("user");
-  localStorage.removeItem("expireTime");
-
-  setTimeout(() => {
-    window.location.href = `${basename}`;
-  }, 1000);
-
+    setTimeout(() => {
+      window.location.href = `${basename}`;
+    }, 1000);
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
 }
 
 export default handleLogoutUser;

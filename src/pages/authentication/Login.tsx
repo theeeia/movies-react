@@ -18,12 +18,13 @@ import { LoginFormValues } from "./interfaces";
 import { AuthContext } from "../../context/AuthContext";
 
 // Utilities
-import { handleSaveUserInLocalStorage } from "../../utils/handleSaveUserInLocalStorage";
 import { toast } from "react-toastify";
 
 // Icons
 import { ReactComponent as ToggleIconHidden } from "../../assets/images/hidden.svg";
 import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg";
+import { browserLocalPersistence, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const Login = () => {
   // Get remembered user from local storage if it exists
@@ -40,44 +41,24 @@ const Login = () => {
   const { setUser } = useContext(AuthContext);
 
   const handleLogin = async (values: LoginFormValues) => {
-    const { rememberMe, ...data } = values;
+    const { rememberMe, email, password } = values;
 
     try {
-      const response = await fetch("https://movies.codeart.mk/api/auth/login", {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-      const res = await response.json();
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
-      if (!response.ok) {
-        throw Error(res.message);
-      }
-
-      // Save or remove remembered user in local storage based on the remember me checkbox
       if (rememberMe) {
-        localStorage.setItem("rememberedUser", JSON.stringify(values.email));
+        localStorage.setItem("rememberedUser", JSON.stringify(email));
       } else {
         localStorage.removeItem("rememberedUser");
       }
+      setUser(userCredential.user);
 
-      setUser(values.email);
-      handleSaveUserInLocalStorage(
-        res.access_token,
-        res.refresh_token,
-        values.email,
-        res.expires_in,
-      );
-
+      toast.success("Logged in successfully");
     } catch (error: any) {
-      toast.error(error.message);
-      throw Error(error);
+      toast.error(error.message || "Login failed.");
     }
   };
-
   /*================
   PASSWORD ICON 
 

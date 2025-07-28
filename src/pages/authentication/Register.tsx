@@ -20,6 +20,9 @@ import { ReactComponent as ToggleIconShow } from "../../assets/images/shown.svg"
 // Utilities
 import { toast } from "react-toastify";
 
+// Firebase
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../firebase";
 const Register = () => {
   /*================
   REGISTER USER
@@ -32,28 +35,18 @@ const Register = () => {
     const { email, password, first_name, last_name } = values;
 
     try {
-      const response = await fetch("https://movies.codeart.mk/api/auth/register", {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ email, password, first_name, last_name }),
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      await updateProfile(userCredential.user, {
+        displayName: `${first_name} ${last_name}`,
       });
-      const res = await response.json();
-      if (!response.ok) {
-        throw Error(res.message);
-      }
 
       toast.success("Registered successfully");
-
       navigate("/login");
     } catch (error: any) {
-      toast.error(error.message);
-      throw Error(error);
+      toast.error(error.message || "Registration failed.");
     }
   };
-
   /*================
   PASSWORD AND CONFIRM PASSWORD ICON 
 
